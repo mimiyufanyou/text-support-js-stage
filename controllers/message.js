@@ -1,7 +1,6 @@
 // controllers/message.js 
-
+const axios = require('axios');
 const SEND_BLUE_URL = 'https://api.sendblue.co/api/send-message';
-
 const headers = { 
     'sb-api-key-id': process.env.SEND_BLUE_API_KEY_ID,
     'sb-api-secret-key': process.env.SEND_BLUE_API_SECRET_KEY,
