@@ -19,11 +19,9 @@ const sendSmsMessage = (number, content) => {
   return axios.post(SEND_BLUE_URL, requestdata, { headers: headers })
     .then((response) => {
       console.log('Webhook response:', response.data);
-      res.sendStatus(200);
     })
     .catch((error) => {
       console.error('Error sending data to webhook:', error);
-      res.sendStatus(500);
     });
 };
 

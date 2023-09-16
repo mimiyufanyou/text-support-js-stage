@@ -1,7 +1,10 @@
 const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 5001;
-const axios = require('axios');
+const connectDB = require('./config/db');
+
+// Connect to the database
+connectDB();
 
 // Require and use route modules
 const messageRoutes = require('./routes/message');
@@ -14,7 +17,13 @@ app.use(express.json()); // JSON parsing middleware
 app.use('/api/message', messageRoutes);
 app.use('/api/callback', callbackRoutes);
 
-// Start Server 
-app.listen(PORT, () => {
+db.connect().then(() => {
+
+    // Start Server 
+    app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
+    });
+
+    }).catch(error => {
+    console.error("Failed to start due to database error:", error);
 });
