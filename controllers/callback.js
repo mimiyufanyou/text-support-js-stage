@@ -2,6 +2,8 @@
 
 const axios = require('axios');
 
+const { sendSmsMessage } = require('./message');
+
 const handleSmsStatusCallback = (req, res) => {
     // Handle the status update here
     const statusUpdate = req.body;
@@ -15,14 +17,15 @@ const receiveSmsController = async (req, res) => {
   const messagePayload = req.body;
   console.log(messagePayload);
 
+  // Assuming messagePayload contains the necessary information
+  const number = messagePayload.number; // adjust based on the actual payload structure
+  const content = await getOpenAIResponse(messagePayload.content); // get content from OpenAI
+  const status_callback = 'https://example.com/message-status/1234abcd'; // replace with dynamic value if needed
+
   try {
-      const response = await getOpenAIResponse(messagePayload.content);
-      console.log("OpenAI Response:", response);
+    await sendSmsMessage(number, content, status_callback);
+    res.sendStatus(200);
 
-      // Do something with the response, if desired.
-      // For now, just respond to the incoming webhook
-
-      res.sendStatus(200);
   } catch (error) {
       console.error("Error getting OpenAI response:", error);
       res.status(500).send("Failed to process the message");
