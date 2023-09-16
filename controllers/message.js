@@ -8,8 +8,7 @@ const headers = {
     'content-type': 'application/json'
 }
 
-const sendSmsMessage = (req, res) => {
-
+const sendSmsMessage = (number, content) => {
   // Data received from the webhook
   const requestdata = {
     number: number,

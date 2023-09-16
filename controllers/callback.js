@@ -23,7 +23,7 @@ const receiveSmsController = async (req, res) => {
   const status_callback = 'https://example.com/message-status/1234abcd'; // replace with dynamic value if needed
 
   try {
-    await sendSmsMessage(number, content, status_callback);
+    await sendSmsMessage(number, content);
     res.sendStatus(200);
 
   } catch (error) {
