@@ -12,7 +12,7 @@ const content = 'This is a test message from the SendBlue API';
 const requestdata = {
   number: number,
   content: content,
-  status_callback: '/sms-status-callback',
+  status_callback: 'https://example.com/message-status/1234abcd',
 };
 
 const headers = { 
