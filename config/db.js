@@ -15,8 +15,8 @@ let database = null;
 
 async function connect() {
   const client = new MongoClient(DB_URI, {
-    sslKey: tmpCertificatePath,     // Use tmpCertificatePath here
-    sslCert: tmpCertificatePath,    // Use tmpCertificatePath here
+    tls: true,
+    tlsCAFile: tmpCertificatePath,    // Use tmpCertificatePath here
     serverApi: ServerApiVersion.v1
   });
   
