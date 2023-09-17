@@ -1,10 +1,7 @@
 const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 5001;
-const connectDB = require('./config/db');
-
-// Connect to the database
-connectDB();
+const db = require('./db');
 
 // Require and use route modules
 const messageRoutes = require('./routes/message');
