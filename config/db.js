@@ -1,23 +1,17 @@
 const { MongoClient, ServerApiVersion } = require('mongodb');
-const fs = require('fs');
 require('dotenv').config();
 
-const DB_URI = process.env.DB_URI;
-
-// Decode Base64 encoded certificate
-const certificate = Buffer.from(process.env.MONGO_CERT_BASE64, 'base64').toString('ascii');
-
-// Write the certificate to a temporary file
-const tmpCertificatePath = '/tmp/mongoCert.pem';
-fs.writeFileSync(tmpCertificatePath, certificate);
+const uri = process.env.MONGODB_URI;
 
 let database = null;
 
 async function connect() {
-  const client = new MongoClient(DB_URI, {
-    tls: true,
-    tlsCAFile: tmpCertificatePath,    // Use tmpCertificatePath here
-    serverApi: ServerApiVersion.v1
+  const client = new MongoClient(uri, {
+    serverApi: {
+      version: ServerApiVersion.v1,
+      strict: true,
+      deprecationErrors: true,
+    }
   });
   
   try {
