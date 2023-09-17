@@ -3,6 +3,7 @@
 
 # Ignore environment secrets and config
 .env
+.cert.pem
 
 # Ignore OS generated files
 .DS_Store
