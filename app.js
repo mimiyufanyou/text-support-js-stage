@@ -18,7 +18,7 @@ app.use(bodyParser.json()); // JSON parsing middleware
 // Use routes
 app.use('/api/message', messageRoutes);
 app.use('/api/callback', callbackRoutes);
-app.use('api/user', userRoutes);
+app.use('/api/user', userRoutes);
 
 db.connect().then(() => {
 
