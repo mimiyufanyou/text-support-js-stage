@@ -6,9 +6,6 @@ const { sendSmsMessage } = require('./message');
 const { createUser, getUserByPhoneNumber, updateUserChatAndSettings } = require('./user');
 const questions = require('../config/questions.js'); 
 
-
-
-
 const handleSmsStatusCallback = (req, res) => {
     // Handle the status update here
     const statusUpdate = req.body;

@@ -1,4 +1,4 @@
-// controllers/userController.js
+// controllers/user.js
 
 const User = require('../models/user');
 
@@ -23,17 +23,14 @@ const getUserByPhoneNumber = async (phoneNumber) => {
 
 const updateUserChatAndSettings = async (phoneNumber, chat, settings) => {
     try {
-        // Ensure we're updating currentQuestion by 1
-        const newSettings = {
-            ...settings,
-            currentQuestion: { $inc: { 'systemSettings.0.currentQuestion': 1 } }
-        };
+        // Increment the currentQuestion outside of the update command
+        settings.currentQuestion += 1;
 
         const updatedUser = await User.findOneAndUpdate(
             { phoneNumber: phoneNumber },
             {
                 $push: { chatHistory: chat },
-                $set: newSettings
+                $set: { systemSettings: [settings] }
             },
             { new: true }  // return the updated user
         );
