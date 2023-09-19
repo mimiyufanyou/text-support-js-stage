@@ -3,8 +3,7 @@
 const axios = require('axios');
 
 const { sendSmsMessage } = require('./message');
-const { createUser, updateSystemSettings } = require('./user');
-
+const { createUser, getUserByPhoneNumber, appendToChatHistory, updateSystemSettings } = require('./user');
 const questions = require('../config/questions.js'); 
 
 
