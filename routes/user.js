@@ -5,6 +5,6 @@ const router = express.Router();
 const userController = require('../controllers/user');
 
 // Define endpoints
-router.post('/update-user-settings', userController.updateSystemSettings);
+router.post('/update-user-settings', userController.updateUserChatAndSettings);
 
 module.exports = router;
