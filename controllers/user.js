@@ -23,14 +23,12 @@ const getUserByPhoneNumber = async (phoneNumber) => {
 
 const updateUserChatAndSettings = async (phoneNumber, chat, settings) => {
     try {
-        // Increment the currentQuestion outside of the update command
-        settings.currentQuestion += 1;
-
         const updatedUser = await User.findOneAndUpdate(
             { phoneNumber: phoneNumber },
             {
                 $push: { chatHistory: chat },
-                $set: { systemSettings: [settings] }
+                $set: settings,
+                $inc: { 'systemSettings.0.currentQuestion': 1 }
             },
             { new: true }  // return the updated user
         );
