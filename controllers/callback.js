@@ -15,7 +15,7 @@ const handleSmsStatusCallback = (req, res) => {
     res.sendStatus(200);
   };
 
-  const receiveSmsController = async (req, res) => {
+const receiveSmsController = async (req, res) => {
     const messagePayload = req.body;
     const number = messagePayload.number;
 
@@ -37,14 +37,19 @@ const handleSmsStatusCallback = (req, res) => {
         }
 
         let content;
+
         const currentQuestionId = user.systemSettings[0].currentQuestion;
-        const currentQuestion = questions[currentQuestionId];
+        const currentQuestion = questions.id[currentQuestionId];
+
+        console.log("Current Question:", currentQuestion)
 
         if (!currentQuestion) {
             // If currentQuestion doesn't exist, default to OpenAI response
             content = await getOpenAIResponse(messagePayload.content);
         } else if (user.systemSettings[0].state === "NOT_STARTED" || user.systemSettings[0].state === "IN_PROGRESS") {
             const chosenOption = currentQuestion.options.find(opt => opt.id === messagePayload.content);
+
+            console.log("Chosen Option:", chosenOption)
             
             if (chosenOption && chosenOption.result) {
                 // If the option leads to a result
