@@ -1,6 +1,3 @@
-// questions.js
-const questions = 
-
   {
     "questions": [
       {
@@ -89,5 +86,3 @@ const questions =
       }
     ]
   }
-  
-  module.exports = questions;

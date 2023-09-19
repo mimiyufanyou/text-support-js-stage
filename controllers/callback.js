@@ -4,7 +4,7 @@ const axios = require('axios');
 
 const { sendSmsMessage } = require('./message');
 const { createUser, getUserByPhoneNumber, updateUserChatAndSettings } = require('./user');
-const questions = require('../config/questions.js'); 
+const questions = require('../config/questions.json'); 
 
 const handleSmsStatusCallback = (req, res) => {
     // Handle the status update here
@@ -38,9 +38,7 @@ const handleSmsStatusCallback = (req, res) => {
 
         let content;
         const currentQuestionId = user.systemSettings[0].currentQuestion;
-
-        // Fetch the current question based on ID
-        const currentQuestion = questions.find(q => q.id === currentQuestionId);
+        const currentQuestion = questions[currentQuestionId];
 
         if (!currentQuestion) {
             // If currentQuestion doesn't exist, default to OpenAI response
@@ -55,12 +53,12 @@ const handleSmsStatusCallback = (req, res) => {
                 user.systemSettings[0].answers.push({ questionId: currentQuestionId, answer: chosenOption.text });
             } else if (chosenOption && chosenOption.next) {
                 // If the option leads to another question
-                content = questions.find(q => q.id === chosenOption.next).text;
+                content = questions[chosenOption.next].message;
                 user.systemSettings[0].currentQuestion = chosenOption.next;
                 user.systemSettings[0].answers.push({ questionId: currentQuestionId, answer: chosenOption.text });
             } else {
                 // Invalid answer, prompt the user again with the same question
-                content = currentQuestion.text;
+                content = currentQuestion.message;
             }
             
             // Update chat and system settings
@@ -90,7 +88,6 @@ const handleSmsStatusCallback = (req, res) => {
         res.status(500).send("Failed to process the message");
     }
 };
-
 
 
 
