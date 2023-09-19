@@ -3,7 +3,7 @@
 const axios = require('axios');
 
 const { sendSmsMessage } = require('./message');
-const { createUser, getUserByPhoneNumber, appendToChatHistory, updateSystemSettings } = require('./user');
+const { createUser, getUserByPhoneNumber, updateUserChatAndSettings } = require('./user');
 const questions = require('../config/questions.js'); 
 
 
@@ -17,7 +17,8 @@ const handleSmsStatusCallback = (req, res) => {
     // Respond with a 200 OK to acknowledge receipt
     res.sendStatus(200);
   };
-  const receiveSmsController = async (req, res) => {
+
+const receiveSmsController = async (req, res) => {
     const messagePayload = req.body;
     const number = messagePayload.number;
 
@@ -52,16 +53,19 @@ const handleSmsStatusCallback = (req, res) => {
                 timestamp: new Date()
             }, {
                 ...user.systemSettings[0],
-                state: "IN_PROGRESS"
+                state: "IN_PROGRESS",
+                currentQuestion: currentQuestionIndex + 1
             });
         } else {
             // User has finished all questions, you can process their message normally
             content = await getOpenAIResponse(messagePayload.content);
-            await appendToChatHistory(number, {
+
+            // Since the user finished the questions, we're just updating the chat history
+            await updateUserChatAndSettings(number, {
                 role: "user",
                 content: messagePayload.content,
                 timestamp: new Date()
-            });
+            }, user.systemSettings[0]);
         }
 
         await sendSmsMessage(number, content);
