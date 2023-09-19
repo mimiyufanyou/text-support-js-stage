@@ -18,4 +18,4 @@ async function connect() {
   }
 }
 
-module.exports = connect;
+module.exports.connect = connect;

@@ -5,6 +5,7 @@ const app = express();
 const PORT = process.env.PORT || 5001;
 
 const db = require('./config/db');
+console.log(db); 
 
 
 // Require and use route modules
