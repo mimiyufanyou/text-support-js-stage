@@ -41,7 +41,7 @@ const receiveSmsController = async (req, res) => {
 
         if (user.systemSettings[0].state === "NOT_STARTED" || (user.systemSettings[0].state === "IN_PROGRESS" && currentQuestionIndex < questions.length)) {
             // If the user hasn't started or hasn't finished the questionnaire:
-            content = questions[currentQuestionIndex];
+            content = questions[currentQuestionIndex + 1];
             
             // Update chat and system settings atomically
             await updateUserChatAndSettings(number, {
