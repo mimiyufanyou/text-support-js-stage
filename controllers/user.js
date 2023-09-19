@@ -21,28 +21,24 @@ const getUserByPhoneNumber = async (phoneNumber) => {
     }
 };
 
-// Update user chat history
-const appendToChatHistory = async (phoneNumber, chat) => {
+const updateUserChatAndSettings = async (phoneNumber, chat, settings) => {
     try {
-        return await User.findOneAndUpdate(
-            { phoneNumber: phoneNumber },
-            { $push: { chatHistory: chat } },
-            { new: true }  // return the updated user
-        );
-    } catch (error) {
-        throw error;
-    }
-};
+        // Ensure we're updating currentQuestion by 1
+        const newSettings = {
+            ...settings,
+            currentQuestion: { $inc: { 'systemSettings.0.currentQuestion': 1 } }
+        };
 
-// Update system settings
-const updateSystemSettings = async (phoneNumber, settings) => {
-    try {
         const updatedUser = await User.findOneAndUpdate(
             { phoneNumber: phoneNumber },
-            { systemSettings: settings },
+            {
+                $push: { chatHistory: chat },
+                $set: newSettings
+            },
             { new: true }  // return the updated user
         );
-        console.log("Updated User System Settings:", updatedUser.systemSettings);
+
+        console.log("Updated User Chat & System Settings:", updatedUser);
         return updatedUser;
     } catch (error) {
         throw error;
@@ -52,6 +48,5 @@ const updateSystemSettings = async (phoneNumber, settings) => {
 module.exports = {
     createUser,
     getUserByPhoneNumber,
-    appendToChatHistory,
-    updateSystemSettings
+    updateUserChatAndSettings,
 };
