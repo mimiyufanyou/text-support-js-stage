@@ -64,6 +64,9 @@ const handleSmsStatusCallback = (req, res) => {
   
       await sendSmsMessage(number, content);
       res.sendStatus(200);
+
+      console.log("Current question index:", currentQuestionIndex);
+      console.log("Next question index:", user.systemSettings[0].currentQuestion);
   
     } catch (error) {
       console.error("Error processing SMS:", error);
