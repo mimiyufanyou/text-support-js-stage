@@ -15,7 +15,7 @@ const handleSmsStatusCallback = (req, res) => {
     res.sendStatus(200);
   };
 
-const receiveSmsController = async (req, res) => {
+  const receiveSmsController = async (req, res) => {
     const messagePayload = req.body;
     const number = messagePayload.number;
 
@@ -30,34 +30,51 @@ const receiveSmsController = async (req, res) => {
                 systemSettings: [{
                     context: "",
                     state: "NOT_STARTED",
-                    answers: "",
-                    currentQuestion: 1
+                    answers: [],
+                    currentQuestion: "q1"
                 }]
             });
         }
 
         let content;
-        const currentQuestionIndex = user.systemSettings[0].currentQuestion;
+        const currentQuestionId = user.systemSettings[0].currentQuestion;
 
-        if (user.systemSettings[0].state === "NOT_STARTED" || (user.systemSettings[0].state === "IN_PROGRESS" && currentQuestionIndex < questions.length)) {
-            // If the user hasn't started or hasn't finished the questionnaire:
-            content = questions[currentQuestionIndex + 1];
+        // Fetch the current question based on ID
+        const currentQuestion = questions.find(q => q.id === currentQuestionId);
+
+        if (!currentQuestion) {
+            // If currentQuestion doesn't exist, default to OpenAI response
+            content = await getOpenAIResponse(messagePayload.content);
+        } else if (user.systemSettings[0].state === "NOT_STARTED" || user.systemSettings[0].state === "IN_PROGRESS") {
+            const chosenOption = currentQuestion.options.find(opt => opt.id === messagePayload.content);
             
-            // Update chat and system settings atomically
+            if (chosenOption && chosenOption.result) {
+                // If the option leads to a result
+                content = chosenOption.result;
+                user.systemSettings[0].state = "COMPLETED";
+                user.systemSettings[0].answers.push({ questionId: currentQuestionId, answer: chosenOption.text });
+            } else if (chosenOption && chosenOption.next) {
+                // If the option leads to another question
+                content = questions.find(q => q.id === chosenOption.next).text;
+                user.systemSettings[0].currentQuestion = chosenOption.next;
+                user.systemSettings[0].answers.push({ questionId: currentQuestionId, answer: chosenOption.text });
+            } else {
+                // Invalid answer, prompt the user again with the same question
+                content = currentQuestion.text;
+            }
+            
+            // Update chat and system settings
             await updateUserChatAndSettings(number, {
                 role: "user",
                 content: messagePayload.content,
                 timestamp: new Date()
-            }, {
-                ...user.systemSettings[0],
-                state: "IN_PROGRESS",
-                currentQuestion: currentQuestionIndex + 1
-            });
+            }, user.systemSettings[0]);
+
         } else {
-            // User has finished all questions, you can process their message normally
+            // User has finished all questions or provided an invalid option, process their message normally
             content = await getOpenAIResponse(messagePayload.content);
 
-            // Since the user finished the questions, we're just updating the chat history
+            // Since the user might have finished the questions, we're just updating the chat history
             await updateUserChatAndSettings(number, {
                 role: "user",
                 content: messagePayload.content,
@@ -68,13 +85,13 @@ const receiveSmsController = async (req, res) => {
         await sendSmsMessage(number, content);
         res.sendStatus(200);
 
-        console.log("Current question index:", currentQuestionIndex);
-        console.log("Next question index:", currentQuestionIndex + 1);
     } catch (error) {
         console.error("Error processing SMS:", error);
         res.status(500).send("Failed to process the message");
     }
 };
+
+
 
 
 async function getOpenAIResponse(message) {
