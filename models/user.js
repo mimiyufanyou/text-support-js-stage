@@ -5,8 +5,7 @@ const mongoose = require('mongoose');
 const userSchema = new mongoose.Schema({
     phoneNumber: {
         type: String,
-        required: true,
-        unique: true
+        required: true
     },
     chatHistory: [{
         role: {
@@ -24,24 +23,18 @@ const userSchema = new mongoose.Schema({
         }
     }],
     systemSettings: [{
-        // You can extend this with any settings you want to store
-        context: {
-            type: String,
-            default: ""
-        }, 
+        context: String,
         state: {
-            type: String, 
-            default: "" 
-        }, 
-        answers: { 
-            type: String, 
-            default: ""
-        }, 
-        currentQuestion: { 
-            type: Number, 
-            default: 1
-        }
-    }],
+            type: String,
+            enum: ["NOT_STARTED", "IN_PROGRESS", "COMPLETED"],
+            default: "NOT_STARTED"
+        },
+        answers: [{
+            questionId: String,
+            answer: String
+        }],
+        currentQuestion: String
+    }]
 });
 
 module.exports = mongoose.model('User', userSchema);
