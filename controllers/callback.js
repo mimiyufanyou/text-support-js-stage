@@ -17,66 +17,63 @@ const handleSmsStatusCallback = (req, res) => {
     // Respond with a 200 OK to acknowledge receipt
     res.sendStatus(200);
   };
-
   const receiveSmsController = async (req, res) => {
     const messagePayload = req.body;
-  
     const number = messagePayload.number;
-  
+
     try {
-      let user = await getUserByPhoneNumber(number);
-      console.log("User's Current Settings:", user.systemSettings);
-  
-      if (!user) {
-        user = await createUser({
-          phoneNumber: number,
-          chatHistory: [],
-          systemSettings: [{
-            context: "",
-            state: "NOT_STARTED",
-            answers: "",
-            currentQuestion: 1
-          }]
-        });
-      }
-  
-      let content;
-      const currentQuestionIndex = user.systemSettings[0].currentQuestion ;
-  
-      if (user.systemSettings[0].state === "NOT_STARTED" || (user.systemSettings[0].state === "IN_PROGRESS" && currentQuestionIndex < questions.length)) {
+        let user = await getUserByPhoneNumber(number);
+        console.log("User's Current Settings:", user?.systemSettings);
 
-        // If the user hasn't started or hasn't finished the questionnaire:
-        content = questions[currentQuestionIndex];
+        if (!user) {
+            user = await createUser({
+                phoneNumber: number,
+                chatHistory: [],
+                systemSettings: [{
+                    context: "",
+                    state: "NOT_STARTED",
+                    answers: "",
+                    currentQuestion: 1
+                }]
+            });
+        }
 
-        await updateSystemSettings(number, {
-          ...user.systemSettings[0],
-          state: "IN_PROGRESS",
-          currentQuestion: user.systemSettings[0].currentQuestion + 1
-        });
+        let content;
+        const currentQuestionIndex = user.systemSettings[0].currentQuestion;
 
-      } else {
-        
-        // User has finished all questions, you can process their message normally
-        content = await getOpenAIResponse(messagePayload.content);
-      }
-  
-      await appendToChatHistory(number, {
-        role: "user",
-        content: messagePayload.content,
-        timestamp: new Date()
-      });
-  
-      await sendSmsMessage(number, content);
-      res.sendStatus(200);
+        if (user.systemSettings[0].state === "NOT_STARTED" || (user.systemSettings[0].state === "IN_PROGRESS" && currentQuestionIndex < questions.length)) {
+            // If the user hasn't started or hasn't finished the questionnaire:
+            content = questions[currentQuestionIndex];
+            
+            // Update chat and system settings atomically
+            await updateUserChatAndSettings(number, {
+                role: "user",
+                content: messagePayload.content,
+                timestamp: new Date()
+            }, {
+                ...user.systemSettings[0],
+                state: "IN_PROGRESS"
+            });
+        } else {
+            // User has finished all questions, you can process their message normally
+            content = await getOpenAIResponse(messagePayload.content);
+            await appendToChatHistory(number, {
+                role: "user",
+                content: messagePayload.content,
+                timestamp: new Date()
+            });
+        }
 
-      console.log("Current question index:", currentQuestionIndex);
-      console.log("Next question index:", user.systemSettings[0].currentQuestion);
-  
+        await sendSmsMessage(number, content);
+        res.sendStatus(200);
+
+        console.log("Current question index:", currentQuestionIndex);
+        console.log("Next question index:", currentQuestionIndex + 1);
     } catch (error) {
-      console.error("Error processing SMS:", error);
-      res.status(500).send("Failed to process the message");
+        console.error("Error processing SMS:", error);
+        res.status(500).send("Failed to process the message");
     }
-  };
+};
 
 
 async function getOpenAIResponse(message) {
