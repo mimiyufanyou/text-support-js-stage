@@ -1,0 +1,262 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "text": "How do you primarily deal with challenges?",
+      "options": [
+        {
+          "id": "q1_o1",
+          "number": 1,
+          "text": "I confront them head-on.",
+          "next": "q1_1"
+        },
+        {
+          "id": "q1_o2",
+          "number": 2,
+          "text": "I seek support or knowledge to address them.",
+          "next": "q1_2"
+        },
+        {
+          "id": "q1_o3",
+          "number": 3,
+          "text": "I try to maintain harmony and balance.",
+          "next": "q1_3"
+        }
+      ]
+    },
+    {
+      "id": "q1_1",
+      "text": "How do you see yourself?",
+      "options": [
+        {
+          "id": "q1_1_o1",
+          "number": 1,
+          "text": "I strive for success and want to be the best.",
+          "next": "q1_1_1"
+        },
+        {
+          "id": "q1_1_o2",
+          "number": 2,
+          "text": "I stand up for what's right and have a strong sense of justice.",
+          "next": "q1_1_2"
+        },
+        {
+          "id": "q1_1_o3",
+          "number": 3,
+          "text": "I desire control and to protect myself and my environment.",
+          "next": "q1_1_3"
+        }
+      ]
+    },
+    {
+      "id": "q1_1_1",
+      "text": "Which statement resonates more with you?",
+      "options": [
+        {
+          "id": "q1_1_1_o1",
+          "number": 1,
+          "text": "I enjoy helping others succeed and be recognized for their accomplishments.",
+          "result": "Type 3w2 - The Charmer"
+        },
+        {
+          "id": "q1_1_1_o2",
+          "number": 2,
+          "text": "I have a need to be different and unique from others, even if it means standing out.",
+          "result": "Type 3w4 - The Professional"
+        }
+      ]
+    },
+    {
+      "id": "q1_1_2",
+      "text": "Which statement resonates more with you?",
+      "options": [
+        {
+          "id": "q1_1_2_o1",
+          "number": 1,
+          "text": "I value achieving things and being recognized for my efforts.",
+          "result": "Type 1w2 - The Advocate"
+        },
+        {
+          "id": "q1_1_2_o2",
+          "number": 2,
+          "text": "I often retreat into deep thought, analyzing every detail.",
+          "result": "Type 1w9 - The Idealist"
+        }
+      ]
+    },
+    {
+      "id": "q1_1_3",
+      "text": "Which statement resonates more with you?",
+      "options": [
+        {
+          "id": "q1_1_3_o1",
+          "number": 1,
+          "text": "I take pride in my ability to guide and assist others.",
+          "result": "Type 8w2 - The Challenger with a Helper Wing"
+        },
+        {
+          "id": "q1_1_3_o2",
+          "number": 2,
+          "text": "I appreciate introspection and often ponder over things deeply.",
+          "result": "Type 8w9 - The Gentle Protector"
+        }
+      ]
+    },
+    {
+      "id": "q1_2",
+      "text": "What do you prioritize in life?",
+      "options": [
+        {
+          "id": "q1_2_o1",
+          "number": 1,
+          "text": "Being knowledgeable and competent.",
+          "next": "q1_2_1"
+        },
+        {
+          "id": "q1_2_o2",
+          "number": 2,
+          "text": "Building strong, trusting relationships.",
+          "next": "q1_2_2"
+        },
+        {
+          "id": "q1_2_o3",
+          "number": 3,
+          "text": "Feeling secure and having a clear guidance.",
+          "next": "q1_2_3"
+        }
+      ]
+    },
+    {
+      "id": "q1_2_1",
+      "text": "Which statement resonates more with you?",
+      "options": [
+        {
+          "id": "q1_2_1_o1",
+          "number": 1,
+          "text": "I enjoy assisting others and feel fulfilled when I can be of help.",
+          "result": "Type 5w4 - The Iconoclast"
+        },
+        {
+          "id": "q1_2_1_o2",
+          "number": 2,
+          "text": "I am often skeptical and question the intentions of others.",
+          "result": "Type 5w6 - The Problem Solver"
+        }
+      ]
+    },
+    {
+      "id": "q1_2_2",
+      "text": "Which statement resonates more with you?",
+      "options": [
+        {
+          "id": "q1_2_2_o1",
+          "number": 1,
+          "text": "I have a strong sense of what's right and wrong and feel the need to correct injustices.",
+          "result": "Type 2w1 - The Servant"
+        },
+        {
+          "id": "q1_2_2_o2",
+          "number": 2,
+          "text": "I like being in the spotlight and want to be appreciated for my efforts.",
+          "result": "Type 2w3 - The Host/Hostess"
+        }
+      ]
+    },
+    {
+      "id": "q1_2_3",
+      "text": "Which statement resonates more with you?",
+      "options": [
+        {
+          "id": "q1_2_3_o1",
+          "number": 1,
+          "text": "I constantly seek deeper understanding and often dive into introspection.",
+          "result": "Type 6w5 - The Defender"
+        },
+        {
+          "id": "q1_2_3_o2",
+          "number": 2,
+          "text": "I have a supportive nature and often prioritize others' needs.",
+          "result": "Type 6w7 - The Buddy"
+        }
+      ]
+    },
+    {
+      "id": "q1_3",
+      "text": "What is more in line with your inner feelings?",
+      "options": [
+        {
+          "id": "q1_3_o1",
+          "number": 1,
+          "text": "I want to be unique and express my individuality.",
+          "next": "q1_3_1"
+        },
+        {
+          "id": "q1_3_o2",
+          "number": 2,
+          "text": "I desire to have my needs met and to experience life to the fullest.",
+          "next": "q1_3_2"
+        },
+        {
+          "id": "q1_3_o3",
+          "number": 3,
+          "text": "I wish for inner and outer peace, avoiding conflicts.",
+          "next": "q1_3_3"
+        }
+      ]
+    },
+    {
+      "id": "q1_3_1",
+      "text": "Which statement resonates more with you?",
+      "options": [
+        {
+          "id": "q1_3_1_o1",
+          "number": 1,
+          "text": "I often feel the weight of envy and sometimes feel misunderstood.",
+          "result": "Type 4w5 - The Bohemian"
+        },
+        {
+          "id": "q1_3_1_o2",
+          "number": 2,
+          "text": "I have a desire to be recognized and can be very image-conscious.",
+          "result": "Type 4w3 - The Aristocrat"
+        }
+      ]
+    },
+    {
+      "id": "q1_3_2",
+      "text": "Which statement resonates more with you?",
+      "options": [
+        {
+          "id": "q1_3_2_o1",
+          "number": 1,
+          "text": "I have a strong inclination towards planning and seek constant stimulation.",
+          "result": "Type 7w6 - The Entertainer"
+        },
+        {
+          "id": "q1_3_2_o2",
+          "number": 2,
+          "text": "I appreciate depth and meaningful experiences in life.",
+          "result": "Type 7w8 - The Realist"
+        }
+      ]
+    },
+    {
+      "id": "q1_3_3",
+      "text": "Which statement resonates more with you?",
+      "options": [
+        {
+          "id": "q1_3_3_o1",
+          "number": 1,
+          "text": "I believe in a moral code and often find myself striving for perfection.",
+          "result": "Type 9w1 - The Dreamer"
+        },
+        {
+          "id": "q1_3_3_o2",
+          "number": 2,
+          "text": "I like to take charge of situations and can be assertive when needed.",
+          "result": "Type 9w8 - The Comfort Seeker"
+        }
+      ]
+    }
+  ]
+}
