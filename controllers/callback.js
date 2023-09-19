@@ -25,6 +25,7 @@ const handleSmsStatusCallback = (req, res) => {
   
     try {
       let user = await getUserByPhoneNumber(number);
+      console.log("User's Current Settings:", user.systemSettings);
   
       if (!user) {
         user = await createUser({
@@ -42,7 +43,7 @@ const handleSmsStatusCallback = (req, res) => {
       let content;
       const currentQuestionIndex = user.systemSettings[0].currentQuestion - 1;
   
-      if (user.systemSettings[0].state === "NOT_STARTED" || currentQuestionIndex < questions.length) {
+      if (user.systemSettings[0].state === "NOT_STARTED" || (user.systemSettings[0].state === "IN_PROGRESS" && currentQuestionIndex < questions.length)) {
         // If the user hasn't started or hasn't finished the questionnaire:
         content = questions[currentQuestionIndex];
         await updateSystemSettings(number, {

@@ -37,11 +37,13 @@ const appendToChatHistory = async (phoneNumber, chat) => {
 // Update system settings
 const updateSystemSettings = async (phoneNumber, settings) => {
     try {
-        return await User.findOneAndUpdate(
+        const updatedUser = await User.findOneAndUpdate(
             { phoneNumber: phoneNumber },
             { systemSettings: settings },
             { new: true }  // return the updated user
         );
+        console.log("Updated User System Settings:", updatedUser.systemSettings);
+        return updatedUser;
     } catch (error) {
         throw error;
     }
