@@ -5,6 +5,10 @@ const axios = require('axios');
 const { sendSmsMessage } = require('./message');
 const { createUser, updateSystemSettings } = require('./user');
 
+const questions = require('../config/questions.js'); 
+
+
+
 
 const handleSmsStatusCallback = (req, res) => {
     // Handle the status update here
@@ -15,24 +19,58 @@ const handleSmsStatusCallback = (req, res) => {
     res.sendStatus(200);
   };
 
-const receiveSmsController = async (req, res) => {
-  const messagePayload = req.body;
-  console.log(messagePayload);
-
-  // Assuming messagePayload contains the necessary information
-  const number = messagePayload.number; // adjust based on the actual payload structure
-  const content = await getOpenAIResponse(messagePayload.content); // get content from OpenAI
-  const status_callback = 'https://example.com/message-status/1234abcd'; // replace with dynamic value if needed
-
-  try {
-    await sendSmsMessage(number, content);
-    res.sendStatus(200);
-
-  } catch (error) {
-      console.error("Error getting OpenAI response:", error);
+  const receiveSmsController = async (req, res) => {
+    const messagePayload = req.body;
+  
+    const number = messagePayload.number;
+  
+    try {
+      let user = await getUserByPhoneNumber(number);
+  
+      if (!user) {
+        user = await createUser({
+          phoneNumber: number,
+          chatHistory: [],
+          systemSettings: [{
+            context: "",
+            state: "NOT_STARTED",
+            answers: "",
+            currentQuestion: 1
+          }]
+        });
+      }
+  
+      let content;
+      const currentQuestionIndex = user.systemSettings[0].currentQuestion - 1;
+  
+      if (user.systemSettings[0].state === "NOT_STARTED" || currentQuestionIndex < questions.length) {
+        // If the user hasn't started or hasn't finished the questionnaire:
+        content = questions[currentQuestionIndex];
+        await updateSystemSettings(number, {
+          ...user.systemSettings[0],
+          state: "IN_PROGRESS",
+          currentQuestion: user.systemSettings[0].currentQuestion + 1
+        });
+      } else {
+        // User has finished all questions, you can process their message normally
+        content = await getOpenAIResponse(messagePayload.content);
+      }
+  
+      await appendToChatHistory(number, {
+        role: "user",
+        content: messagePayload.content,
+        timestamp: new Date()
+      });
+  
+      await sendSmsMessage(number, content);
+      res.sendStatus(200);
+  
+    } catch (error) {
+      console.error("Error processing SMS:", error);
       res.status(500).send("Failed to process the message");
-  }
-};
+    }
+  };
+
 
 async function getOpenAIResponse(message) {
     const endpoint = "https://api.openai.com/v1/chat/completions";
