@@ -41,17 +41,21 @@ const handleSmsStatusCallback = (req, res) => {
       }
   
       let content;
-      const currentQuestionIndex = user.systemSettings[0].currentQuestion - 1;
+      const currentQuestionIndex = user.systemSettings[0].currentQuestion ;
   
       if (user.systemSettings[0].state === "NOT_STARTED" || (user.systemSettings[0].state === "IN_PROGRESS" && currentQuestionIndex < questions.length)) {
+
         // If the user hasn't started or hasn't finished the questionnaire:
         content = questions[currentQuestionIndex];
+
         await updateSystemSettings(number, {
           ...user.systemSettings[0],
           state: "IN_PROGRESS",
           currentQuestion: user.systemSettings[0].currentQuestion + 1
         });
+
       } else {
+        
         // User has finished all questions, you can process their message normally
         content = await getOpenAIResponse(messagePayload.content);
       }
