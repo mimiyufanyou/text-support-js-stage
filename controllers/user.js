@@ -27,7 +27,11 @@ const updateUserChatAndSettings = async (phoneNumber, chat, settings) => {
             { phoneNumber: phoneNumber },
             {
                 $push: { chatHistory: chat },
-                $set: settings,
+                $set: {
+                    'systemSettings.0.context': settings.context,
+                    'systemSettings.0.state': settings.state,
+                    'systemSettings.0.answers': settings.answers,
+                },
                 $inc: { 'systemSettings.0.currentQuestion': 1 }
             },
             { new: true }  // return the updated user
