@@ -1,4 +1,3 @@
-
 const QuizResult = require('../models/quiz');
 
 const fs = require('fs');

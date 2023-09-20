@@ -112,4 +112,3 @@ const initializeQuiz = async () => {
 };
 
 initializeQuiz();  // Call the main function to start your program
-

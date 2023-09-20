@@ -15,20 +15,19 @@ const handleSmsStatusCallback = (req, res) => {
     res.sendStatus(200);
   };
 
-const receiveSmsController = async (req, res) => {
+  const receiveSmsController = async (req, res) => {
     const messagePayload = req.body;
     const number = messagePayload.number;
 
     try {
         let user = await getUserByPhoneNumber(number);
-        console.log("User's Current Settings:", user?.systemSettings);
 
         if (!user) {
             user = await createUser({
                 phoneNumber: number,
                 chatHistory: [],
                 systemSettings: [{
-                    context: "",
+                    context: "quiz",  // Setting context to "quiz" for new users
                     state: "NOT_STARTED",
                     answers: [],
                     currentQuestion: "q1"
@@ -39,45 +38,34 @@ const receiveSmsController = async (req, res) => {
         let content;
 
         const currentQuestionId = user.systemSettings[0].currentQuestion;
-        const currentQuestion = questions.id[currentQuestionId];
+        const currentQuestion = questions[currentQuestionId]; // Make sure to access your questions correctly
 
-        console.log("Current Question:", currentQuestion)
-
-        if (!currentQuestion) {
-            // If currentQuestion doesn't exist, default to OpenAI response
-            content = await getOpenAIResponse(messagePayload.content);
-        } else if (user.systemSettings[0].state === "NOT_STARTED" || user.systemSettings[0].state === "IN_PROGRESS") {
+        if (user.systemSettings[0].context === "quiz" && (user.systemSettings[0].state === "NOT_STARTED" || user.systemSettings[0].state === "IN_PROGRESS")) {
             const chosenOption = currentQuestion.options.find(opt => opt.id === messagePayload.content);
 
-            console.log("Chosen Option:", chosenOption)
-            
             if (chosenOption && chosenOption.result) {
-                // If the option leads to a result
                 content = chosenOption.result;
                 user.systemSettings[0].state = "COMPLETED";
                 user.systemSettings[0].answers.push({ questionId: currentQuestionId, answer: chosenOption.text });
             } else if (chosenOption && chosenOption.next) {
-                // If the option leads to another question
-                content = questions[chosenOption.next].message;
+                content = questions[chosenOption.next].message; // Provide the next question's message
                 user.systemSettings[0].currentQuestion = chosenOption.next;
                 user.systemSettings[0].answers.push({ questionId: currentQuestionId, answer: chosenOption.text });
             } else {
-                // Invalid answer, prompt the user again with the same question
-                content = currentQuestion.message;
+                content = "Invalid option. Please try again. " + currentQuestion.message; // Prompt them to answer the current question again
             }
             
-            // Update chat and system settings
             await updateUserChatAndSettings(number, {
                 role: "user",
                 content: messagePayload.content,
                 timestamp: new Date()
             }, user.systemSettings[0]);
 
+        } else if (user.systemSettings[0].context === "quiz" && user.systemSettings[0].state === "COMPLETED") {
+            content = "You have already completed the quiz. Type 'RESTART' if you want to start over."; 
         } else {
-            // User has finished all questions or provided an invalid option, process their message normally
+            // Handle other conversation context
             content = await getOpenAIResponse(messagePayload.content);
-
-            // Since the user might have finished the questions, we're just updating the chat history
             await updateUserChatAndSettings(number, {
                 role: "user",
                 content: messagePayload.content,
@@ -87,7 +75,6 @@ const receiveSmsController = async (req, res) => {
 
         await sendSmsMessage(number, content);
         res.sendStatus(200);
-
     } catch (error) {
         console.error("Error processing SMS:", error);
         res.status(500).send("Failed to process the message");
