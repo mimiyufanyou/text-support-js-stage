@@ -30,9 +30,13 @@ const getQuizResultByUserId = async (userId, quizName) => {
 
 const createQuizResult = async (data) => {
     try {
+        console.log("Attempting to save the following data:", data);
         const quizResult = new QuizResult(data);
-        return await quizResult.save();
+        const savedResult = await quizResult.save();
+        console.log("Saved result:", savedResult);
+        return savedResult;
     } catch (error) {
+        console.error("Error saving quiz result:", error);
         throw error;
     }
 };
