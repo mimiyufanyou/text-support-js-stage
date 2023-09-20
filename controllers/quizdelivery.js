@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { connect } = require('../config/db');  // Importing your connection function
 
-const { getQuizResultByUserId, createQuizResult, quizController, loadQuizFromFile } = require('./controllers/quiz');
+const { getQuizResultByUserId, createQuizResult, quizController, loadQuizFromFile } = require('./quiz');
 
 const checkQuizCompletionForUser = async (user, quizName) => {
     const quizResult = await getQuizResultByUserId(user, quizName);
