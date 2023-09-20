@@ -1,30 +1,25 @@
 const fs = require('fs');
 const path = require('path');
-const readline = require('readline');
 const { connect } = require('./config/db');  // Importing your connection function
 
 const { getQuizResultByUserId, createQuizResult, quizController, loadQuizFromFile } = require('./controllers/quiz');
 
-const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-});
-
-const user = '+16048189821'
-
-let questionsData;  // Declare the variable at the module level
-
-const askIfTakenQuiz = async (quizName) => {
+const checkQuizCompletionForUser = async (user, quizName) => {
     const quizResult = await getQuizResultByUserId(user, quizName);
+    return !!quizResult;  // Returns true if a quiz result exists, otherwise false
+};
 
-    if (!quizResult) {
+const askIfTakenQuiz = async (user, quizName) => {
+    const hasTakenQuiz = await checkQuizCompletionForUser(user, quizName);
+
+    if (!hasTakenQuiz) {
         rl.question(`Have you taken the ${quizName} test? (yes/no) `, (answer) => {
             if (answer.toLowerCase() === 'no') {
                 const isQuizLoaded = loadQuizFromFile(quizName);
 
                 if (isQuizLoaded) {
                     console.log(`Starting the ${quizName} quiz...`);
-                    askQuestion('q1');
+                    askQuestion('q1', isQuizLoaded);  // Assuming you're now passing the quiz data to `askQuestion`
                 } else {
                     console.log(`No quiz named ${quizName} found.`);
                     rl.close();
@@ -99,7 +94,7 @@ const initializeQuiz = async () => {
         // Then, start the readline interface
         rl.question("Which quiz are you interested in (enneagram/stress)? ", async (quizChoice) => {
             if (['enneagram', 'stress'].includes(quizChoice.toLowerCase())) {
-                await startQuiz(quizChoice.toLowerCase());  // Call the renamed function here
+                await askIfTakenQuiz(user, quizChoice.toLowerCase());  // Call `askIfTakenQuiz` instead of `startQuiz`
             } else {
                 console.log("I'm sorry, I didn't understand which quiz you want. Please specify either 'enneagram' or 'stress'.");
                 rl.close();
@@ -111,4 +106,10 @@ const initializeQuiz = async () => {
     }
 };
 
-initializeQuiz();  // Call the main function to start your program
+module.exports = { 
+    checkQuizCompletionForUser, 
+    askIfTakenQuiz, 
+    askQuestion, 
+    startQuiz, 
+    initializeQuiz 
+};
