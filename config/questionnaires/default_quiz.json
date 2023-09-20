@@ -5,7 +5,7 @@
         "id": "q1",
         "text": "How often would you like us to check in with you?",
         "options": [
-          {"id": "q1_o1", "number": 1, "text": "Twice a day, beginning and end", "next": "q2"},
+          {"id": "q1_o1", "number": 1, "text": "2, beginning and end", "next": "q2"},
           {"id": "q1_o2", "number": 2, "text": "3+ times a day", "next": "q2"},
           {"id": "q1_o3", "number": 3, "text": "10+ times a day", "next": "q2"},
           {"id": "q1_o4", "number": 4, "text": "Never, just when I reach out", "next": "q2"}

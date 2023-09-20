@@ -64,7 +64,7 @@ const receiveSmsController = async (req, res) => {
             return;
         }
 
-        const quizName = user.systemSettings[0].context || "default";
+        const quizName = user.systemSettings[0].context || "enneagram";
         const loadedQuestions = loadQuizFromFile(quizName);
 
         if (!loadedQuestions) {
