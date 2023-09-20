@@ -41,7 +41,7 @@ const updateUserProgress = async (user, questionId) => {
 const receiveSmsController = async (req, res) => {
     const { number, message } = req.body;
     
-    const user = await getUserByNumber(number);
+    const user = await getUserByPhoneNumber(number);
     
     if (!user) {
         console.error("User not found");
