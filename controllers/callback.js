@@ -5,7 +5,7 @@ const axios = require('axios');
 const { sendSmsMessage } = require('./message');
 const { createUser, getUserByPhoneNumber, updateUserChatAndSettings } = require('./user');
 const { getQuizResultByUserId, loadQuizFromFile } = require('./quiz');
-const { askQuestion, askIfTakenQuiz, checkQuizCompletionForUser, startQuiz, initializeQuiz } = require('./quizdelivery');
+const { askIfTakenQuiz, checkQuizCompletionForUser, startQuiz, initializeQuiz } = require('./quizdelivery');
 
 const handleSmsStatusCallback = (req, res) => {
     try {
@@ -19,26 +19,6 @@ const handleSmsStatusCallback = (req, res) => {
     }
 };
 
-const askQuestion = async (number, questionId, questionsData, user) => {
-    try {
-        const specificQuestion = questionsData.questions.find(q => q.id === questionId);
-        if (!specificQuestion) {
-            console.log("All questions answered or invalid question ID.");
-            await sendSmsMessage(number, "Thank you for participating in the quiz!");
-            return;
-        }
-
-        let questionText = specificQuestion.text;
-        specificQuestion.options.forEach((option, index) => {
-            questionText += `\n${index + 1}. ${option.text}`;
-        });
-
-        await sendSmsMessage(number, questionText);
-    } catch (err) {
-        console.error('Error in askQuestion function:', err);
-    }
-};
-
 const updateUserProgress = async (user, questionId) => {
     try {
         user.currentQuestionId = questionId;
@@ -46,6 +26,23 @@ const updateUserProgress = async (user, questionId) => {
     } catch (err) {
         console.error('Error updating user progress:', err);
     }
+};
+
+const askQuestion = async (number, questionId, questionsData) => {
+    const specificQuestion = questionsData.questions.find(q => q.id === questionId);
+
+    if (!specificQuestion) {
+        console.log("All questions answered or invalid question ID.");
+        await sendSmsMessage(number, "Thank you for participating in the quiz!");
+        return;
+    }
+
+    let questionText = specificQuestion.text;
+    specificQuestion.options.forEach((option, index) => {
+        questionText += `\n${index + 1}. ${option.text}`;
+    });
+
+    await sendSmsMessage(number, questionText);
 };
 
 const receiveSmsController = async (req, res) => {
@@ -77,11 +74,34 @@ const receiveSmsController = async (req, res) => {
             return;
         }
 
-        // ... [rest of the code remains the same]
+        if (!user.currentQuestionId) {
+            await askQuestion(number, 'q1', loadedQuestions);
+        } else {
+            const chosenIndex = parseInt(message) - 1;
+            const previousQuestion = loadedQuestions.questions.find(q => q.id === user.currentQuestionId);
+            const chosenOption = previousQuestion && previousQuestion.options[chosenIndex];
+
+            if (chosenOption && chosenOption.next) {
+                await askQuestion(number, chosenOption.next, loadedQuestions);
+            } else if (chosenOption && chosenOption.result) {
+                await sendSmsMessage(number, `Your result is: ${chosenOption.result}`);
+                await createQuizResult({
+                    user,
+                    quizName: loadedQuestions.name,
+                    result: chosenOption.result,
+                    answers: []  // Assuming you might want to save answers in the future
+                });
+            } else {
+                await sendSmsMessage(number, "Invalid option. Please try again.");
+                await askQuestion(number, user.currentQuestionId, loadedQuestions);
+            }
+        }
+
+        res.sendStatus(200);
 
     } catch (err) {
         console.error('Error in receiveSmsController:', err);
-        res.sendStatus(500); // You might want to send 500 for unexpected server errors
+        res.sendStatus(500);  // Sending 500 for unexpected server errors
     }
 };
 
