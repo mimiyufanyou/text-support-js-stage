@@ -21,25 +21,64 @@ const handleSmsStatusCallback = (req, res) => {
     try {
         let user = await getUserByPhoneNumber(number);
 
+        // If user doesn't exist in our database
         if (!user) {
-            user = await createUser({
-                phoneNumber: number,
-                chatHistory: [],
-                systemSettings: [{
-                    context: "quiz",  // Setting context to "quiz" for new users
-                    state: "NOT_STARTED",
-                    answers: [],
-                    currentQuestion: "q1"
-                }]
-            });
+            if (['enneagram', 'stress'].includes(messagePayload.content.toLowerCase())) {
+                // Check if the user has already taken this quiz
+                const quizName = messagePayload.content.toLowerCase();
+                const quizResult = await getQuizResultByUserId(number, quizName);
+
+                if (quizResult) {
+                    // User has already taken the quiz
+                    await sendSmsMessage(number, "You have already taken this quiz.");
+                    res.sendStatus(200);
+                    return;
+                }
+
+                const loadedQuestions = loadQuizFromFile(quizName);
+                if (!loadedQuestions) {
+                    console.error("Quiz questions not loaded.");
+                    await sendSmsMessage(number, "Sorry, couldn't load the quiz questions.");
+                    res.sendStatus(200);
+                    return;
+                }
+
+                user = await createUser({
+                    phoneNumber: number,
+                    chatHistory: [],
+                    systemSettings: [{
+                        context: quizName, // <-- Store the quiz name for reference
+                        state: "NOT_STARTED",
+                        answers: [],
+                        currentQuestion: "q1"
+                    }]
+                });
+            } else {
+                // Ask the user which quiz they're interested in
+                await sendSmsMessage(number, "Which quiz are you interested in (enneagram/stress)?");
+                res.sendStatus(200);
+                return;
+            }
         }
 
-        let content;
+        // By this point, the user either selected a quiz or is already in the middle of one
+        const quizName = user.systemSettings[0].context;  // Extracting the quiz name
+        const loadedQuestions = loadQuizFromFile(quizName);
+
+        // Ensure the questions are loaded
+        if (!loadedQuestions) {
+            console.error("Quiz questions not loaded.");
+            res.status(500).send("Failed to process the message");
+            return;
+        }
 
         const currentQuestionId = user.systemSettings[0].currentQuestion;
-        const currentQuestion = questions[currentQuestionId]; // Make sure to access your questions correctly
+        const currentQuestion = loadedQuestions[currentQuestionId];
 
-        if (user.systemSettings[0].context === "quiz" && (user.systemSettings[0].state === "NOT_STARTED" || user.systemSettings[0].state === "IN_PROGRESS")) {
+        if (!currentQuestion) {
+            // If currentQuestion doesn't exist, default to OpenAI response
+            content = await getOpenAIResponse(messagePayload.content);
+        } else if (user.systemSettings[0].state === "NOT_STARTED" || user.systemSettings[0].state === "IN_PROGRESS") {
             const chosenOption = currentQuestion.options.find(opt => opt.id === messagePayload.content);
 
             if (chosenOption && chosenOption.result) {
@@ -47,24 +86,25 @@ const handleSmsStatusCallback = (req, res) => {
                 user.systemSettings[0].state = "COMPLETED";
                 user.systemSettings[0].answers.push({ questionId: currentQuestionId, answer: chosenOption.text });
             } else if (chosenOption && chosenOption.next) {
-                content = questions[chosenOption.next].message; // Provide the next question's message
+                content = loadedQuestions[chosenOption.next].message;
                 user.systemSettings[0].currentQuestion = chosenOption.next;
                 user.systemSettings[0].answers.push({ questionId: currentQuestionId, answer: chosenOption.text });
             } else {
-                content = "Invalid option. Please try again. " + currentQuestion.message; // Prompt them to answer the current question again
+                // Invalid answer, prompt the user again with the same question
+                content = currentQuestion.message;
             }
-            
+
+            // Update chat and system settings
             await updateUserChatAndSettings(number, {
                 role: "user",
                 content: messagePayload.content,
                 timestamp: new Date()
             }, user.systemSettings[0]);
 
-        } else if (user.systemSettings[0].context === "quiz" && user.systemSettings[0].state === "COMPLETED") {
-            content = "You have already completed the quiz. Type 'RESTART' if you want to start over."; 
         } else {
-            // Handle other conversation context
             content = await getOpenAIResponse(messagePayload.content);
+
+            // Just updating the chat history
             await updateUserChatAndSettings(number, {
                 role: "user",
                 content: messagePayload.content,
@@ -74,6 +114,7 @@ const handleSmsStatusCallback = (req, res) => {
 
         await sendSmsMessage(number, content);
         res.sendStatus(200);
+
     } catch (error) {
         console.error("Error processing SMS:", error);
         res.status(500).send("Failed to process the message");
