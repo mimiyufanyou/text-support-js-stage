@@ -4,7 +4,6 @@ const axios = require('axios');
 
 const { sendSmsMessage } = require('./message');
 const { createUser, getUserByPhoneNumber, updateUserChatAndSettings } = require('./user');
-const questions = require('../config/questions.json'); 
 
 const handleSmsStatusCallback = (req, res) => {
     // Handle the status update here
