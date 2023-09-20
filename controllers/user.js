@@ -8,6 +8,7 @@ const createUser = async (userData) => {
         const user = new User(userData);
         return await user.save();
     } catch (error) {
+        console.error("Error creating user:", error);
         throw error;
     }
 };
@@ -17,6 +18,7 @@ const getUserByPhoneNumber = async (phoneNumber) => {
     try {
         return await User.findOne({ phoneNumber: phoneNumber });
     } catch (error) {
+        console.error("Error retrieving user by phone number:", error);
         throw error;
     }
 };
@@ -40,6 +42,7 @@ const updateUserChatAndSettings = async (phoneNumber, chat, settings) => {
         console.log("Updated User Chat & System Settings:", updatedUser);
         return updatedUser;
     } catch (error) {
+        console.error("Error updating user chat and settings:", error);
         throw error;
     }
 };
