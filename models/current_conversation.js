@@ -19,12 +19,17 @@ const messageSchema = new mongoose.Schema({
 // Define the current conversation schema
 const currentConversationSchema = new mongoose.Schema({
   userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User' 
+  },
+  phoneNumber: {
     type: String,
     required: true
   },
   sessionId: {
-    type: String,
-    required: true
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Session',
+    default: null
   },
   isActive: {
     type: Boolean,
@@ -50,5 +55,9 @@ currentConversationSchema.pre('save', function (next) {
 
 // Create the model
 const CurrentConversation = mongoose.model('CurrentConversation', currentConversationSchema);
+const NewMessage = mongoose.model('NewMessage', messageSchema);
 
-module.exports = CurrentConversation;
+module.exports = {
+  CurrentConversation, 
+  NewMessage, 
+};

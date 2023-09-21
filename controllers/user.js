@@ -23,7 +23,8 @@ const getUserByPhoneNumber = async (phoneNumber) => {
     }
 };
 
-const updateUserChatAndSettings = async (phoneNumber, chat, settings) => {
+// find a user, and then update the chat history and system settings
+const updateUserChatAndSettings = async (phoneNumber, chat, settings, questionId) => {
     try {
         const updatedUser = await User.findOneAndUpdate(
             { phoneNumber: phoneNumber },
@@ -34,7 +35,7 @@ const updateUserChatAndSettings = async (phoneNumber, chat, settings) => {
                     'systemSettings.0.state': settings.state,
                     'systemSettings.0.answers': settings.answers,
                 },
-                $inc: { 'systemSettings.0.currentQuestion': 1 }
+                $set: { 'systemSettings.0.currentQuestion': 1 }
             },
             { new: true }  // return the updated user
         );

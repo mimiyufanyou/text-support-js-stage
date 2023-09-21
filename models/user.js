@@ -16,18 +16,26 @@ const userSchema = new mongoose.Schema({
     username: String,
     phoneNumber: {
         type: String,
-        required: true
+        required: true, 
+        unique: true 
     },
+    confirmed: Boolean, 
     email: {
       type: String,
-      required: true,
+      required: false,
       unique: true
     },
     programs: [{
       programId: String,
     }],
-    quizResults: [quizResultSchema],
-    chatHistory: [chatHistorySchema],
+    quizResults: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'QuizResult'
+    }],
+    chatHistory: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'ChatHistory'
+    }],
     userContext: [contextSchema], 
     createdAt: {
       type: Date,
