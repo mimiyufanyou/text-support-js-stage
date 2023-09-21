@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { quizSchema } = require('./programs');
+const { quizSchema } = require('./quiz');
 
 // Define the quiz result schema
 

@@ -24,32 +24,32 @@ const getUserByPhoneNumber = async (phoneNumber) => {
 };
 
 // find a user, and then update the chat history and system settings
-const updateUserChatAndSettings = async (phoneNumber, chat, settings, questionId) => {
-    try {
-        const updatedUser = await User.findOneAndUpdate(
-            { phoneNumber: phoneNumber },
-            {
-                $push: { chatHistory: chat },
-                $set: {
-                    'systemSettings.0.context': settings.context,
-                    'systemSettings.0.state': settings.state,
-                    'systemSettings.0.answers': settings.answers,
-                },
-                $set: { 'systemSettings.0.currentQuestion': 1 }
-            },
-            { new: true }  // return the updated user
-        );
+// const updateUserChatAndSettings = async (phoneNumber, chat, settings, questionId) => {
+//     try {
+//         const updatedUser = await User.findOneAndUpdate(
+//             { phoneNumber: phoneNumber },
+//             {
+//                 $push: { chatHistory: chat },
+//                 $set: {
+//                     'systemSettings.0.context': settings.context,
+//                     'systemSettings.0.state': settings.state,
+//                     'systemSettings.0.answers': settings.answers,
+//                 },
+//                 $set: { 'systemSettings.0.currentQuestion': 1 }
+//             },
+//             { new: true }  // return the updated user
+//         );
 
-        console.log("Updated User Chat & System Settings:", updatedUser);
-        return updatedUser;
-    } catch (error) {
-        console.error("Error updating user chat and settings:", error);
-        throw error;
-    }
-};
+//         console.log("Updated User Chat & System Settings:", updatedUser);
+//         return updatedUser;
+//     } catch (error) {
+//         console.error("Error updating user chat and settings:", error);
+//         throw error;
+//     }
+// };
 
 module.exports = {
     createUser,
     getUserByPhoneNumber,
-    updateUserChatAndSettings,
+    // updateUserChatAndSettings,
 };

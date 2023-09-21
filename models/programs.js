@@ -19,7 +19,6 @@ const programSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  quizzes: [quizSchema],
   isActive: {
     type: Boolean,
     default: true
