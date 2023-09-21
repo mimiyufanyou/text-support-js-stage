@@ -65,7 +65,6 @@ const processAndStoreMessage = async (user, phoneNumber, message) => {
   console.log(`Looking for conversation with ${phoneNumber}`)
 
   let conversation = await Session.findOne({ phoneNumber : phoneNumber });
-  let user = await User.findOne({ phoneNumber: phoneNumber });
 
   if (!conversation) {
     // Create a new conversation if one doesn't exist
