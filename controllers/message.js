@@ -28,32 +28,30 @@ const sendSmsMessage = (phoneNumber, content) => {
 };
 
 // receiveSmsMessage 
-const receiveSmsMessage = async (req, res) => {
+const receiveSmsMessage = async (req) => {
+  try {
   const messagePayload = req.body;
-
   console.log('Received SMS message:', messagePayload);
-
   let user = await User.findOne({phoneNumber: req.body.number});
 
   if (!user) {
     console.log(`User with number ${req.body.number} does not exist, creating user and confirming.`);
     user = new User({ phoneNumber: req.body.number, confirmed: true });
     await user.save();
+    await processAndStoreMessage(req.body.number, req.body.content);
+    return true; 
   }
 
   if (user && !user.confirmed) {
     console.log(`User with number ${req.body.number} is not confirmed`);
-    res.status(400).json({ message: 'User with number is not confirmed, confirming' });
-
     user.confirmed = true; 
     await user.save();  
-  }
-
-  try {
     await processAndStoreMessage(req.body.number, req.body.content);
-    res.status(200).json({ message: 'SMS received successfully.' });
-  } catch (error) {
-    res.status(500).json({ message: 'Failed to process the message' });
+    return true; 
+  }
+  } catch (error) { 
+    console.error("Error receiving SMS message:", error);
+    return false; 
   }
 };
 
