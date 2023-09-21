@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const { quizSchema } = require('./quiz');
 
 // Define the quiz result schema
 
@@ -8,8 +7,10 @@ const quizResultSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    quizId: quizSchema.path('quizId'),
-    quizName: quizSchema.path('name'), 
+    quizId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Quiz',
+    }, 
     answers: [{
         questionId: String,
         selectedOption: String
