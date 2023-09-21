@@ -7,6 +7,8 @@ const headers = {
     'content-type': 'application/json'
 }
 
+const User = require('../models/user');
+
 const sendSmsMessage = (phoneNumber, content) => {
   // Data received from the webhook
   const requestdata = {
