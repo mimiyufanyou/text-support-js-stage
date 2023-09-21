@@ -28,37 +28,6 @@ const sendSmsMessage = (phoneNumber, content) => {
     });
 };
 
-// receiveSmsMessage 
-const receiveSmsMessage = async (req) => {
-  try {
-  const messagePayload = req.body;
-  console.log('Received SMS message:', messagePayload);
-  let user = await User.findOne({phoneNumber: req.body.number});
-
-  if (!user) {
-    console.log(`User with number ${req.body.number} does not exist, creating user and confirming.`);
-    user = new User({ phoneNumber: req.body.number, confirmed: true });
-    await user.save();
-    await processAndStoreMessage(user, req.body.number, req.body.content);
-    return true; 
-  }
-
-  if (user && !user.confirmed) {
-    console.log(`User with number ${req.body.number} is not confirmed`);
-    user.confirmed = true; 
-    await user.save();  
-    await processAndStoreMessage(user, req.body.number, req.body.content);
-    return true; 
-  }
-
-  await processAndStoreMessage(user, req.body.number, req.body.content);
-  return true; 
-
-  } catch (error) { 
-    console.error("Error receiving SMS message:", error);
-    return false; 
-  }
-};
 
 // Process and store the user's answer and update their progress.
 const processAndStoreMessage = async (user, phoneNumber, message) => {
@@ -97,6 +66,40 @@ const processAndStoreMessage = async (user, phoneNumber, message) => {
   await conversation.save();
   console.log(`Stored message for ${phoneNumber}`);
 };
+
+
+// receiveSmsMessage 
+const receiveSmsMessage = async (req) => {
+  try {
+  const messagePayload = req.body;
+  console.log('Received SMS message:', messagePayload);
+  let user = await User.findOne({phoneNumber: req.body.number});
+
+  if (!user) {
+    console.log(`User with number ${req.body.number} does not exist, creating user and confirming.`);
+    user = new User({ phoneNumber: req.body.number, confirmed: true });
+    await user.save();
+    await processAndStoreMessage(user, req.body.number, req.body.content);
+    return true; 
+  }
+
+  if (user && !user.confirmed) {
+    console.log(`User with number ${req.body.number} is not confirmed`);
+    user.confirmed = true; 
+    await user.save();  
+    await processAndStoreMessage(user, req.body.number, req.body.content);
+    return true; 
+  }
+
+  await processAndStoreMessage(user, req.body.number, req.body.content);
+  return true; 
+
+  } catch (error) { 
+    console.error("Error receiving SMS message:", error);
+    return false; 
+  }
+};
+
 
 module.exports = {
   sendSmsMessage, 
