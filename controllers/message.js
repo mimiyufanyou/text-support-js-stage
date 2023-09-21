@@ -37,7 +37,7 @@ const receiveSmsMessage = async (req, res) => {
 
   if (!user) {
     console.log(`User with number ${req.body.number} does not exist, creating user and confirming.`);
-    user = new User({ phoneNumber: number, confirmed: true });
+    user = new User({ phoneNumber: req.body.number, confirmed: true });
     await user.save();
   }
 

@@ -8,7 +8,6 @@ const { quizResultSchema } = require('./quiz_result');
 
 
 const userSchema = new mongoose.Schema({
-    username: String,
     phoneNumber: {
         type: String,
         required: true, 
