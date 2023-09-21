@@ -92,8 +92,6 @@ const processAndStoreMessage = async (phoneNumber, message) => {
   console.log(`Stored message for ${phoneNumber}`);
 };
 
-export default message
-
 module.exports = {
   sendSmsMessage, 
   receiveSmsMessage,
