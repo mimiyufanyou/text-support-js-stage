@@ -42,12 +42,6 @@ const currentConversationSchema = new mongoose.Schema({
   }
 });
 
-// Add a pre-save hook to update the "updatedAt" field
-currentConversationSchema.pre('save', function (next) {
-  this.updatedAt = Date.now();
-  next();
-});
-
 // Create the model
 const CurrentConversation = mongoose.model('CurrentConversation', currentConversationSchema);
 const NewMessage = mongoose.model('NewMessage', messageSchema);
