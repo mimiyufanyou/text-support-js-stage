@@ -1,40 +1,46 @@
-// models/User.js 
+// models/user.js 
 
 const mongoose = require('mongoose');
 
+const { chatHistorySchema } = require('./chat_history');
+const { contextSchema } = require('./context'); 
+const { quizResultSchema } = require('./quiz_result');
+
+
 const userSchema = new mongoose.Schema({
+    userId: {
+      type: String,
+      required: true,
+      unique: true
+    },
+    username: String,
     phoneNumber: {
         type: String,
         required: true
     },
-    chatHistory: [{
-        role: {
-            type: String,
-            enum: ['user', 'assistant', 'system'],
-            required: true
-        },
-        content: {
-            type: String,
-            required: true
-        },
-        timestamp: {
-            type: Date,
-            default: Date.now
-        }
+    email: {
+      type: String,
+      required: true,
+      unique: true
+    },
+    programs: [{
+      programId: String,
     }],
-    systemSettings: [{
-        context: String,
-        state: {
-            type: String,
-            enum: ["NOT_STARTED", "IN_PROGRESS", "COMPLETED"],
-            default: "NOT_STARTED"
-        },
-        answers: [{
-            questionId: String,
-            answer: String
-        }],
-        currentQuestion: String
-    }]
-});
+    quizResults: [quizResultSchema],
+    chatHistory: [chatHistorySchema],
+    userContext: [contextSchema], 
+    createdAt: {
+      type: Date,
+      default: Date.now
+    },
+    updatedAt: {
+      type: Date,
+      default: Date.now
+    }
+  });
 
 module.exports = mongoose.model('User', userSchema);
+
+
+
+

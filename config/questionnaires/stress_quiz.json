@@ -1,64 +1,65 @@
-{"name": "stress", 
-    "questions": [
-      {
-        "id": "q1",
-        "text": "How often do you find yourself feeling overwhelmed?",
-        "options": [
-          {"id": "q1_o1", "number": 1, "text": "Rarely or never", "next": "q2"},
-          {"id": "q1_o2", "number": 2, "text": "A few times a month", "next": "q2"},
-          {"id": "q1_o3", "number": 3, "text": "A few times a week", "next": "q2"},
-          {"id": "q1_o4", "number": 4, "text": "Every day", "next": "q2"}
-        ]
-      },
-      {
-        "id": "q2",
-        "text": "How often do you have difficulty sleeping due to your thoughts?",
-        "options": [
-          {"id": "q2_o1", "number": 1, "text": "Rarely or never", "next": "q3"},
-          {"id": "q2_o2", "number": 2, "text": "A few times a month", "next": "q3"},
-          {"id": "q2_o3", "number": 3, "text": "A few times a week", "next": "q3"},
-          {"id": "q2_o4", "number": 4, "text": "Every day", "next": "q3"}
-        ]
-      },
-      {
-        "id": "q3",
-        "text": "How often do you feel physically fatigued without a clear reason?",
-        "options": [
-          {"id": "q3_o1", "number": 1, "text": "Rarely or never", "next": "q4"},
-          {"id": "q3_o2", "number": 2, "text": "A few times a month", "next": "q4"},
-          {"id": "q3_o3", "number": 3, "text": "A few times a week", "next": "q4"},
-          {"id": "q3_o4", "number": 4, "text": "Every day", "next": "q4"}
-        ]
-      },
-      {
-        "id": "q4",
-        "text": "How often do you find it hard to focus or concentrate on tasks?",
-        "options": [
-          {"id": "q4_o1", "number": 1, "text": "Rarely or never", "next": "q5"},
-          {"id": "q4_o2", "number": 2, "text": "A few times a month", "next": "q5"},
-          {"id": "q4_o3", "number": 3, "text": "A few times a week", "next": "q5"},
-          {"id": "q4_o4", "number": 4, "text": "Every day", "next": "q5"}
-        ]
-      },
-      {
-        "id": "q5",
-        "text": "How often do you feel irritable or short-tempered?",
-        "options": [
-          {"id": "q5_o1", "number": 1, "text": "Rarely or never", "next": "q6"},
-          {"id": "q5_o2", "number": 2, "text": "A few times a month", "next": "q6"},
-          {"id": "q5_o3", "number": 3, "text": "A few times a week", "next": "q6"},
-          {"id": "q5_o4", "number": 4, "text": "Every day", "next": "q6"}
-        ]
-      },
-      {
-        "id": "q6",
-        "text": "How often do you feel a sense of hopelessness or despair?",
-        "options": [
-          {"id": "q6_o1", "number": 1, "text": "Rarely or never", "result": "Low Stress"},
-          {"id": "q6_o2", "number": 2, "text": "A few times a month", "result": "Low to Moderate Stress"},
-          {"id": "q6_o3", "number": 3, "text": "A few times a week", "result": "Moderate Stress"},
-          {"id": "q6_o4", "number": 4, "text": "Every day", "result": "High Stress"}
-        ]
-      }
-    ]
-  }
+{
+  "name": "stress", 
+  "questions": [
+    {
+      "id": 1,
+      "text": "How often do you find yourself feeling overwhelmed?",
+      "options": [
+        {"id": 1, "number": 1, "text": "Rarely or never", "next": 2},
+        {"id": 2, "number": 2, "text": "A few times a month", "next": 2},
+        {"id": 3, "number": 3, "text": "A few times a week", "next": 2},
+        {"id": 4, "number": 4, "text": "Every day", "next": 2}
+      ]
+    },
+    {
+      "id": 2,
+      "text": "How often do you have difficulty sleeping due to your thoughts?",
+      "options": [
+        {"id": 5, "number": 1, "text": "Rarely or never", "next": 3},
+        {"id": 6, "number": 2, "text": "A few times a month", "next": 3},
+        {"id": 7, "number": 3, "text": "A few times a week", "next": 3},
+        {"id": 8, "number": 4, "text": "Every day", "next": 3}
+      ]
+    },
+    {
+      "id": 3,
+      "text": "How often do you feel physically fatigued without a clear reason?",
+      "options": [
+        {"id": 9, "number": 1, "text": "Rarely or never", "next": 4},
+        {"id": 10, "number": 2, "text": "A few times a month", "next": 4},
+        {"id": 11, "number": 3, "text": "A few times a week", "next": 4},
+        {"id": 12, "number": 4, "text": "Every day", "next": 4}
+      ]
+    },
+    {
+      "id": 4,
+      "text": "How often do you find it hard to focus or concentrate on tasks?",
+      "options": [
+        {"id": 13, "number": 1, "text": "Rarely or never", "next": 5},
+        {"id": 14, "number": 2, "text": "A few times a month", "next": 5},
+        {"id": 15, "number": 3, "text": "A few times a week", "next": 5},
+        {"id": 16, "number": 4, "text": "Every day", "next": 5}
+      ]
+    },
+    {
+      "id": 5,
+      "text": "How often do you feel irritable or short-tempered?",
+      "options": [
+        {"id": 17, "number": 1, "text": "Rarely or never", "next": 6},
+        {"id": 18, "number": 2, "text": "A few times a month", "next": 6},
+        {"id": 19, "number": 3, "text": "A few times a week", "next": 6},
+        {"id": 20, "number": 4, "text": "Every day", "next": 6}
+      ]
+    },
+    {
+      "id": 6,
+      "text": "How often do you feel a sense of hopelessness or despair?",
+      "options": [
+        {"id": 21, "number": 1, "text": "Rarely or never", "result": "Low Stress"},
+        {"id": 22, "number": 2, "text": "A few times a month", "result": "Low to Moderate Stress"},
+        {"id": 23, "number": 3, "text": "A few times a week", "result": "Moderate Stress"},
+        {"id": 24, "number": 4, "text": "Every day", "result": "High Stress"}
+      ]
+    }
+  ]
+}

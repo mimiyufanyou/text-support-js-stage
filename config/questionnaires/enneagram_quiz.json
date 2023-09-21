@@ -1,137 +1,130 @@
-{ "name": "enneagram", 
+{
+  "name": "enneagram",
   "questions": [
     {
-      "id": "q1",
+      "id": 1,
       "text": "How do you primarily deal with challenges?",
       "options": [
-        {"id": "q1_o1", "number": 1, "text": "I confront them head-on.", "next": "q2"},
-        {"id": "q1_o2", "number": 2, "text": "I seek support or knowledge to address them.", "next": "q7"},
-        {"id": "q1_o3", "number": 3, "text": "I try to maintain harmony and balance.", "next": "q12"}
+        {"id": 1, "number": 1, "text": "I confront them head-on.", "next": 2},
+        {"id": 2, "number": 2, "text": "I seek support or knowledge to address them.", "next": 7},
+        {"id": 3, "number": 3, "text": "I try to maintain harmony and balance.", "next": 12}
       ]
     },
     {
-      "id": "q2",
+      "id": 2,
       "text": "Which motivation resonates with you the most?",
       "options": [
-        {"id": "q2_o1", "number": 1, "text": "Being successful and valued.", "next": "q3"},
-        {"id": "q2_o2", "number": 2, "text": "Doing the right thing and having integrity.", "next": "q4"},
-        {"id": "q2_o3", "number": 3, "text": "Exerting control and protecting myself.", "next": "q5"}
+        {"id": 4, "number": 1, "text": "Being successful and valued.", "next": 3},
+        {"id": 5, "number": 2, "text": "Doing the right thing and having integrity.", "next": 4},
+        {"id": 6, "number": 3, "text": "Exerting control and protecting myself.", "next": 5}
       ]
     },
     {
-      "id": "q3",
+      "id": 3,
       "text": "How do you approach your goals?",
       "options": [
-        {"id": "q3_o1", "number": 1, "text": "I adapt and do whatever it takes.", "next": "q6"},
-        {"id": "q3_o2", "number": 2, "text": "I'm driven by my passion for success.", "next": "q6"}
+        {"id": 7, "number": 1, "text": "I adapt and do whatever it takes.", "next": 6},
+        {"id": 8, "number": 2, "text": "I'm driven by my passion for success.", "next": 6}
       ]
     },
     {
-      "id": "q4",
+      "id": 4,
       "text": "What upsets you the most?",
       "options": [
-        {"id": "q4_o1", "number": 1, "text": "Injustice and unfairness.", "next": "q6"},
-        {"id": "q4_o2", "number": 2, "text": "Feeling out of control.", "next": "q5"}
+        {"id": 9, "number": 1, "text": "Injustice and unfairness.", "next": 6},
+        {"id": 10, "number": 2, "text": "Feeling out of control.", "next": 5}
       ]
     },
     {
-      "id": "q5",
+      "id": 5,
       "text": "How do you assert yourself?",
       "options": [
-        {"id": "q5_o1", "number": 1, "text": "By challenging obstacles and conflicts.", "next": "q6"},
-        {"id": "q5_o2", "number": 2, "text": "By ensuring things align with my values.", "next": "q6"}
+        {"id": 11, "number": 1, "text": "By challenging obstacles and conflicts.", "next": 6},
+        {"id": 12, "number": 2, "text": "By ensuring things align with my values.", "next": 6}
       ]
     },
     {
-      "id": "q6",
+      "id": 6,
       "text": "What best describes your approach to feedback?",
       "options": [
-        {"id": "q6_o1", "number": 1, "text": "I use it as a ladder to climb higher.", "result": "Type 3 - The Achiever"},
-        {"id": "q6_o2", "number": 2, "text": "I align it with my values and principles.", "result": "Type 1 - The Reformer"},
-        {"id": "q6_o3", "number": 3, "text": "I confront it and assert my perspective.", "result": "Type 8 - The Challenger"}
+        {"id": 13, "number": 1, "text": "I use it as a ladder to climb higher.", "result": "Type 3 - The Achiever"},
+        {"id": 14, "number": 2, "text": "I align it with my values and principles.", "result": "Type 1 - The Reformer"},
+        {"id": 15, "number": 3, "text": "I confront it and assert my perspective.", "result": "Type 8 - The Challenger"}
       ]
     },
     {
-      "id": "q7",
+      "id": 7,
       "text": "What do you prioritize in life?",
       "options": [
-        {"id": "q7_o1", "number": 1, "text": "Knowledge and competence.", "next": "q8"},
-        {"id": "q7_o2", "number": 2, "text": "Building connections and helping others.", "next": "q9"},
-        {"id": "q7_o3", "number": 3, "text": "Stability and guidance.", "next": "q10"}
+        {"id": 16, "number": 1, "text": "Knowledge and competence.", "next": 8},
+        {"id": 17, "number": 2, "text": "Building connections and helping others.", "next": 9},
+        {"id": 18, "number": 3, "text": "Stability and guidance.", "next": 10}
       ]
     },
     {
-      "id": "q8",
+      "id": 8,
       "text": "How do you handle uncertainty?",
       "options": [
-        {"id": "q8_o1", "number": 1, "text": "I research and seek understanding.", "next": "q11"},
-        {"id": "q8_o2", "number": 2, "text": "I rely on my support system.", "next": "q11"}
+        {"id": 19, "number": 1, "text": "I research and seek understanding.", "next": 11},
+        {"id": 20, "number": 2, "text": "I rely on my support system.", "next": 11}
       ]
     },
     {
-      "id": "q9",
+      "id": 9,
       "text": "When someone is in need, how do you respond?",
       "options": [
-        {"id": "q9_o1", "number": 1, "text": "I empathize and offer help.", "next": "q11"},
-        {"id": "q9_o2", "number": 2, "text": "I provide information or a solution.", "next": "q11"}
+        {"id": 21, "number": 1, "text": "I empathize and offer help.", "next": 11},
+        {"id": 22, "number": 2, "text": "I provide information or a solution.", "next": 11}
       ]
     },
     {
-      "id": "q10",
+      "id": 10,
       "text": "When facing a challenge, you...",
       "options": [
-        {"id": "q10_o1", "number": 1, "text": "Seek guidance from trusted individuals.", "next": "q11"},
-        {"id": "q10_o2", "number": 2, "text": "Analyze the situation deeply.", "next": "q11"}
+        {"id": 23, "number": 1, "text": "Seek guidance from trusted individuals.", "next": 11},
+        {"id": 24, "number": 2, "text": "Analyze the situation deeply.", "next": 11}
       ]
     },
     {
-      "id": "q11",
+      "id": 11,
       "text": "Which statement resonates more with you?",
       "options": [
-        {"id": "q11_o1", "number": 1, "text": "I often detach to contemplate and understand.", "result": "Type 5 - The Investigator"},
-        {"id": "q11_o2", "number": 2, "text": "I often put others before myself.", "result": "Type 2 - The Helper"},
-        {"id": "q11_o3", "number": 3, "text": "I am dedicated and need to feel secure.", "result": "Type 6 - The Loyalist"}
+        {"id": 25, "number": 1, "text": "I aim to be helpful and supportive.", "result": "Type 2 - The Helper"},
+        {"id": 26, "number": 2, "text": "I aim to be knowledgeable and competent.", "result": "Type 5 - The Investigator"},
+        {"id": 27, "number": 3, "text": "I aim to be guided and feel secure.", "result": "Type 6 - The Loyalist"}
       ]
     },
     {
-      "id": "q12",
-      "text": "How do you relate to the world?",
+      "id": 12,
+      "text": "When there's a conflict, you...",
       "options": [
-        {"id": "q12_o1", "number": 1, "text": "I seek depth and individuality.", "next": "q16"},
-        {"id": "q12_o2", "number": 2, "text": "I look for excitement and experiences.", "next": "q13"},
-        {"id": "q12_o3", "number": 3, "text": "I prefer peace and easygoing environments.", "next": "q14"}
+        {"id": 28, "number": 1, "text": "Aim to understand all perspectives.", "next": 13},
+        {"id": 29, "number": 2, "text": "Seek inner peace and disengage.", "next": 14},
+        {"id": 30, "number": 3, "text": "Strive for happiness and positivity.", "next": 15}
       ]
     },
     {
-      "id": "q13",
-      "text": "How do you handle stress?",
+      "id": 13,
+      "text": "Which value is more important to you?",
       "options": [
-        {"id": "q13_o1", "number": 1, "text": "I seek new experiences and distractions.", "next": "q15"},
-        {"id": "q13_o2", "number": 2, "text": "I contemplate and seek deeper understanding.", "next": "q16"}
+        {"id": 31, "number": 1, "text": "Understanding and wisdom.", "result": "Type 9 - The Peacemaker"},
+        {"id": 32, "number": 2, "text": "Happiness and positivity.", "result": "Type 7 - The Enthusiast"}
       ]
     },
     {
-      "id": "q14",
-      "text": "How do you approach conflicts?",
+      "id": 14,
+      "text": "When stressed, you tend to...",
       "options": [
-        {"id": "q14_o1", "number": 1, "text": "I avoid them and seek harmony.", "next": "q15"},
-        {"id": "q14_o2", "number": 2, "text": "I address them head-on.", "next": "q15"}
+        {"id": 33, "number": 1, "text": "Seek solitude and introspection.", "result": "Type 4 - The Individualist"},
+        {"id": 34, "number": 2, "text": "Maintain harmony and avoid confrontation.", "result": "Type 9 - The Peacemaker"}
       ]
     },
     {
-      "id": "q15",
-      "text": "How do you feel about routines?",
+      "id": 15,
+      "text": "You find joy in...",
       "options": [
-        {"id": "q15_o1", "number": 1, "text": "They provide comfort, but I can feel trapped.", "result": "Type 9 - The Peacemaker"},
-        {"id": "q15_o2", "number": 2, "text": "I often break routines in search of something new.", "result": "Type 7 - The Enthusiast"}
-      ]
-    },
-    {
-      "id": "q16",
-      "text": "How do you view yourself?",
-      "options": [
-        {"id": "q16_o1", "number": 1, "text": "Different from others, sometimes misunderstood.", "result": "Type 4 - The Individualist"},
-        {"id": "q16_o2", "number": 2, "text": "As someone in constant pursuit of knowledge.", "result": "Type 5 - The Investigator"}
+        {"id": 35, "number": 1, "text": "New experiences and adventures.", "result": "Type 7 - The Enthusiast"},
+        {"id": 36, "number": 2, "text": "Personal reflection and understanding.", "result": "Type 4 - The Individualist"}
       ]
     }
   ]

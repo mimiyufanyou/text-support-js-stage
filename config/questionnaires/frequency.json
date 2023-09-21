@@ -1,0 +1,22 @@
+{
+    "name": "frequency",
+    "description": "These are prompts to ask the user how often they would like to be checked in with.",
+    "questions": [
+      {
+        "id": 1,
+        "text": "How frequently would you like us to touch base with you?",
+        "options": [
+          {"id": 1, "number": 1, "text": "Twice a day: just at the start and end of my day", "next": 2},
+          {"id": 2, "number": 2, "text": "Multiple times throughout the day", "next": 2},
+          {"id": 3, "number": 3, "text": "As much as possible (10+ times a day)", "next": 2},
+          {"id": 4, "number": 4, "text": "Only when I initiate contact", "next": 2},
+          {"id": 5, "number": 5, "text": "Once a day is enough", "next": 2}
+        ]
+      }, 
+      { 
+        "id": 2,
+        "text": "When do you usually start and end your day?",
+        "options": [] 
+      }
+    ]
+}

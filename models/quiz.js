@@ -1,18 +1,25 @@
-// models/QuizResult.js
-
 const mongoose = require('mongoose');
 
-const quizResultSchema = new mongoose.Schema({
-    // Define your schema here, for example:
-    quizName: {
-        type: String,
-        required: true
-    },
-    result: {
-        type: String,
-        required: true
-    },
-    // Add other fields as necessary
+const optionsSchema = new mongoose.Schema({
+  id: Number,
+  number: Number,
+  text: String,
+  next: Number
 });
 
-module.exports = mongoose.model('QuizResult', quizResultSchema);
+// Define the quiz schema
+const quizSchema = new mongoose.Schema({
+    quizId: String,
+    name: String, 
+    title: String,
+    description: String,
+    questions: [{
+      id: Number,
+      questionText: String,
+      options: optionsSchema 
+    }]
+  });
+
+const Quiz = mongoose.model('Quiz', quizSchema);
+
+module.exports = Quiz;
