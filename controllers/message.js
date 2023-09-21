@@ -58,6 +58,8 @@ const receiveSmsMessage = async (req) => {
 // Process and store the user's answer and update their progress.
 const processAndStoreMessage = async (phoneNumber, message) => {
   // Look for an existing conversation with this phone number
+  console.log(`Looking for conversation with ${phoneNumber}`)
+
   let conversation = await CurrentConversation.findOne({ phoneNumber });
 
   const newMessage = {
@@ -70,10 +72,9 @@ const processAndStoreMessage = async (phoneNumber, message) => {
     // Create a new conversation if one doesn't exist
     console.log(`Creating a new conversation for ${phoneNumber}`);
 
-    let user = await User.findOne({ phoneNumber: userData.phoneNumber });
+    let user = await User.findOne({ phoneNumber: phoneNumber });
 
     conversation = new CurrentConversation({ 
-      userId: user.userId, 
       isActive: true, 
       phoneNumber,
       messages: [newMessage]
