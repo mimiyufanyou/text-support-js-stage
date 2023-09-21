@@ -49,6 +49,10 @@ const receiveSmsMessage = async (req) => {
     await processAndStoreMessage(req.body.number, req.body.content);
     return true; 
   }
+
+  await processAndStoreMessage(req.body.number, req.body.content);
+  return true; 
+  
   } catch (error) { 
     console.error("Error receiving SMS message:", error);
     return false; 
