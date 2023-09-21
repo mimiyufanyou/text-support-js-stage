@@ -36,7 +36,10 @@ const userSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: 'ChatHistory'
     }],
-    userContext: [contextSchema], 
+    userContext: { 
+      type: Array, 
+      default: []
+    }, 
     createdAt: {
       type: Date,
       default: Date.now
