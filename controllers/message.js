@@ -8,6 +8,7 @@ const headers = {
 }
 
 const User = require('../models/user');
+const CurrentConversation = require('../models/current_conversation');
 
 const sendSmsMessage = (phoneNumber, content) => {
   // Data received from the webhook
@@ -52,7 +53,7 @@ const receiveSmsMessage = async (req) => {
 
   await processAndStoreMessage(req.body.number, req.body.content);
   return true; 
-  
+
   } catch (error) { 
     console.error("Error receiving SMS message:", error);
     return false; 
