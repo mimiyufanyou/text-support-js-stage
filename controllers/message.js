@@ -7,9 +7,9 @@ const headers = {
     'content-type': 'application/json'
 }
 
-const mongoose = require('mongoose');
 const User = require('../models/user');
-const CurrentConversation = require('../models/messages');
+const Message = require('../models/messages');
+const Session = require('../models/session');
 
 const sendSmsMessage = (phoneNumber, content) => {
   // Data received from the webhook
@@ -58,45 +58,55 @@ const receiveSmsMessage = async (req) => {
   }
 };
 
-
-await processAndStoreMessage(user, req.body.number, req.body.content);
-
 // Process and store the user's answer and update their progress.
 const processAndStoreMessage = async (user, phoneNumber, message) => {
 
   // Look for an existing conversation with this phone number
   console.log(`Looking for conversation with ${phoneNumber}`)
 
-  let conversation = await CurrentConversation.findOne({ phoneNumber : phoneNumber });
-
-  const newMessage = {
-    sender: phoneNumber, // Set sender based on your needs, assuming 'user' here
-    content: message,
-    timestamp: new Date()
-  };
+  let conversation = await Session.findOne({ phoneNumber : phoneNumber });
+  let user = await User.findOne({ phoneNumber: phoneNumber });
 
   if (!conversation) {
     // Create a new conversation if one doesn't exist
     console.log(`Creating a new conversation for ${phoneNumber}`);
 
-    let user = await User.findOne({ phoneNumber: phoneNumber });
-
-    conversation = new CurrentConversation({
-      isActive: true, 
-      phoneNumber: phoneNumber,
-      messages: [newMessage]
+    conversation = new Session({
+      phoneNumber: phoneNumber, 
+      userId: user._id,
      });
+    
+    await conversation.save();
 
+    let session = await Session.findOne({ userId: user._id });
+
+    const newMessage = {
+      phoneNumber: phoneNumber, // Set sender based on your needs, assuming 'user' here
+      userId: user._id,
+      sessionId: session._id,
+      content: message,
+      timestamp: new Date()
+    };
+
+    newmessages = new Message(newMessage);
+    await newmessages.save();
+    
   } else {
     // Add the new message to the existing conversation
     console.log(`Adding message to existing conversation for ${phoneNumber}`);
-    conversation.messages.push(newMessage);
-    conversation.updatedAt = new Date();
+
+    const newMessage = {
+      phoneNumber: phoneNumber, // Set sender based on your needs, assuming 'user' here
+      userId: user._id,
+      sessionId: session._id,
+      content: message,
+      timestamp: new Date()
+    };
+
+    newmessages = new Message(newMessage);
+    await newmessages.save();
   }
 
-  // Save the updated or new conversation
-  await conversation.save();
-  console.log(`Stored message for ${phoneNumber}`);
 };
 
 module.exports = {

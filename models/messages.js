@@ -4,8 +4,18 @@ const mongoose = require('mongoose');
 
 // Define message schema
 const messageSchema = new mongoose.Schema({
-  sender: {
+  phoneNumber: {
     type: String,
+    required: false
+  },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',  // Assuming 'User' is another model you've defined
+    required: false
+  },
+  sessionId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Session',  
     required: false
   },
   content: {
