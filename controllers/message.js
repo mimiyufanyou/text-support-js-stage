@@ -66,7 +66,7 @@ const processAndStoreMessage = async (user, phoneNumber, message) => {
   // Look for an existing conversation with this phone number
   console.log(`Looking for conversation with ${phoneNumber}`)
 
-  let conversation = await CurrentConversation.findOne({ userId: user._id });
+  let conversation = await CurrentConversation.findOne({ phoneNumber : phoneNumber });
 
   const newMessage = {
     sender: phoneNumber, // Set sender based on your needs, assuming 'user' here
@@ -80,8 +80,7 @@ const processAndStoreMessage = async (user, phoneNumber, message) => {
 
     let user = await User.findOne({ phoneNumber: phoneNumber });
 
-    conversation = new CurrentConversation({ 
-      userId: user._id, 
+    conversation = new CurrentConversation({
       isActive: true, 
       phoneNumber: phoneNumber,
       messages: [newMessage]

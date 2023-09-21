@@ -18,10 +18,6 @@ const messageSchema = new mongoose.Schema({
 
 // Define the current conversation schema
 const currentConversationSchema = new mongoose.Schema({
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User' 
-  },
   phoneNumber: {
     type: String,
     required: true
