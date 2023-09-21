@@ -26,17 +26,16 @@ const currentConversationSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  sessionId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Session',
-    default: null
-  },
   isActive: {
     type: Boolean,
     default: true
   },
   messages: [messageSchema],
-  topic: String,
+  topic: {
+    type: String,
+    default: "", 
+    nullable: true 
+  }, 
   startedAt: {
     type: Date,
     default: Date.now

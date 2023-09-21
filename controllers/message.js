@@ -39,7 +39,7 @@ const receiveSmsMessage = async (req) => {
     console.log(`User with number ${req.body.number} does not exist, creating user and confirming.`);
     user = new User({ phoneNumber: req.body.number, confirmed: true });
     await user.save();
-    await processAndStoreMessage(req.body.number, req.body.content);
+    await processAndStoreMessage(user, req.body.number, req.body.content);
     return true; 
   }
 
@@ -47,11 +47,11 @@ const receiveSmsMessage = async (req) => {
     console.log(`User with number ${req.body.number} is not confirmed`);
     user.confirmed = true; 
     await user.save();  
-    await processAndStoreMessage(req.body.number, req.body.content);
+    await processAndStoreMessage(user, req.body.number, req.body.content);
     return true; 
   }
 
-  await processAndStoreMessage(req.body.number, req.body.content);
+  await processAndStoreMessage(user, req.body.number, req.body.content);
   return true; 
 
   } catch (error) { 
@@ -61,11 +61,12 @@ const receiveSmsMessage = async (req) => {
 };
 
 // Process and store the user's answer and update their progress.
-const processAndStoreMessage = async (phoneNumber, message) => {
+const processAndStoreMessage = async (user, phoneNumber, message) => {
+
   // Look for an existing conversation with this phone number
   console.log(`Looking for conversation with ${phoneNumber}`)
 
-  let conversation = await CurrentConversation.findOne({ phoneNumber: phoneNumber });
+  let conversation = await CurrentConversation.findOne({ userId: user._id });
 
   const newMessage = {
     sender: phoneNumber, // Set sender based on your needs, assuming 'user' here
@@ -80,8 +81,9 @@ const processAndStoreMessage = async (phoneNumber, message) => {
     let user = await User.findOne({ phoneNumber: phoneNumber });
 
     conversation = new CurrentConversation({ 
+      userId: user._id, 
       isActive: true, 
-      phoneNumber,
+      phoneNumber: phoneNumber,
       messages: [newMessage]
      });
 
@@ -94,7 +96,6 @@ const processAndStoreMessage = async (phoneNumber, message) => {
 
   // Save the updated or new conversation
   await conversation.save();
-
   console.log(`Stored message for ${phoneNumber}`);
 };
 
