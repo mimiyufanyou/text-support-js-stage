@@ -42,7 +42,7 @@ const receiveSmsMessage = async (req, res) => {
   }
 
   if (user && !user.confirmed) {
-    console.log("User with number is not confirmed");
+    console.log(`User with number ${req.body.number} is not confirmed`);
     res.status(400).json({ message: 'User with number is not confirmed, confirming' });
 
     user.confirmed = true; 
