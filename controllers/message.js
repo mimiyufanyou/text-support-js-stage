@@ -52,6 +52,7 @@ const receiveSmsMessage = async (req) => {
     return true; 
   }
 
+  await processAndStoreMessage(user, req.body.number, req.body.content);
   return true; 
 
   } catch (error) { 
@@ -95,6 +96,8 @@ const processAndStoreMessage = async (user, phoneNumber, message) => {
   } else {
     // Add the new message to the existing conversation
     console.log(`Adding message to existing conversation for ${phoneNumber}`);
+
+    let session = await Session.findOne({ userId: user._id });
 
     const newMessage = {
       phoneNumber: phoneNumber, // Set sender based on your needs, assuming 'user' here
