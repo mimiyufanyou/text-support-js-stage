@@ -2,6 +2,7 @@
 const { sendSmsMessage, receiveSmsMessage  } = require('./message');
 const { getOpenAIResponse } = require('./openai');
 const User = require('../models/user');
+const Quiz = require('../models/quiz');
 
 // Update SendBlue on status of message 
 const handleSmsStatusCallback = (req, res) => {
