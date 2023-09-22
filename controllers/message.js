@@ -22,10 +22,10 @@ const sendSmsMessage = (phoneNumber, content) => {
   // Send the SMS message
   return axios.post(SEND_BLUE_URL, requestdata, { headers: headers })
     .then((response) => {
-      console.log('Webhook response:', response.data);
+      //console.log('Webhook response:', response.data);
     })
     .catch((error) => {
-      console.error('Error sending data to webhook:', error);
+      //console.error('Error sending data to webhook:', error);
     });
 };
 
@@ -33,11 +33,11 @@ const sendSmsMessage = (phoneNumber, content) => {
 const receiveSmsMessage = async (req) => {
   try {
   const messagePayload = req.body;
-  console.log('Received SMS message:', messagePayload);
+  //console.log('Received SMS message:', messagePayload);
   let user = await User.findOne({phoneNumber: req.body.number});
 
   if (!user) {
-    console.log(`User with number ${req.body.number} does not exist, creating user and confirming.`);
+    //console.log(`User with number ${req.body.number} does not exist, creating user and confirming.`);
     user = new User({ phoneNumber: req.body.number, confirmed: true });
     await user.save();
     await processAndStoreMessage(user, req.body.number, req.body.content);
@@ -45,7 +45,7 @@ const receiveSmsMessage = async (req) => {
   }
 
   if (user && !user.confirmed) {
-    console.log(`User with number ${req.body.number} is not confirmed`);
+   // console.log(`User with number ${req.body.number} is not confirmed`);
     user.confirmed = true; 
     await user.save();  
     await processAndStoreMessage(user, req.body.number, req.body.content);
@@ -65,13 +65,13 @@ const receiveSmsMessage = async (req) => {
 const processAndStoreMessage = async (user, phoneNumber, message) => {
 
   // Look for an existing conversation with this phone number
-  console.log(`Looking for conversation with ${phoneNumber}`)
+  //console.log(`Looking for conversation with ${phoneNumber}`)
 
   let conversation = await Session.findOne({ phoneNumber : phoneNumber });
 
   if (!conversation) {
     // Create a new conversation if one doesn't exist
-    console.log(`Creating a new conversation for ${phoneNumber}`);
+   // console.log(`Creating a new conversation for ${phoneNumber}`);
 
     conversation = new Session({
       phoneNumber: phoneNumber, 
@@ -95,7 +95,7 @@ const processAndStoreMessage = async (user, phoneNumber, message) => {
     
   } else {
     // Add the new message to the existing conversation
-    console.log(`Adding message to existing conversation for ${phoneNumber}`);
+    //console.log(`Adding message to existing conversation for ${phoneNumber}`);
 
     let session = await Session.findOne({ userId: user._id });
 

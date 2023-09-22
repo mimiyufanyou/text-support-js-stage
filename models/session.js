@@ -13,8 +13,8 @@ const sessionSchema = new mongoose.Schema({
   expiresAt: {
     type: Date,
     default: function() {
-      // Set default expiration to 1 day from now
-      return new Date(Date.now() + 24 * 60 * 60 * 1000);
+      // Set default expiration to 15 minutes from now 
+      return new Date(Date.now() + 15 * 60 * 1000);
     }
   }
 });

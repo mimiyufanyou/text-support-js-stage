@@ -4,6 +4,7 @@
 # Ignore environment secrets and config
 .env
 .cert.pem
+.import_quiz.txt
 
 # Ignore OS generated files
 .DS_Store

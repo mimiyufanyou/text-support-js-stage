@@ -5,7 +5,7 @@ async function getOpenAIResponse(message) {
 
     const data = {
         messages: [{ "role": "user", "content": message }],
-        max_tokens: 150,
+        max_tokens: 75,
         model: "gpt-3.5-turbo",
     };
 

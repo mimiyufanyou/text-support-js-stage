@@ -9,17 +9,14 @@ const optionsSchema = new mongoose.Schema({
 
 // Define the quiz schema
 const quizSchema = new mongoose.Schema({
-    quizId: String,
     name: String, 
-    title: String,
-    description: String,
     questions: [{
       id: Number,
-      questionText: String,
+      text: String,
       options: optionsSchema 
     }]
   });
 
-const Quiz = mongoose.model('Quiz', quizSchema);
+const Quiz = mongoose.model('Quiz', quizSchema, 'quiz');
 
 module.exports = Quiz;

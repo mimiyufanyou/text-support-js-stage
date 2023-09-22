@@ -4,7 +4,8 @@ const mongoose = require('mongoose');
 
 const quizResultSchema = new mongoose.Schema({
     userId: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User', 
         required: true
     },
     quizId: {
@@ -28,12 +29,6 @@ const quizResultSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     }
-});
-
-// Add a pre-save hook to update the "updatedAt" field
-quizResultSchema.pre('save', function (next) {
-  this.updatedAt = Date.now();
-  next();
 });
 
 // Create the models

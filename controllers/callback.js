@@ -1,6 +1,7 @@
 // controllers/callback.js
 const { sendSmsMessage, receiveSmsMessage  } = require('./message');
 const { getOpenAIResponse } = require('./openai');
+const User = require('../models/user');
 
 // Update SendBlue on status of message 
 const handleSmsStatusCallback = (req, res) => {
@@ -16,25 +17,37 @@ const handleSmsStatusCallback = (req, res) => {
 };
 
 const receiveSmsController = async (req, res) => {
-
+  try {
+    await receiveSmsMessage(req, res);
     const messagePayload = req.body;
     console.log("Message Payload:", messagePayload);
-    await receiveSmsMessage(req, res);
-  
-    // Assuming messagePayload contains the necessary information
-    const number = messagePayload.number; // adjust based on the actual payload structure
-    const content = await getOpenAIResponse(messagePayload.content); // get content from OpenAI
-    const status_callback = 'https://example.com/message-status/1234abcd'; // replace with dynamic value if needed
-  
-    try {
-      await sendSmsMessage(number, content);
-      res.sendStatus(200);
-  
-    } catch (error) {
-        console.error("Error getting OpenAI response:", error);
-        res.status(500).send("Failed to process the message");
+    const number = messagePayload.number;
+    let user = await User.findOne({ phoneNumber: number });
+
+    let content;
+
+    if (!user.quizResults || user.quizResults.length === 0) {
+      console.log("No quiz results found for user:", number);
+      let currentQuiz = await Quiz.findOne({ name: 'thought_starters' });
+      const questions = currentQuiz.questions;
+      console.log("Current quiz:", currentQuiz.name);
+
+      for (const [index, question] of questions.entries()) {
+        console.log(`Question ${index + 1}: ${question.text}`);
+        content = question.text;
+      }
+    } else {
+      content = await getOpenAIResponse(messagePayload.content);
+      const status_callback = 'https://example.com/message-status/1234abcd';
     }
-  };
+
+    await sendSmsMessage(number, content);
+    res.sendStatus(200);
+  } catch (error) {
+    console.error("Error getting OpenAI response:", error);
+    res.status(500).send("Failed to process the message");
+  }
+};
 
 module.exports = {
   handleSmsStatusCallback,
