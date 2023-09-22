@@ -1,8 +1,6 @@
 // controllers/callback.js
-
-const axios = require('axios');
 const { sendSmsMessage, receiveSmsMessage  } = require('./message');
-
+const { getOpenAIResponse } = require('./openai');
 
 // Update SendBlue on status of message 
 const handleSmsStatusCallback = (req, res) => {
@@ -20,9 +18,7 @@ const handleSmsStatusCallback = (req, res) => {
 const receiveSmsController = async (req, res) => {
 
     const messagePayload = req.body;
-
     console.log("Message Payload:", messagePayload);
-
     await receiveSmsMessage(req, res);
   
     // Assuming messagePayload contains the necessary information
@@ -39,32 +35,6 @@ const receiveSmsController = async (req, res) => {
         res.status(500).send("Failed to process the message");
     }
   };
-
-
-  async function getOpenAIResponse(message) {
-    const endpoint = "https://api.openai.com/v1/chat/completions";
-
-    const data = {
-        messages: [{ "role": "user", "content": message }],
-        max_tokens: 150,
-        model: "gpt-3.5-turbo",
-    };
-
-    const headers = {
-        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
-        'Content-Type': 'application/json'
-    };
-
-    try {
-        const response = await axios.post(endpoint, data, { headers: headers });
-        
-        return response.data.choices[0].message.content;
-
-    } catch (error) {
-        console.error("Error querying OpenAI:", error);
-        throw new Error("Sorry, I couldn't process that.");
-    }
-};
 
 module.exports = {
   handleSmsStatusCallback,

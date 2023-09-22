@@ -11,11 +11,6 @@ const chatHistorySchema = new mongoose.Schema({
     required: true,
     unique: true
   },
-  conversationId: {
-    type: String,
-    required: true,
-    unique: true
-  },
   startTime: {
     type: Date,
     default: Date.now
