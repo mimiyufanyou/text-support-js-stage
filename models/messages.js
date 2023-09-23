@@ -18,15 +18,11 @@ const messageSchema = new mongoose.Schema({
     ref: 'Session',  
     required: false
   },
-  quizResponse: { 
-    type: Boolean, 
-    required: false
-  }, 
-  quizName: { 
-    type: String, 
+  content: {
+    type: String,
     required: false
   },
-  content: {
+  type: {
     type: String,
     required: false
   },
