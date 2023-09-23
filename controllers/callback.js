@@ -1,7 +1,6 @@
 // controllers/callback.js
 const { sendSmsMessage, receiveSmsMessage, processAndStoreMessage  } = require('./message');
 const { getOpenAIResponse } = require('./openai');
-const redis = require('redis'); 
 
 const User = require('../models/user');
 const Quiz = require('../models/quiz');
