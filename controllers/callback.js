@@ -44,7 +44,8 @@ const receiveSmsController = async (req, res) => {
     };
 
     } else {
-      content = await getOpenAIResponse(content);
+      content = await getOpenAIResponse(messagePayload.content);
+      
       let type = 'openai';
       await processAndStoreMessage(user, number, content, type) 
     }
