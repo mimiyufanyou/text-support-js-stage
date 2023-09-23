@@ -1,6 +1,8 @@
 // controllers/callback.js
-const { sendSmsMessage, receiveSmsMessage  } = require('./message');
+const { sendSmsMessage, receiveSmsMessage, processAndStoreMessage  } = require('./message');
 const { getOpenAIResponse } = require('./openai');
+const redis = require('redis'); 
+
 const User = require('../models/user');
 const Quiz = require('../models/quiz');
 
@@ -22,28 +24,34 @@ const receiveSmsController = async (req, res) => {
     await receiveSmsMessage(req, res);
     const messagePayload = req.body;
     console.log("Message Payload:", messagePayload);
+
+
     const number = messagePayload.number;
     let user = await User.findOne({ phoneNumber: number });
-
     let content;
 
-    if (!user.quizResults || user.quizResults.length === 0) {
+    if (!user.quizResults) {
       console.log("No quiz results found for user:", number);
       let currentQuiz = await Quiz.findOne({ name: 'thought_starters' });
+
       const questions = currentQuiz.questions;
       console.log("Current quiz:", currentQuiz.name);
 
       for (const [index, question] of questions.entries()) {
         console.log(`Question ${index + 1}: ${question.text}`);
         content = question.text;
-      }
-    } else {
-      content = await getOpenAIResponse(messagePayload.content);
-      const status_callback = 'https://example.com/message-status/1234abcd';
-    }
+        let type = 'quiz';
+        await processAndStoreMessage(user, number, content, type)    
+    };
 
+    } else {
+      content = await getOpenAIResponse(content);
+      let type = 'openai';
+      await processAndStoreMessage(user, number, content, type) 
+    }
     await sendSmsMessage(number, content);
     res.sendStatus(200);
+
   } catch (error) {
     console.error("Error getting OpenAI response:", error);
     res.status(500).send("Failed to process the message");

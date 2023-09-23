@@ -62,17 +62,12 @@ const receiveSmsMessage = async (req) => {
 };
 
 // Process and store the user's answer and update their progress.
-const processAndStoreMessage = async (user, phoneNumber, message) => {
-
-  // Look for an existing conversation with this phone number
-  //console.log(`Looking for conversation with ${phoneNumber}`)
+const processAndStoreMessage = async (user, phoneNumber, message, type) => {
 
   let conversation = await Session.findOne({ phoneNumber : phoneNumber });
 
-  if (!conversation) {
-    // Create a new conversation if one doesn't exist
-   // console.log(`Creating a new conversation for ${phoneNumber}`);
-
+  if (!conversation || conversation.expiresAt < new Date()) {
+    // Create a new conversation
     conversation = new Session({
       phoneNumber: phoneNumber, 
       userId: user._id,
@@ -87,6 +82,7 @@ const processAndStoreMessage = async (user, phoneNumber, message) => {
       userId: user._id,
       sessionId: session._id,
       content: message,
+      type: type, 
       timestamp: new Date()
     };
 
@@ -104,6 +100,7 @@ const processAndStoreMessage = async (user, phoneNumber, message) => {
       userId: user._id,
       sessionId: session._id,
       content: message,
+      type: type, 
       timestamp: new Date()
     };
 
@@ -116,5 +113,5 @@ const processAndStoreMessage = async (user, phoneNumber, message) => {
 module.exports = {
   sendSmsMessage, 
   receiveSmsMessage,
-  processAndStoreMessage, 
+  processAndStoreMessage
 };
