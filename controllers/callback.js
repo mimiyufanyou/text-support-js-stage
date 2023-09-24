@@ -19,7 +19,7 @@ const handleSmsStatusCallback = (req, res) => {
     }
 };
 
-const quizSequence = ['onboarding', 'thought_starters', 'frequency', 'openai'];
+const quizSequence = ['onboarding', 'thought_starters', 'stress'];
 
 const receiveSmsController = async (req, res) => {
   try {
