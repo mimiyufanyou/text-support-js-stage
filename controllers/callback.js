@@ -32,7 +32,7 @@ const receiveSmsController = async (req, res) => {
     let type;
 
     const lastMessage = await Message.findOne({ 
-      user: user._id, 
+      phoneNumber: number, 
       type: { $ne: 'user' }  // $ne is the 'not equals' operator in MongoDB
     }).sort({ createdAt: -1 });
 
