@@ -19,64 +19,65 @@ const handleSmsStatusCallback = (req, res) => {
     }
 };
 
+const quizSequence = ['onboarding', 'thought_starters', 'frequency', 'openai'];
+
 const receiveSmsController = async (req, res) => {
   try {
     await receiveSmsMessage(req, 'user');
     const messagePayload = req.body;
-    console.log("Message Payload:", messagePayload);
-
     const number = messagePayload.number;
     const user = await User.findOne({ phoneNumber: number });
 
-    // Check if the user has 'onboarding' type in their history
-    const hasTypeOnboarding = await Message.exists({ user: user._id, type: 'onboarding' });
-    
-    // Check if the user has 'thought_starters' type in their history
-    const hasTypeQuiz = await Message.exists({ user: user._id, type: 'thought_starters' });
-  
     let content;
     let type;
 
-    if (!hasTypeOnboarding) {
-      // Handle onboarding
-      const currentQuiz = await Quiz.findOne({ name: 'onboarding' });
-      const questions = currentQuiz.questions;
-
-      console.log("Current quiz:", currentQuiz.name);
-
-      for (const [index, question] of questions.entries()) {
-        console.log(`Question ${index + 1}: ${question.text}`);
-        content = question.text;
-        type = 'onboarding';
-        await processAndStoreMessage(user, number, content, type);
-      }
-    } else if (!hasTypeQuiz) {
-      // Handle thought starters only if onboarding is done
-      console.log("No quiz results found for user:", number);
-
-      const currentQuiz = await Quiz.findOne({ name: 'thought_starters' });
-      const questions = currentQuiz.questions;
-
-      console.log("Current quiz:", currentQuiz.name);
-
-      for (const [index, question] of questions.entries()) {
-        console.log(`Question ${index + 1}: ${question.text}`);
-        content = question.text;
-        type = 'thought_starters';
-        await processAndStoreMessage(user, number, content, type);
-      }
+    const lastMessage = await Message.findOne({ user: user._id }).sort({ createdAt: -1 });
+    
+    if (!lastMessage) {
+      // If there's no last message, start with the first quiz in the sequence
+      const currentQuiz = await Quiz.findOne({ name: quizSequence[0] });
+      content = currentQuiz.questions[0].text;
+      type = quizSequence[0];
     } else {
-      // Handle OpenAI response only if onboarding is done
-      content = await getOpenAIResponse(messagePayload.content);
-      type = 'openai';
-      await processAndStoreMessage(user, number, content, type);
+      // Find which quiz the last message belonged to
+      const lastQuizIndex = quizSequence.indexOf(lastMessage.type);
+
+      if (lastQuizIndex >= 0) {
+        const currentQuiz = await Quiz.findOne({ name: quizSequence[lastQuizIndex] });
+        const lastQuestionIndex = currentQuiz.questions.findIndex(q => q.text === lastMessage.content);
+        const nextQuestion = currentQuiz.questions[lastQuestionIndex + 1];
+
+        if (nextQuestion) {
+          // Continue with the current quiz
+          content = nextQuestion.text;
+          type = quizSequence[lastQuizIndex];
+        } else {
+          // Proceed to the next quiz in the sequence
+          const nextQuiz = quizSequence[lastQuizIndex + 1];
+          if (nextQuiz) {
+            const newQuiz = await Quiz.findOne({ name: nextQuiz });
+            content = newQuiz.questions[0].text;
+            type = nextQuiz;
+          } else {
+            // Handle OpenAI response only if onboarding is done
+            content = await getOpenAIResponse(messagePayload.content);
+            type = 'openai';
+            await processAndStoreMessage(user, number, content, type);
+          }
+        }
+      } else {
+        content = await getOpenAIResponse(messagePayload.content);
+        type = 'openai';
+      }
     }
+
+    await processAndStoreMessage(user, number, content, type);
 
     // Send SMS and respond
     await sendSmsMessage(number, content);
     res.sendStatus(200);
   } catch (error) {
-    console.error("Error getting OpenAI response:", error);
+    console.error("Error:", error);
     res.status(500).send("Failed to process the message");
   }
 };
