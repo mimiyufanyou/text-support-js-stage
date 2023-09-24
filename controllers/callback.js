@@ -31,7 +31,7 @@ const receiveSmsController = async (req, res) => {
     let type;
 
     // Check if user has quiz results
-    if (!user.quizResults) {
+    if (!user.quizResults || user.quizResults.length === 0) {
       console.log("No quiz results found for user:", number);
 
       // Fetch and process quiz
@@ -45,7 +45,7 @@ const receiveSmsController = async (req, res) => {
         type = 'quiz';
         await processAndStoreMessage(user, number, content, type);
       }
-      
+
     } else {
       // Fetch and process OpenAI response
       content = await getOpenAIResponse(messagePayload.content);
