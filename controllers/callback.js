@@ -31,8 +31,11 @@ const receiveSmsController = async (req, res) => {
     let content;
     let type;
 
-    const lastMessage = await Message.findOne({ user: user._id }).sort({ createdAt: -1 });
-    
+    const lastMessage = await Message.findOne({ 
+      user: user._id, 
+      type: { $ne: 'user' }  // $ne is the 'not equals' operator in MongoDB
+    }).sort({ createdAt: -1 });
+
     if (!lastMessage) {
       // If there's no last message, start with the first quiz in the sequence
       const currentQuiz = await Quiz.findOne({ name: quizSequence[0] });
