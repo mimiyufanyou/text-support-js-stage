@@ -32,6 +32,8 @@ const receiveSmsController = async (req, res) => {
     let content;
     let type;
 
+    console.log("History:", history")
+
     const hasTypeQuiz = history.some(message => message.type === 'quiz');
 
     // Check if user has quiz results
