@@ -28,7 +28,7 @@ const receiveSmsController = async (req, res) => {
 
     const number = messagePayload.number;
     let user = await User.findOne({ phoneNumber: number });
-    let history = await Message.find({ user: user._id}); 
+    let history = await Message.find({ phoneNumber: number}); 
     let content;
     let type;
 
