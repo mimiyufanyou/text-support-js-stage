@@ -1,0 +1,9 @@
+{
+    "name": "onboarding",
+    "questions": [
+      {
+        "id": 1,
+        "text": "Hello and welcome to ---- ! We have some questions that can help us tailor our support to your needs and also help you understand yourself better. To start, we have a few questions to help describe your current emotional state as well as understand your personality better. Just respond if you're ready to begin."
+      }
+    ]
+  }

@@ -34,23 +34,38 @@ const receiveSmsController = async (req, res) => {
 
     console.log("History:", history)
 
-    const hasTypeQuiz = history.some(message => message.type === 'quiz');
+    const hasTypeQuiz = history.some(message => message.type === 'thought_starters');
+    const hasTypeOnboarding = history.some(message => message.type === 'onboarding');
 
     // Check if user has quiz results
-    if (!hasTypeQuiz) {
-      console.log("No quiz results found for user:", number);
 
-      // Fetch and process quiz
-      let currentQuiz = await Quiz.findOne({ name: 'thought_starters' });
+    if (!hasTypeOnboarding) {
+      let currentQuiz = await Quiz.findOne({ name: 'onboarding' });
       const questions = currentQuiz.questions;
       console.log("Current quiz:", currentQuiz.name);
 
       for (const [index, question] of questions.entries()) {
         console.log(`Question ${index + 1}: ${question.text}`);
         content = question.text;
-        type = 'quiz';
+        type = 'onboarding';
         await processAndStoreMessage(user, number, content, type);
       }
+
+      if (!hasTypeQuiz) {
+        console.log("No quiz results found for user:", number);
+  
+        // Fetch and process quiz
+        let currentQuiz = await Quiz.findOne({ name: 'thought_starters' });
+        const questions = currentQuiz.questions;
+        console.log("Current quiz:", currentQuiz.name);
+  
+        for (const [index, question] of questions.entries()) {
+          console.log(`Question ${index + 1}: ${question.text}`);
+          content = question.text;
+          type = 'thought_starters';
+          await processAndStoreMessage(user, number, content, type);
+        }
+    } 
 
     } else {
       // Fetch and process OpenAI response
