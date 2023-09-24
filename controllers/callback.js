@@ -23,7 +23,7 @@ const receiveSmsController = async (req, res) => {
     // Receive SMS and fetch user data
     await receiveSmsMessage(req, 'user');
     const messagePayload = req.body;
-    console.log("Message Payload:", messagePayload);
+    // console.log("Message Payload:", messagePayload);
 
     const number = messagePayload.number;
     let user = await User.findOne({ phoneNumber: number });
@@ -45,6 +45,7 @@ const receiveSmsController = async (req, res) => {
         type = 'quiz';
         await processAndStoreMessage(user, number, content, type);
       }
+      
     } else {
       // Fetch and process OpenAI response
       content = await getOpenAIResponse(messagePayload.content);
@@ -55,6 +56,7 @@ const receiveSmsController = async (req, res) => {
     // Send SMS and respond
     await sendSmsMessage(number, content);
     res.sendStatus(200);
+
   } catch (error) {
     console.error("Error getting OpenAI response:", error);
     res.status(500).send("Failed to process the message");
