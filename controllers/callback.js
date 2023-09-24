@@ -20,38 +20,41 @@ const handleSmsStatusCallback = (req, res) => {
 
 const receiveSmsController = async (req, res) => {
   try {
-    await receiveSmsMessage(req, res);
+    // Receive SMS and fetch user data
+    await receiveSmsMessage(req, 'user');
     const messagePayload = req.body;
     console.log("Message Payload:", messagePayload);
-
 
     const number = messagePayload.number;
     let user = await User.findOne({ phoneNumber: number });
     let content;
+    let type;
 
+    // Check if user has quiz results
     if (!user.quizResults) {
       console.log("No quiz results found for user:", number);
-      let currentQuiz = await Quiz.findOne({ name: 'thought_starters' });
 
+      // Fetch and process quiz
+      let currentQuiz = await Quiz.findOne({ name: 'thought_starters' });
       const questions = currentQuiz.questions;
       console.log("Current quiz:", currentQuiz.name);
 
       for (const [index, question] of questions.entries()) {
         console.log(`Question ${index + 1}: ${question.text}`);
         content = question.text;
-        let type = 'quiz';
-        await processAndStoreMessage(user, number, content, type)    
-    };
-
+        type = 'quiz';
+        await processAndStoreMessage(user, number, content, type);
+      }
     } else {
+      // Fetch and process OpenAI response
       content = await getOpenAIResponse(messagePayload.content);
-      
-      let type = 'openai';
-      await processAndStoreMessage(user, number, content, type) 
+      type = 'openai';
+      await processAndStoreMessage(user, number, content, type);
     }
+
+    // Send SMS and respond
     await sendSmsMessage(number, content);
     res.sendStatus(200);
-
   } catch (error) {
     console.error("Error getting OpenAI response:", error);
     res.status(500).send("Failed to process the message");

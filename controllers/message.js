@@ -30,7 +30,7 @@ const sendSmsMessage = (phoneNumber, content) => {
 };
 
 // receiveSmsMessage 
-const receiveSmsMessage = async (req) => {
+const receiveSmsMessage = async (req, type) => {
   try {
   const messagePayload = req.body;
   //console.log('Received SMS message:', messagePayload);
@@ -40,7 +40,7 @@ const receiveSmsMessage = async (req) => {
     //console.log(`User with number ${req.body.number} does not exist, creating user and confirming.`);
     user = new User({ phoneNumber: req.body.number, confirmed: true });
     await user.save();
-    await processAndStoreMessage(user, req.body.number, req.body.content);
+    await processAndStoreMessage(user, req.body.number, req.body.content, type);
     return true; 
   }
 
@@ -48,11 +48,11 @@ const receiveSmsMessage = async (req) => {
    // console.log(`User with number ${req.body.number} is not confirmed`);
     user.confirmed = true; 
     await user.save();  
-    await processAndStoreMessage(user, req.body.number, req.body.content);
+    await processAndStoreMessage(user, req.body.number, req.body.content, type);
     return true; 
   }
 
-  await processAndStoreMessage(user, req.body.number, req.body.content);
+  await processAndStoreMessage(user, req.body.number, req.body.content, type);
   return true; 
 
   } catch (error) { 

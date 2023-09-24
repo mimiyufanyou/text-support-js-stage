@@ -1,7 +1,5 @@
 const fs = require('fs');
 const path = require('path');
-const { connect } = require('../config/db');  // Importing your connection function
-
 const { getQuizResultByUserId, createQuizResult, quizController, loadQuizFromFile } = require('./admin');
 
 
