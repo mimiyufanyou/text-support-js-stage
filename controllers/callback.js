@@ -21,27 +21,27 @@ const handleSmsStatusCallback = (req, res) => {
 
 const receiveSmsController = async (req, res) => {
   try {
-    // Receive SMS and fetch user data
     await receiveSmsMessage(req, 'user');
     const messagePayload = req.body;
-    // console.log("Message Payload:", messagePayload);
+    console.log("Message Payload:", messagePayload);
 
     const number = messagePayload.number;
-    let user = await User.findOne({ phoneNumber: number });
-    let history = await Message.find({ phoneNumber: number}); 
+    const user = await User.findOne({ phoneNumber: number });
+
+    // Check if the user has 'onboarding' type in their history
+    const hasTypeOnboarding = await Message.exists({ user: user._id, type: 'onboarding' });
+    
+    // Check if the user has 'thought_starters' type in their history
+    const hasTypeQuiz = await Message.exists({ user: user._id, type: 'thought_starters' });
+  
     let content;
     let type;
 
-    console.log("History:", history)
-
-    const hasTypeQuiz = history.some(message => message.type === 'thought_starters');
-    const hasTypeOnboarding = history.some(message => message.type === 'onboarding');
-
-    // Check if user has quiz results
-
     if (!hasTypeOnboarding) {
-      let currentQuiz = await Quiz.findOne({ name: 'onboarding' });
+      // Handle onboarding
+      const currentQuiz = await Quiz.findOne({ name: 'onboarding' });
       const questions = currentQuiz.questions;
+
       console.log("Current quiz:", currentQuiz.name);
 
       for (const [index, question] of questions.entries()) {
@@ -50,25 +50,23 @@ const receiveSmsController = async (req, res) => {
         type = 'onboarding';
         await processAndStoreMessage(user, number, content, type);
       }
+    } else if (!hasTypeQuiz) {
+      // Handle thought starters only if onboarding is done
+      console.log("No quiz results found for user:", number);
 
-      if (!hasTypeQuiz) {
-        console.log("No quiz results found for user:", number);
-  
-        // Fetch and process quiz
-        let currentQuiz = await Quiz.findOne({ name: 'thought_starters' });
-        const questions = currentQuiz.questions;
-        console.log("Current quiz:", currentQuiz.name);
-  
-        for (const [index, question] of questions.entries()) {
-          console.log(`Question ${index + 1}: ${question.text}`);
-          content = question.text;
-          type = 'thought_starters';
-          await processAndStoreMessage(user, number, content, type);
-        }
-    } 
+      const currentQuiz = await Quiz.findOne({ name: 'thought_starters' });
+      const questions = currentQuiz.questions;
 
+      console.log("Current quiz:", currentQuiz.name);
+
+      for (const [index, question] of questions.entries()) {
+        console.log(`Question ${index + 1}: ${question.text}`);
+        content = question.text;
+        type = 'thought_starters';
+        await processAndStoreMessage(user, number, content, type);
+      }
     } else {
-      // Fetch and process OpenAI response
+      // Handle OpenAI response only if onboarding is done
       content = await getOpenAIResponse(messagePayload.content);
       type = 'openai';
       await processAndStoreMessage(user, number, content, type);
@@ -77,12 +75,12 @@ const receiveSmsController = async (req, res) => {
     // Send SMS and respond
     await sendSmsMessage(number, content);
     res.sendStatus(200);
-
   } catch (error) {
     console.error("Error getting OpenAI response:", error);
     res.status(500).send("Failed to process the message");
   }
 };
+
 
 module.exports = {
   handleSmsStatusCallback,
