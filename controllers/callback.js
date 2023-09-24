@@ -4,6 +4,7 @@ const { getOpenAIResponse } = require('./openai');
 
 const User = require('../models/user');
 const Quiz = require('../models/quiz');
+const Message = require('../models/message');
 
 // Update SendBlue on status of message 
 const handleSmsStatusCallback = (req, res) => {
@@ -27,11 +28,14 @@ const receiveSmsController = async (req, res) => {
 
     const number = messagePayload.number;
     let user = await User.findOne({ phoneNumber: number });
+    let history = await Message.find({ user: user._id}); 
     let content;
     let type;
 
+    const hasTypeQuiz = history.some(message => message.type === 'quiz');
+
     // Check if user has quiz results
-    if (!user.quizResults || user.quizResults.length === 0) {
+    if (!hasTypeQuiz) {
       console.log("No quiz results found for user:", number);
 
       // Fetch and process quiz
