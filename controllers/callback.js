@@ -3,8 +3,6 @@ const { sendSmsMessage, receiveSmsMessage, processAndStoreMessage  } = require('
 const { getOpenAIResponse } = require('./openai');
 
 const User = require('../models/user');
-const Quiz = require('../models/quiz');
-const Message = require('../models/messages');
 
 // Update SendBlue on status of message 
 const handleSmsStatusCallback = (req, res) => {
@@ -45,7 +43,6 @@ const receiveSmsController = async (req, res) => {
   }
 };
 
-
 let sessionTimer
 
 const sessionMiddleware = async (req, res, next) => {
@@ -60,7 +57,7 @@ const sessionMiddleware = async (req, res, next) => {
       sessionTimer = setTimeout(async () => {
         console.log('Session closed due to inactivity.');
         // Run the summarizeChat function
-        await summarizeChat('some_phone_number'); // Replace 'some_phone_number' with the actual phone number
+        await summarizeChat( phoneNumber ); // Replace 'some_phone_number' with the actual phone number
 
         // Update the Session model's expiresAt field
         if (sessionId) { // Make sure sessionId exists
