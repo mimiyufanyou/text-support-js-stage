@@ -9,7 +9,6 @@ console.log(db);
 
 
 // Require and use route modules
-const userRoutes = require('./routes/user')
 const messageRoutes = require('./routes/message');
 const callbackRoutes = require('./routes/callback');
 
@@ -19,7 +18,6 @@ app.use(bodyParser.json()); // JSON parsing middleware
 // Use routes
 app.use('/api/message', messageRoutes);
 app.use('/api/callback', callbackRoutes);
-app.use('/api/user', userRoutes);
 
 db.connect().then(() => {
 
