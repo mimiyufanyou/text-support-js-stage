@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-const { system_prompt, internal_monologue } = require('../system_prompts');
+const { system_prompt, internal_monologue } = require('../config/system_prompts');
 
 async function getOpenAIResponse(message) {
     const endpoint = "https://api.openai.com/v1/chat/completions";
