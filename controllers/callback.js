@@ -9,7 +9,6 @@ const handleSmsStatusCallback = (req, res) => {
     try {
         const statusUpdate = req.body;
         console.log('Received SMS status update:', statusUpdate);
-  
         res.sendStatus(200);
     } catch (err) {
         console.error('Error handling SMS status callback:', err);
@@ -50,6 +49,10 @@ const sessionMiddleware = async (req, res, next) => {
   const sessionRecord = await Session.findOne({ phoneNumber: phoneNumber }).sort({ createdAt: -1 });
   const sessionId = sessionRecord ? sessionRecord._id : null;
 
+  console.log('Session ID:', sessionId);
+  console.log('Session record:', sessionRecord);
+  console.log('phone number:', phoneNumber);
+
     if (sessionTimer) {
         clearTimeout(sessionTimer);
       }
@@ -68,7 +71,6 @@ const sessionMiddleware = async (req, res, next) => {
     
       next();
 };
-
 
 module.exports = {
   handleSmsStatusCallback,
