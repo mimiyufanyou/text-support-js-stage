@@ -19,7 +19,7 @@ const handleSmsStatusCallback = (req, res) => {
     }
 };
 
-const quizSequence = ['onboarding', 'thought_starters', 'stress'];
+const conversationSequence = ['onboarding', 'thought_starters', 'stress'];
 
 const receiveSmsController = async (req, res) => {
   try {
@@ -31,48 +31,8 @@ const receiveSmsController = async (req, res) => {
     let content;
     let type;
 
-    const lastMessage = await Message.findOne({ 
-      phoneNumber: number, 
-      type: { $ne: 'user' }  // $ne is the 'not equals' operator in MongoDB
-    }).sort({ createdAt: -1 });
-
-    if (!lastMessage) {
-      // If there's no last message, start with the first quiz in the sequence
-      const currentQuiz = await Quiz.findOne({ name: quizSequence[0] });
-      content = currentQuiz.questions[0].text;
-      type = quizSequence[0];
-    } else {
-      // Find which quiz the last message belonged to
-      const lastQuizIndex = quizSequence.indexOf(lastMessage.type);
-
-      if (lastQuizIndex >= 0) {
-        const currentQuiz = await Quiz.findOne({ name: quizSequence[lastQuizIndex] });
-        const lastQuestionIndex = currentQuiz.questions.findIndex(q => q.text === lastMessage.content);
-        const nextQuestion = currentQuiz.questions[lastQuestionIndex + 1];
-
-        if (nextQuestion) {
-          // Continue with the current quiz
-          content = nextQuestion.text;
-          type = quizSequence[lastQuizIndex];
-        } else {
-          // Proceed to the next quiz in the sequence
-          const nextQuiz = quizSequence[lastQuizIndex + 1];
-          if (nextQuiz) {
-            const newQuiz = await Quiz.findOne({ name: nextQuiz });
-            content = newQuiz.questions[0].text;
-            type = nextQuiz;
-          } else {
-            // Handle OpenAI response only if onboarding is done
-            content = await getOpenAIResponse(messagePayload.content);
-            type = 'openai';
-            await processAndStoreMessage(user, number, content, type);
-          }
-        }
-      } else {
-        content = await getOpenAIResponse(messagePayload.content);
-        type = 'openai';
-      }
-    }
+    content = await getOpenAIResponse(messagePayload.content);
+    type = 'openai';
 
     await processAndStoreMessage(user, number, content, type);
 

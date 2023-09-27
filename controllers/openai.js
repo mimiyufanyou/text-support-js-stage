@@ -1,11 +1,16 @@
 const axios = require('axios');
 
+const { system_prompt, internal_monologue } = require('../system_prompts');
+
 async function getOpenAIResponse(message) {
     const endpoint = "https://api.openai.com/v1/chat/completions";
 
     const data = {
-        messages: [{ "role": "user", "content": message }],
-        max_tokens: 75,
+        messages: [
+                { "role": "system", "content": system_prompt }, 
+                { "role": "system", "content": internal_monologue }, 
+                { "role": "user", "content": message }],
+        max_tokens: 150,
         model: "gpt-3.5-turbo",
     };
 
