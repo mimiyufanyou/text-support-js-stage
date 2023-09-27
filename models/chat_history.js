@@ -19,25 +19,14 @@ const chatHistorySchema = new mongoose.Schema({
     type: Date
   },
   topic: {
-    type: String,
-    required: true
+    type: String
   },
   summary: {
-    type: String,
-    required: true
-  },
-  keyTakeaways: [{
     type: String
-  }],
-  actionItems: [{
-    description: String,
-    deadline: Date,
-    assignedTo: String
-  }],
-  quotesOfNote: [{
-    quote: String,
-    speaker: String
-  }]
+  },
+  keyTakeaways: [],
+  actionItems: [],
+  quotesOfNote: []
 });
 
 // Create the model

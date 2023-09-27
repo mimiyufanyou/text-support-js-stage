@@ -1,17 +1,16 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
-
 const PORT = process.env.PORT || 5001;
 
 const db = require('./config/db');
 console.log(db); 
 
-
 // Require and use route modules
 const userRoutes = require('./routes/user')
 const messageRoutes = require('./routes/message');
 const callbackRoutes = require('./routes/callback');
+const req = require('express/lib/request');
 
 // Use middleware and other configurations
 app.use(bodyParser.json()); // JSON parsing middleware

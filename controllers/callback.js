@@ -46,7 +46,35 @@ const receiveSmsController = async (req, res) => {
 };
 
 
+let sessionTimer
+
+const sessionMiddleware = async (req, res, next) => {
+  const phoneNumber = req.body.number;  
+  const sessionRecord = await Session.findOne({ phoneNumber: phoneNumber }).sort({ createdAt: -1 });
+  const sessionId = sessionRecord ? sessionRecord._id : null;
+
+    if (sessionTimer) {
+        clearTimeout(sessionTimer);
+      }
+    
+      sessionTimer = setTimeout(async () => {
+        console.log('Session closed due to inactivity.');
+        // Run the summarizeChat function
+        await summarizeChat('some_phone_number'); // Replace 'some_phone_number' with the actual phone number
+
+        // Update the Session model's expiresAt field
+        if (sessionId) { // Make sure sessionId exists
+          await Session.findByIdAndUpdate(sessionId, { expiresAt: new Date() });
+          console.log('Session expiresAt field updated.');
+        }
+      }, 900000); // 15 minutes
+    
+      next();
+};
+
+
 module.exports = {
   handleSmsStatusCallback,
   receiveSmsController,
+  sessionMiddleware
 };
