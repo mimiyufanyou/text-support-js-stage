@@ -36,7 +36,7 @@ const receiveSmsController = async (req, res) => {
     await sendSmsMessage(number, content);
 
     // Send status and additional information
-    res.sendStatus(200).json({
+    res.status(200).json({
       status: 'READ', 
       message: 'Message received and processed.', 
       type: type, 
