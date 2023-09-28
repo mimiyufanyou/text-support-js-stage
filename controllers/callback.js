@@ -4,6 +4,7 @@ const { getOpenAIResponse } = require('./openai');
 
 const User = require('../models/user');
 
+/* 
 // Update SendBlue on status of message 
 const handleSmsStatusCallback = (req, res) => {
     try {
@@ -17,6 +18,8 @@ const handleSmsStatusCallback = (req, res) => {
 };
 
 const conversationSequence = ['onboarding', 'thought_starters', 'stress'];
+
+*/ 
 
 const receiveSmsController = async (req, res) => {
   try {
@@ -43,7 +46,7 @@ const receiveSmsController = async (req, res) => {
 };
 
 module.exports = {
-  handleSmsStatusCallback,
+  // handleSmsStatusCallback,
   receiveSmsController,
   // sessionMiddleware
 };
