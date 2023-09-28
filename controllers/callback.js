@@ -75,7 +75,7 @@ const sessionMiddleware = async (req, res, next) => {
         await Session.findByIdAndUpdate(sessionId, { expiresAt: new Date() });
         console.log('Session expiresAt field updated.');
       }
-    }, 900000); // 15 minutes
+    }, 300000); // 5 minutes
     
     next();
     
