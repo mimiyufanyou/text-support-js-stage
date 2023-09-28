@@ -1,86 +1,75 @@
-// controllers/callback.js
-const { sendSmsMessage, receiveSmsMessage, processAndStoreMessage  } = require('./message');
+// Imports
+const { sendSmsMessage, receiveSmsMessage, processAndStoreMessage } = require('./message');
 const { getOpenAIResponse } = require('./openai');
 const { summarizeChat } = require('./llm_processing');
-
 const User = require('../models/user');
 const Session = require('../models/session');
 
-// Update SendBlue on status of message 
+// Update status of message with SendBlue
 const handleSmsStatusCallback = (req, res) => {
-    try {
-        const statusUpdate = req.body;
-        console.log('Received SMS status update:', statusUpdate);
-        res.sendStatus(200);
-    } catch (err) {
-        console.error('Error handling SMS status callback:', err);
-        res.sendStatus(500);
-    }
-};
-
-const receiveSmsController = async (req, res) => {
   try {
-    await receiveSmsMessage(req, 'user');
-    const messagePayload = req.body;
-    const number = messagePayload.number;
-    const user = await User.findOne({ phoneNumber: number });
-
-    let content;
-    let type;
-
-    content = await getOpenAIResponse(messagePayload.content);
-    type = 'openai';
-
-    await processAndStoreMessage(user, number, content, type);
-
-    // Send SMS and respond
-    await sendSmsMessage(number, content);
-
-    // Send status and additional information
-    res.status(200).json({
-      status: "READ", 
-      type: type, 
-      content: content 
-    });
-
-  } catch (error) {
-    console.error("Error:", error);
-    
-    res.status(500).send("Failed to process the message");
+    console.log('Received SMS status update:', req.body);
+    res.sendStatus(200);
+  } catch (err) {
+    console.error('Error handling SMS status callback:', err);
+    res.sendStatus(500);
   }
 };
 
+// Handle incoming SMS messages
+const receiveSmsController = async (req, res) => {
+  try {
+    await receiveSmsMessage(req, 'user');
+    const { number, content } = req.body;
+    const user = await User.findOne({ phoneNumber: number });
 
-let sessionTimers = {}; // Store timers for multiple sessions
+    const type = 'openai';
+    const aiResponse = await getOpenAIResponse(content);
 
+    await processAndStoreMessage(user, number, aiResponse, type);
+    await sendSmsMessage(number, aiResponse);
+
+    res.status(200).json({
+      status: 'READ',
+      type,
+      content: aiResponse
+    });
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).send('Failed to process the message');
+  }
+};
+
+// Middleware to manage chat session timeouts
+let sessionTimers = {};
 const sessionMiddleware = async (req, res, next) => {
   try {
-    const phoneNumber = req.body.number;
-    const sessionRecord = await Session.findOne({ phoneNumber: phoneNumber }).sort({ createdAt: -1 });
+    const { number } = req.body;
+    let sessionRecord = await Session.findOne({ phoneNumber: number }).sort({ createdAt: -1 });
     const sessionId = sessionRecord ? sessionRecord._id : null;
 
-    console.log('Session ID:', sessionId);
-    console.log('Session record:', sessionRecord);
-    console.log('phone number:', phoneNumber);
-
+    // Clear any existing timeout for the session
     if (sessionTimers[sessionId]) {
       clearTimeout(sessionTimers[sessionId]);
     }
-    
-    sessionTimers[sessionId] = setTimeout(async () => {
-      console.log('Session closed due to inactivity.');
-      await summarizeChat(phoneNumber);
 
-      if (sessionId) {
-        await Session.findByIdAndUpdate(sessionId, { expiresAt: new Date() });
-        console.log('Session expiresAt field updated.');
-      }
+    // Create a new session if needed
+    if (!sessionRecord || new Date(sessionRecord.expiresAt) < new Date()) {
+      sessionRecord = new Session({ phoneNumber: number });
+      await sessionRecord.save();
+      sessionId = sessionRecord._id;
+    }
+
+    // Set a timeout to close the session after a period of inactivity
+    sessionTimers[sessionId] = setTimeout(async () => {
+      await summarizeChat(number);
+      await Session.findByIdAndUpdate(sessionId, { expiresAt: new Date() });
+      console.log(`Session ${sessionId} closed due to inactivity.`);
     }, 300000); // 5 minutes
-    
+
     next();
-    
   } catch (error) {
-    console.log('An error occurred:', error);
+    console.error('An error occurred:', error);
     res.status(500).send('Internal Server Error');
   }
 };

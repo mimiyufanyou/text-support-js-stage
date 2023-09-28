@@ -1,118 +1,84 @@
-// controllers/message.js 
 const axios = require('axios');
-const SEND_BLUE_URL = 'https://api.sendblue.co/api/send-message';
-const headers = { 
-    'sb-api-key-id': process.env.SEND_BLUE_API_KEY_ID,
-    'sb-api-secret-key': process.env.SEND_BLUE_API_SECRET_KEY,
-    'content-type': 'application/json'
-}
-
 const User = require('../models/user');
 const Message = require('../models/messages');
 const Session = require('../models/session');
 
-const sendSmsMessage = (phoneNumber, content) => {
-  // Data received from the webhook
-  const requestdata = {
-    number: phoneNumber,
-    content: content,
-    status_callback: 'https://example.com/message-status/1234abcd',
-    };
+const SEND_BLUE_URL = 'https://api.sendblue.co/api/send-message';
+const headers = {
+  'sb-api-key-id': process.env.SEND_BLUE_API_KEY_ID,
+  'sb-api-secret-key': process.env.SEND_BLUE_API_SECRET_KEY,
+  'content-type': 'application/json'
+};
 
-  // Send the SMS message
-  return axios.post(SEND_BLUE_URL, requestdata, { headers: headers })
+// Function to send SMS message using SendBlue
+const sendSmsMessage = (phoneNumber, content) => {
+  const requestData = {
+    number: phoneNumber,
+    content,
+    status_callback: 'https://example.com/message-status/1234abcd',
+  };
+
+  return axios.post(SEND_BLUE_URL, requestData, { headers })
     .then((response) => {
-      //console.log('Webhook response:', response.data);
+      // Handle success, if needed
     })
     .catch((error) => {
-      //console.error('Error sending data to webhook:', error);
+      console.error('Error sending SMS:', error);
     });
 };
 
-// receiveSmsMessage 
+// Function to handle incoming SMS messages
 const receiveSmsMessage = async (req, type) => {
-  let status = 'DELIVERED'
+  let status = 'DELIVERED';
 
   try {
-  const messagePayload = req.body;
+    const { number, content, was_downgraded } = req.body;
+    let user = await User.findOne({ phoneNumber: number });
 
-  //console.log('Received SMS message:', messagePayload);
-  let user = await User.findOne({phoneNumber: req.body.number});
+    if (!user) {
+      user = new User({ phoneNumber: number, confirmed: true });
+      await user.save();
+    } else if (!user.confirmed) {
+      user.confirmed = true;
+      await user.save();
+    }
 
-  if (!user) {
-    //console.log(`User with number ${req.body.number} does not exist, creating user and confirming.`);
-    user = new User({ phoneNumber: req.body.number, confirmed: true });
-    await user.save();
-    await processAndStoreMessage(user, req.body.number, req.body.content, type, req.body.was_downgraded, req.body.status);
-    return true; 
-  }
+    await processAndStoreMessage(user, number, content, type, was_downgraded, status);
+    status = 'READ';
 
-  if (user && !user.confirmed) {
-   // console.log(`User with number ${req.body.number} is not confirmed`);
-    user.confirmed = true; 
-    await user.save();  
-    await processAndStoreMessage(user, req.body.number, req.body.content, type, req.body.was_downgraded, req.body.status);
-    return true; 
-  }
+    return { status, success: true };
 
-  await processAndStoreMessage(user, req.body.number, req.body.content, type, req.body.was_downgraded, req.body.status);
-
-  status = 'READ';
-  return { status: status, success: true }; 
-
-  } catch (error) { 
-    console.error("Error receiving SMS message:", error);
-    return { status: status, success: false} ; 
+  } catch (error) {
+    console.error('Error receiving SMS:', error);
+    return { status, success: false };
   }
 };
 
-// Process and store the user's answer and update their progress.
+// Function to process and store incoming messages
 const processAndStoreMessage = async (user, phoneNumber, message, type, was_downgraded, status) => {
-  
-  // Use a transaction to handle race condition
-  const session = await Session.startSession();
-  session.startTransaction();
+  const session = await Session.findOne({ phoneNumber }).sort({ createdAt: -1 });
 
-  try {
-    let conversation = await Session.findOne({ phoneNumber: phoneNumber }).sort({ createdAt: -1 }).session(session);
-
-    if (!conversation || (new Date(conversation.expiresAt)) < new Date()) {
-      // Create a new conversation
-      conversation = new Session({
-        phoneNumber: phoneNumber,
-        userId: user._id,
-      });
-
-      await conversation.save({ session: session });
-    }
-
-    // Add the new message to the conversation (either new or existing)
+  if (session && new Date(session.expiresAt) >= new Date()) {
     const newMessage = {
-      phoneNumber: phoneNumber,
+      phoneNumber,
       userId: user._id,
-      sessionId: conversation._id, // Use the ID from the found or newly created session
+      sessionId: session._id,
       content: message,
-      type: type,
-      was_downgraded: was_downgraded,
-      status: status,
-      timestamp: new Date()
+      type,
+      was_downgraded,
+      status,
+      timestamp: new Date(),
     };
 
     const newMessageDoc = new Message(newMessage);
-    await newMessageDoc.save({ session: session });
-
-    await session.commitTransaction();
-    session.endSession();
-
-  } catch (error) {
-    await session.abortTransaction();
-    session.endSession();
-    throw error;
+    await newMessageDoc.save();
+  } else {
+    console.warn(`No active session found for phone number ${phoneNumber}`);
   }
 };
 
 module.exports = {
-  sendSmsMessage, 
+  sendSmsMessage,
   receiveSmsMessage,
   processAndStoreMessage
 };
