@@ -71,7 +71,7 @@ const processAndStoreMessage = async (user, phoneNumber, message, type, was_down
 
   let conversation = await Session.findOne({ phoneNumber : phoneNumber }).sort({ createdAt: -1 });
 
-  if (!conversation) {
+  if (!conversation || conversation.expiresAt < new Date()) {
     // Create a new conversation
     conversation = new Session({
       phoneNumber: phoneNumber, 
