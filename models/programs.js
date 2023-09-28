@@ -31,7 +31,7 @@ const programSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   }
-});
+}, { timestamps: true });
 
 // Add a pre-save hook to update the "updatedAt" field
 programSchema.pre('save', function (next) {

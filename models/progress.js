@@ -29,7 +29,7 @@ const progressSchema = new mongoose.Schema({
     default: Date.now
   },
   notes: String
-});
+}, { timestamps: true });
 
 // Add a pre-save hook to update the "updatedAt" field
 progressSchema.pre('save', function (next) {

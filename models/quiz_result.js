@@ -29,7 +29,7 @@ const quizResultSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     }
-});
+}, { timestamps: true });
 
 // Create the models
 const QuizResult = mongoose.model('QuizResult', quizResultSchema);

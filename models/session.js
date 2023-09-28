@@ -17,7 +17,7 @@ const sessionSchema = new mongoose.Schema({
       return new Date(Date.now() + 5 * 60 * 1000);
     }
   }
-});
+}, { timestamps: true });
 
 module.exports = mongoose.model('Session', sessionSchema);
 

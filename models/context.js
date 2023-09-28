@@ -35,7 +35,7 @@ const userContextSchema = new mongoose.Schema({
     lastMessageTime: Date
   }],
   customFields: mongoose.Schema.Types.Mixed  // for storing any additional user-specific information
-});
+}, { timestamps: true });
 
 // Create the model
 const UserContext = mongoose.model('UserContext', userContextSchema);

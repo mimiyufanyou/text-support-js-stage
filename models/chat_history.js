@@ -26,7 +26,7 @@ const chatHistorySchema = new mongoose.Schema({
   keyTakeaways: [],
   actionItems: [],
   quotesOfNote: []
-});
+}, { timestamps: true });
 
 // Create the model
 const ChatHistory = mongoose.model('ChatHistory', chatHistorySchema);
