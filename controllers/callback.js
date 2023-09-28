@@ -44,8 +44,8 @@ const receiveSmsController = async (req, res) => {
 let sessionTimers = {};
 const sessionMiddleware = async (req, res, next) => {
   try {
-    const { number } = req.body;
-    const user = await User.findOne({ phoneNumber: number });  // <-- Add this line
+    let { number } = req.body;
+    let user = await User.findOne({ phoneNumber: number });  // <-- Add this line
 
     if (!user) {
       user = new User({ phoneNumber: number, confirmed: true });
