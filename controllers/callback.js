@@ -3,6 +3,7 @@ const { sendSmsMessage, receiveSmsMessage, processAndStoreMessage  } = require('
 const { getOpenAIResponse } = require('./openai');
 
 const User = require('../models/user');
+const Session = require('../models/session');
 
 // Update SendBlue on status of message 
 const handleSmsStatusCallback = (req, res) => {
