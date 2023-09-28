@@ -34,9 +34,18 @@ const receiveSmsController = async (req, res) => {
 
     // Send SMS and respond
     await sendSmsMessage(number, content);
-    res.sendStatus(200);
+
+    // Send status and additional information
+    res.sendStatus(200).json({
+      status: 'READ', 
+      message: 'Message received and processed.', 
+      type: type, 
+      content: content 
+    });
+
   } catch (error) {
     console.error("Error:", error);
+    
     res.status(500).send("Failed to process the message");
   }
 };

@@ -33,6 +33,7 @@ const sendSmsMessage = (phoneNumber, content) => {
 const receiveSmsMessage = async (req, type) => {
   try {
   const messagePayload = req.body;
+
   //console.log('Received SMS message:', messagePayload);
   let user = await User.findOne({phoneNumber: req.body.number});
 
@@ -40,7 +41,7 @@ const receiveSmsMessage = async (req, type) => {
     //console.log(`User with number ${req.body.number} does not exist, creating user and confirming.`);
     user = new User({ phoneNumber: req.body.number, confirmed: true });
     await user.save();
-    await processAndStoreMessage(user, req.body.number, req.body.content, type);
+    await processAndStoreMessage(user, req.body.number, req.body.content, type, req.body.was_downgraded, req.body.status);
     return true; 
   }
 
@@ -48,11 +49,11 @@ const receiveSmsMessage = async (req, type) => {
    // console.log(`User with number ${req.body.number} is not confirmed`);
     user.confirmed = true; 
     await user.save();  
-    await processAndStoreMessage(user, req.body.number, req.body.content, type);
+    await processAndStoreMessage(user, req.body.number, req.body.content, type, req.body.was_downgraded, req.body.status);
     return true; 
   }
 
-  await processAndStoreMessage(user, req.body.number, req.body.content, type);
+  await processAndStoreMessage(user, req.body.number, req.body.content, type, req.body.was_downgraded, req.body.status);
   return true; 
 
   } catch (error) { 
@@ -62,7 +63,7 @@ const receiveSmsMessage = async (req, type) => {
 };
 
 // Process and store the user's answer and update their progress.
-const processAndStoreMessage = async (user, phoneNumber, message, type) => {
+const processAndStoreMessage = async (user, phoneNumber, message, type, was_downgraded, status) => {
 
   let conversation = await Session.findOne({ phoneNumber : phoneNumber });
 
@@ -83,6 +84,8 @@ const processAndStoreMessage = async (user, phoneNumber, message, type) => {
       sessionId: session._id,
       content: message,
       type: type, 
+      was_downgraded: was_downgraded, 
+      status: status, 
       timestamp: new Date()
     };
 
@@ -101,6 +104,8 @@ const processAndStoreMessage = async (user, phoneNumber, message, type) => {
       sessionId: session._id,
       content: message,
       type: type, 
+      was_downgraded: was_downgraded, 
+      status: status, 
       timestamp: new Date()
     };
 

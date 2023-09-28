@@ -26,6 +26,14 @@ const messageSchema = new mongoose.Schema({
     type: String,
     required: false
   },
+  was_downgraded: {  // Was the message downgraded to SMS?
+    type: Boolean,
+    required: false
+  },
+  status: { 
+    type: String,
+    required: false
+  },
   timestamp: {
     type: Date,
     default: Date.now
