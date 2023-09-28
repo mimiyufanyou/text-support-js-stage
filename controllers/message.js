@@ -31,6 +31,8 @@ const sendSmsMessage = (phoneNumber, content) => {
 
 // receiveSmsMessage 
 const receiveSmsMessage = async (req, type) => {
+  let status = 'DELIVERED'
+
   try {
   const messagePayload = req.body;
 
@@ -54,11 +56,13 @@ const receiveSmsMessage = async (req, type) => {
   }
 
   await processAndStoreMessage(user, req.body.number, req.body.content, type, req.body.was_downgraded, req.body.status);
-  return true; 
+
+  status = 'READ';
+  return { status: status, success: true }; 
 
   } catch (error) { 
     console.error("Error receiving SMS message:", error);
-    return false; 
+    return { status: status, success: false} ; 
   }
 };
 
@@ -67,7 +71,7 @@ const processAndStoreMessage = async (user, phoneNumber, message, type, was_down
 
   let conversation = await Session.findOne({ phoneNumber : phoneNumber }).sort({ createdAt: -1 });
 
-  if (!conversation || conversation.expiresAt < new Date()) {
+  if (!conversation) {
     // Create a new conversation
     conversation = new Session({
       phoneNumber: phoneNumber, 
