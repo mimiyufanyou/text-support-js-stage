@@ -56,7 +56,7 @@ const sessionMiddleware = async (req, res, next) => {
     }
 
     let sessionRecord = await Session.findOne({ phoneNumber: number }).sort({ createdAt: -1 });
-    const sessionId = sessionRecord ? sessionRecord._id : null;
+    let sessionId = sessionRecord ? sessionRecord._id : null;
 
     // Clear any existing timeout for the session
     if (sessionTimers[sessionId]) {
