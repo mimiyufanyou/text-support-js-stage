@@ -68,55 +68,47 @@ const receiveSmsMessage = async (req, type) => {
 
 // Process and store the user's answer and update their progress.
 const processAndStoreMessage = async (user, phoneNumber, message, type, was_downgraded, status) => {
+  
+  // Use a transaction to handle race condition
+  const session = await Session.startSession();
+  session.startTransaction();
 
-  let conversation = await Session.findOne({ phoneNumber : phoneNumber }).sort({ createdAt: -1 });
+  try {
+    let conversation = await Session.findOne({ phoneNumber: phoneNumber }).sort({ createdAt: -1 }).session(session);
 
-  if (!conversation || conversation.expiresAt < new Date()) {
-    // Create a new conversation
-    conversation = new Session({
-      phoneNumber: phoneNumber, 
-      userId: user._id,
-     });
-    
-    await conversation.save();
+    if (!conversation || (new Date(conversation.expiresAt)) < new Date()) {
+      // Create a new conversation
+      conversation = new Session({
+        phoneNumber: phoneNumber,
+        userId: user._id,
+      });
 
-    let session = await Session.findOne({ userId: user._id }).sort({ createdAt: -1 });
+      await conversation.save({ session: session });
+    }
 
+    // Add the new message to the conversation (either new or existing)
     const newMessage = {
-      phoneNumber: phoneNumber, // Set sender based on your needs, assuming 'user' here
+      phoneNumber: phoneNumber,
       userId: user._id,
-      sessionId: session._id,
+      sessionId: conversation._id, // Use the ID from the found or newly created session
       content: message,
-      type: type, 
-      was_downgraded: was_downgraded, 
-      status: status, 
+      type: type,
+      was_downgraded: was_downgraded,
+      status: status,
       timestamp: new Date()
     };
 
-    newmessages = new Message(newMessage);
-    await newmessages.save();
-    
-  } else {
-    // Add the new message to the existing conversation
-    //console.log(`Adding message to existing conversation for ${phoneNumber}`);
+    const newMessageDoc = new Message(newMessage);
+    await newMessageDoc.save({ session: session });
 
-    let session = await Session.findOne({ userId: user._id }).sort({ createdAt: -1 });
+    await session.commitTransaction();
+    session.endSession();
 
-    const newMessage = {
-      phoneNumber: phoneNumber, // Set sender based on your needs, assuming 'user' here
-      userId: user._id,
-      sessionId: session._id,
-      content: message,
-      type: type, 
-      was_downgraded: was_downgraded, 
-      status: status, 
-      timestamp: new Date()
-    };
-
-    newmessages = new Message(newMessage);
-    await newmessages.save();
+  } catch (error) {
+    await session.abortTransaction();
+    session.endSession();
+    throw error;
   }
-
 };
 
 module.exports = {
