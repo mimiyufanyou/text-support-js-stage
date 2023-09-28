@@ -5,15 +5,18 @@ const { system_prompt, internal_monologue } = require('../config/system_prompts'
 async function getOpenAIResponse(message, sessionMessages) {
     const endpoint = "https://api.openai.com/v1/chat/completions";
 
+    console.log("sessionMessages:", sessionMessages);
+
     // Transform sessionMessages into the format you want.
     const transformedSessionMessages = sessionMessages.map(msg => ({ role: msg.type, content: msg.content }));
+
+    console.log("transformedSessionMessages:", transformedSessionMessages);
 
     const data = {
         messages: [
                 { "role": "system", "content": system_prompt }, 
                 { "role": "system", "content": internal_monologue }, 
-                ... transformedSessionMessages,
-                { "role": "system", "content": message },],
+                ... transformedSessionMessages],
         max_tokens: 150,
         model: "gpt-3.5-turbo",
     };
