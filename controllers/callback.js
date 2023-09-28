@@ -55,7 +55,7 @@ const sessionMiddleware = async (req, res, next) => {
 
     // Create a new session if needed
     if (!sessionRecord || new Date(sessionRecord.expiresAt) < new Date()) {
-      sessionRecord = new Session({ phoneNumber: number });
+      sessionRecord = new Session({ phoneNumber: number, userId: user._id});
       await sessionRecord.save();
       sessionId = sessionRecord._id;
     }
