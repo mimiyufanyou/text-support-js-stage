@@ -23,8 +23,13 @@ const receiveSmsController = async (req, res) => {
     const { number, content } = req.body;
     const user = await User.findOne({ phoneNumber: number });
 
+    const sessionId = req.sessionId;  // Access sessionId from req object
+
+    // Fetch all messages in the current session.
+    const sessionMessages = await Message.find({ sessionId }).sort({ timestamp: 1 });
+
     const type = 'openai';
-    const aiResponse = await getOpenAIResponse(content);
+    const aiResponse = await getOpenAIResponse(content, sessionMessages);
 
     await processAndStoreMessage(user, number, aiResponse, type);
     await sendSmsMessage(number, aiResponse);
@@ -77,6 +82,7 @@ const sessionMiddleware = async (req, res, next) => {
       console.log(`Session ${sessionId} closed due to inactivity.`);
     }, 300000); // 5 minutes
 
+    req.sessionId = sessionId;  // Attach sessionId to the req object
     next();
   } catch (error) {
     console.error('An error occurred:', error);
