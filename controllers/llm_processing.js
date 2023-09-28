@@ -1,7 +1,7 @@
 const axios = require('axios');
 const mongoose = require('mongoose');
 const User = require('../models/user');  // Replace with your actual User model path
-const Message = require('../models/message');  // Replace with your actual Message model path
+const Message = require('../models/messages');  // Replace with your actual Message model path
 const ChatHistory = require('../models/chat_history');  // Replace with your actual ChatHistory model path
 
 const { summarize_chat } = require('../config/system_prompts');
