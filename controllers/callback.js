@@ -46,11 +46,15 @@ const sessionMiddleware = async (req, res, next) => {
   try {
     const { number } = req.body;
     const user = await User.findOne({ phoneNumber: number });  // <-- Add this line
+
     if (!user) {
-      console.warn('User not found for number:', number);
-      return res.status(404).send('User not found');
+      user = new User({ phoneNumber: number, confirmed: true });
+      await user.save();
+    } else if (!user.confirmed) {
+      user.confirmed = true;
+      await user.save();
     }
-    
+
     let sessionRecord = await Session.findOne({ phoneNumber: number }).sort({ createdAt: -1 });
     const sessionId = sessionRecord ? sessionRecord._id : null;
 
