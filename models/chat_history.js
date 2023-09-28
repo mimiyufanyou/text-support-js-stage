@@ -8,8 +8,7 @@ const chatHistorySchema = new mongoose.Schema({
   },
   sessionId: {
     type: String,
-    required: true,
-    unique: true
+    required: true
   },
   startTime: {
     type: Date,
