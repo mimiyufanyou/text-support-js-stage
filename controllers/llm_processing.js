@@ -60,7 +60,6 @@ const summarizeChat = async (number) => {
   } catch (error) {
     console.error("An error occurred:", error);
   } finally {
-    await mongoose.disconnect(); // Close the DB connection
   }
 };
 
