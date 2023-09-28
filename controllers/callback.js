@@ -42,41 +42,8 @@ const receiveSmsController = async (req, res) => {
   }
 };
 
-let sessionTimers = {}; // Store timers for multiple sessions
-
-const sessionMiddleware = async (req, res, next) => {
-  try {
-    const phoneNumber = req.body.number;
-    const sessionRecord = await Session.findOne({ phoneNumber: phoneNumber }).sort({ createdAt: -1 });
-    const sessionId = sessionRecord ? sessionRecord._id : null;
-
-    console.log('Session ID:', sessionId);
-    console.log('Session record:', sessionRecord);
-    console.log('phone number:', phoneNumber);
-
-    if (sessionTimers[sessionId]) {
-      clearTimeout(sessionTimers[sessionId]);
-    }
-    
-    sessionTimers[sessionId] = setTimeout(async () => {
-      console.log('Session closed due to inactivity.');
-      await summarizeChat(phoneNumber);
-
-      if (sessionId) {
-        await Session.findByIdAndUpdate(sessionId, { expiresAt: new Date() });
-        console.log('Session expiresAt field updated.');
-      }
-    }, 900000); // 15 minutes
-    
-    next();
-  } catch (error) {
-    console.log('An error occurred:', error);
-    res.status(500).send('Internal Server Error');
-  }
-};
-
 module.exports = {
   handleSmsStatusCallback,
   receiveSmsController,
-  sessionMiddleware
+  // sessionMiddleware
 };
