@@ -30,7 +30,7 @@ const receiveSmsController = async (req, res) => {
     // Fetch all messages in the current session.
     const sessionMessages = await Message.find({ sessionId }).sort({ timestamp: 1 });
 
-    const type = 'openai';
+    const type = 'assistant';
     const aiResponse = await getOpenAIResponse(content, sessionMessages);
 
     await processAndStoreMessage(user, number, aiResponse, type);
