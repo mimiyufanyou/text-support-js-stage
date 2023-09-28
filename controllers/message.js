@@ -65,7 +65,7 @@ const receiveSmsMessage = async (req, type) => {
 // Process and store the user's answer and update their progress.
 const processAndStoreMessage = async (user, phoneNumber, message, type, was_downgraded, status) => {
 
-  let conversation = await Session.findOne({ phoneNumber : phoneNumber });
+  let conversation = await Session.findOne({ phoneNumber : phoneNumber }).sort({ createdAt: -1 });
 
   if (!conversation || conversation.expiresAt < new Date()) {
     // Create a new conversation
@@ -76,7 +76,7 @@ const processAndStoreMessage = async (user, phoneNumber, message, type, was_down
     
     await conversation.save();
 
-    let session = await Session.findOne({ userId: user._id });
+    let session = await Session.findOne({ userId: user._id }).sort({ createdAt: -1 });
 
     const newMessage = {
       phoneNumber: phoneNumber, // Set sender based on your needs, assuming 'user' here
@@ -96,7 +96,7 @@ const processAndStoreMessage = async (user, phoneNumber, message, type, was_down
     // Add the new message to the existing conversation
     //console.log(`Adding message to existing conversation for ${phoneNumber}`);
 
-    let session = await Session.findOne({ userId: user._id });
+    let session = await Session.findOne({ userId: user._id }).sort({ createdAt: -1 });
 
     const newMessage = {
       phoneNumber: phoneNumber, // Set sender based on your needs, assuming 'user' here
