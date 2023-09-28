@@ -1,6 +1,7 @@
 // controllers/callback.js
 const { sendSmsMessage, receiveSmsMessage, processAndStoreMessage  } = require('./message');
 const { getOpenAIResponse } = require('./openai');
+const { summarizeChat } = require('./llm_processing');
 
 const User = require('../models/user');
 const Session = require('../models/session');
