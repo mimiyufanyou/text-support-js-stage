@@ -17,8 +17,6 @@ const handleSmsStatusCallback = (req, res) => {
     }
 };
 
-const conversationSequence = ['onboarding', 'thought_starters', 'stress'];
-
 const receiveSmsController = async (req, res) => {
   try {
     await receiveSmsMessage(req, 'user');
