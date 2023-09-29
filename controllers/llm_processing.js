@@ -64,6 +64,7 @@ const summarizeChat = async (number) => {
   }
 };
 
+/* 
 // Function to get the OpenAI response
 async function getUserContextSentimentOpenAIResponse(message) {
   const endpoint = "https://api.openai.com/v1/chat/completions";
@@ -92,5 +93,10 @@ async function getUserContextSentimentOpenAIResponse(message) {
     throw new Error("Sorry, I couldn't process that.");
   }
 }
+*/ 
 
-module.exports = { getBackEndOpenAIResponse, summarizeChat, getUserContextSentimentOpenAIResponse, applyContext };
+module.exports = { getBackEndOpenAIResponse, 
+  summarizeChat, 
+  // getUserContextSentimentOpenAIResponse, 
+  // applyCon
+};

@@ -26,10 +26,8 @@ const chatHistorySchema = new mongoose.Schema({
   keyTakeaways: [],
   actionItems: [],
   quotesOfNote: [], 
-  PANAS: [], 
-  dyad_relational_summary: [], 
-  emotional_flow: [],
-  earl_humaine: [], 
+  dyadicAnalysis: [], 
+  EARL: [], 
   urgency: [],
   complexity: [] 
 }, { timestamps: true });
