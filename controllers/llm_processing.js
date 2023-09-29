@@ -4,17 +4,19 @@ const User = require('../models/user');
 const Message = require('../models/messages');
 const ChatHistory = require('../models/chat_history');
 
-const { summarize_chat, preferences, thought_starters, communication_style, diagnoses_and_tests } = require('../config/system_prompts');
-
+const { summarize_chat } = require('../config/system_prompts');
 
 // Function to get the OpenAI response
-async function getBackEndOpenAIResponse(message) {
+async function getBackEndOpenAIResponse(sessionMessages) {
   const endpoint = "https://api.openai.com/v1/chat/completions";
+
+  const transformedSessionMessages = sessionMessages.map(msg => ({ role: msg.type, content: msg.content }));
+  console.log("transformedSessionMessages:", transformedSessionMessages);
+
   const data = {
     messages: [
       { "role": "system", "content": summarize_chat },
-      { "role": "user", "content": message }
-    ],
+      ... transformedSessionMessages], 
     max_tokens: 4000,
     model: "gpt-3.5-turbo",
   };
@@ -27,26 +29,24 @@ async function getBackEndOpenAIResponse(message) {
   try {
     const response = await axios.post(endpoint, data, { headers });
     return response.data.choices[0].message.content;
+
   } catch (error) {
+
     console.error("Error querying OpenAI:", error);
     throw new Error("Sorry, I couldn't process that.");
   }
-}
+};
 
 // Function to summarize chat history
-const summarizeChat = async (number) => {
+const summarizeChat = async (user, sessionId) => {
   try {
-    const user = await User.findOne({ phoneNumber: number });
-    const lastMessage = await Message.findOne({ phoneNumber: number }).sort({ createdAt: -1 });
+    // Fetch all messages in the current session.
+    const sessionMessages = await Message.find({ sessionId }).sort({ timestamp: 1 });
+    console.log("sessionMessages:", sessionMessages);
 
-    const fetchUserSessionRecords = await Message.find({
-      userId: user._id,
-      sessionId: lastMessage.sessionId
-    }, 'content type');
-
-    console.log("fetchUserSessionRecords", fetchUserSessionRecords)
+    const openAIResponseString = await getBackEndOpenAIResponse(sessionMessages);
+    console.log("openAIResponseString:", openAIResponseString);
     
-    const openAIResponseString = await getBackEndOpenAIResponse(JSON.stringify(fetchUserSessionRecords));
     const openAIResponse = JSON.parse(openAIResponseString);
 
     const chatSummary = {
