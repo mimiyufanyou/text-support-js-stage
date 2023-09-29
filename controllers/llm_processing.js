@@ -15,7 +15,7 @@ async function getBackEndOpenAIResponse(sessionMessages) {
 
   const data = {
     messages: [
-      // { "role": "system", "content": summarize_chat },
+      { "role": "system", "content": summarize_chat },
       ... transformedSessionMessages], 
     max_tokens: 4000,
     model: "gpt-3.5-turbo",

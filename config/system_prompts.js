@@ -37,13 +37,13 @@ const internal_monologue = {
 };
 
 const summarize_chat = 
-` "Summarize content in a JSON object with this exact format:
+` "Summarize the chat history in a JSON object with this exact format:
 {
-    topic: 1 sentence topic
-    summary: 3 sentence summary
-    keyTakeaways: 3 bullet key take aways 
-    actionItems: 3 bullet action items for assistant or user 
-    quotesOfNote: 3 bullet quotes of note only from the user 
+    "topic": "" String with 1 sentence topic
+    "summary": [] Array with 3 sentence summary
+    "keyTakeaways": [] Array with 3 bullet key take aways 
+    "actionItems": [] Array with 3 bullet action items for assistant
+    "quotesOfNote": [] Array 3 bullet quotes of note only from the user 
 }`
 
 
