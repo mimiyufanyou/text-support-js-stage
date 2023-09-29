@@ -13,18 +13,24 @@ async function getBackEndOpenAIResponse(sessionMessages) {
   const transformedSessionMessages = sessionMessages.map(msg => ({ role: msg.type, content: msg.content }));
   console.log("transformedSessionMessages:", transformedSessionMessages);
 
-  const data = {
+  let data = {
     messages: [
       { "role": "system", "content": summarize_chat },
       ... transformedSessionMessages], 
     max_tokens: 4000,
     model: "gpt-3.5-turbo",
   };
+
+  data = JSON.stringify(data);
   
   const headers = {
     'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
     'Content-Type': 'application/json'
   };
+
+  console.log("data:", data);
+
+  console.log("response:", response);
 
   try {
     const response = await axios.post(endpoint, data, { headers });
