@@ -44,7 +44,7 @@ const summarize_chat =
     keyTakeaways: 3 bullet key take aways 
     actionItems: 3 bullet action items for assistant or user 
     quotesOfNote: 3 bullet quotes of note only from the user 
-};`
+}`
 
 
 const EARL = 
