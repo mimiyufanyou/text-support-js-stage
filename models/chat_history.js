@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 
-
 const emotionalStateSchema = new mongoose.Schema({
   Valence: { type: Number, default: 0.0 },
   Arousal: { type: Number, default: 0.0 },
