@@ -37,11 +37,11 @@ const internal_monologue = {
 };
 
 const summarize_chat = 
-`Summarize the conversation history in a JSON object with this exact format:
-
+`
 For dyadicAnalysis, it is a dyadic relational interactions summary that is a simplified format, using arrows to indicate the emotional exchange (e.g., "Anxiety ↔️ Comfort")
-
 For EARL HUMAINE, all dimensions are on a scale that is described to the side of each dimension. 
+
+Summarize the conversation history in a JSON object with this exact format:
 
 {
     "topic": "1 sentence topic",
@@ -61,11 +61,11 @@ For EARL HUMAINE, all dimensions are on a scale that is described to the side of
         "Second notable quote from the user",
         "Third notable quote from the user"
     ],
-    "dyadicAnalysis": {
+    "dyadicAnalysis": [
         "entity1_entity2": "emotion1 ↔️ emotion2",
         "entity3_entity4": "emotion3 ↔️ emotion4"
-    },
-    "EARL": {
+    ],
+    "EARL": [
         "EmotionalState": {
             "Valence": 0.0,
             "Arousal": 0.0,
@@ -96,23 +96,22 @@ For EARL HUMAINE, all dimensions are on a scale that is described to the side of
             "Object": ""
         },
         "Intensity": 0.0
-    },
-    "complexity_score": {
+      ],
+    "complexity_score": [
         "Sentence Structure": "Complex",
         "Vocabulary": "Academic and specialized",
         "Conceptual Depth": "High",
         "Coherence": "Requires prior knowledge",
         "Overall Complexity Score": "High"
-    },
-    "urgency_score": {
+    ],
+    "urgency_score": [
         "Urgency": "Very High",
         "EmotionalTone": "Very High",
         "Complexity": "Very High",
         "Length": "Very High",
         "InformationDensity": "Very High"
-    }
+    ]
 }
-
 `
 
 const PANAS = 
