@@ -37,81 +37,83 @@ const internal_monologue = {
 };
 
 const summarize_chat = 
-`"Summarize the conversation history in a JSON object with this exact format:
+`Summarize the conversation history in a JSON object with this exact format:
 
 For dyadicAnalysis, it is a dyadic relational interactions summary that is a simplified format, using arrows to indicate the emotional exchange (e.g., "Anxiety ↔️ Comfort")
 
 For EARL HUMAINE, all dimensions are on a scale that is described to the side of each dimension. 
 
 {
-    topic: '1 sentence topic',
-    summary: '3 sentence summary',
-    keyTakeaways: [
-        'First takeaway',
-        'Second takeaway',
-        'Third takeaway'
+    "topic": "1 sentence topic",
+    "summary": "3 sentence summary",
+    "keyTakeaways": [
+        "First takeaway",
+        "Second takeaway",
+        "Third takeaway"
     ],
-    actionItems: [
-        'First action for assistant',
-        'Second action for assistant',
-        'Third action for assistant'
+    "actionItems": [
+        "First action for assistant",
+        "Second action for assistant",
+        "Third action for assistant"
     ],
-    quotesOfNote: [
-        'First notable quote from the user',
-        'Second notable quote from the user',
-        'Third notable quote from the user'
+    "quotesOfNote": [
+        "First notable quote from the user",
+        "Second notable quote from the user",
+        "Third notable quote from the user"
     ],
-    dyadicAnalysis: {
-        entity1_entity2: 'emotion1 ↔️ emotion2',
-        entity3_entity4: 'emotion3 ↔️ emotion4'
-    }, 
-    EARL: {
+    "dyadicAnalysis": {
+        "entity1_entity2": "emotion1 ↔️ emotion2",
+        "entity3_entity4": "emotion3 ↔️ emotion4"
+    },
+    "EARL": {
         "EmotionalState": {
-          "Valence": 0.0,  // -1.0 (negative) to +1.0 (positive), 0.0 (neutral)
-          "Arousal": 0.0,  // 0.0 (low) to 1.0 (high)
-          "Potency": 0.0   // 0.0 (low) to 1.0 (high)
+            "Valence": 0.0,
+            "Arousal": 0.0,
+            "Potency": 0.0
         },
         "PrimaryEmotions": {
-          "Happiness": 0,  // 0 (absent) to 1.0 (strong)
-          "Sadness": 0,    // 0 (absent) to 1.0 (strong)
-          "Fear": 0,       // 0 (absent) to 1.0 (strong)
-          "Disgust": 0,    // 0 (absent) to 1.0 (strong)
-          "Anger": 0,      // 0 (absent) to 1.0 (strong)
-          "Surprise": 0    // 0 (absent) to 1.0 (strong)
+            "Happiness": 0,
+            "Sadness": 0,
+            "Fear": 0,
+            "Disgust": 0,
+            "Anger": 0,
+            "Surprise": 0
         },
         "CognitiveDimensions": {
-          "Certainty": 0.0,  // 0.0 (uncertain) to 1.0 (certain)
-          "Attention": 0.0,  // 0.0 (distracted) to 1.0 (focused)
-          "Control": 0.0     // 0.0 (low) to 1.0 (high)
+            "Certainty": 0.0,
+            "Attention": 0.0,
+            "Control": 0.0
         },
         "SocialEmotions": {
-          "Embarrassment": 0, // 0 (absent) to 1.0 (strong)
-          "Guilt": 0,         // 0 (absent) to 1.0 (strong)
-          "Pride": 0,         // 0 (absent) to 1.0 (strong)
-          "Shame": 0          // 0 (absent) to 1.0 (strong)
+            "Embarrassment": 0,
+            "Guilt": 0,
+            "Pride": 0,
+            "Shame": 0
         },
         "Context": {
-          "SocialSetting": "" // examples: "home", "work", "school", "other", "church", "party", "restaurant", "bar", "other"
-          "Activity": ""      // examples: "alone", "with others", "other", "knitting", "reading", "watching TV", "playing video games", "working", "studying", "other"
-          "Object": ""        // "computer", "phone", "other", "book", "TV", "video game", "other", "food", "drink", "other"
+            "SocialSetting": "",
+            "Activity": "",
+            "Object": ""
         },
-        "Intensity": 0.0      // 0.0 (low) to 1.0 (high)
+        "Intensity": 0.0
     },
-    complexity_score: {
+    "complexity_score": {
         "Sentence Structure": "Complex",
         "Vocabulary": "Academic and specialized",
         "Conceptual Depth": "High",
         "Coherence": "Requires prior knowledge",
         "Overall Complexity Score": "High"
-    }, 
-    urgency_score: {
+    },
+    "urgency_score": {
         "Urgency": "Very High",
         "EmotionalTone": "Very High",
         "Complexity": "Very High",
         "Length": "Very High",
         "InformationDensity": "Very High"
     }
-};"`
+}
+
+`
 
 const PANAS = 
 `
