@@ -36,7 +36,16 @@ const internal_monologue = {
     }
 };
 
-const summarize_chat = `"Summarize the chat history in a JSON object with this exact format: {\"topic\": \"String with 1 sentence topic\", \"summary\": [\"Array with 3 sentence summary\"], \"keyTakeaways\": [\"Array with 3 bullet key take aways\"], \"actionItems\": [\"Array with 3 bullet action items for assistant\"], \"quotesOfNote\": [\"Array 3 bullet quotes of note only from the user\"]}"`
+const summarize_chat = `
+Summarize the chat history in a JSON string with this exact format. No other output is required. 
+
+{
+  topic: String with 1 sentence topic,
+  summary: Array with 3 sentence summary,
+  keyTakeaways: Array with 3 bullet key takeaways,
+  actionItems: Array with 3 bullet action items for assistant,
+  quotesOfNote: Array with 3 bullet quotes of note only from the user
+}`;
 
 
 const EARL = 
@@ -75,7 +84,8 @@ Summarize the conversation history in a JSON object with this exact format:
   },
   "Intensity": 0.0
 ] 
-` 
+`;
+
 const PANAS = 
 `
 Populate this template using the conversation history.
@@ -108,7 +118,7 @@ Rate each of the following emotions on a scale of 1-5, with 1 being "Very slight
         "Afraid": 0
       }
     }
-}`
+}`;
 
 const dyad_relational_summary = 
 `Populate this template using the conversation history.
@@ -137,7 +147,7 @@ const dyad_relational_summary =
       }
     }
   }
-`
+`;
 
 const emotional_flow = 
 ` Level is on a scale from -1.0 to +1.0 with 0.0 being neutral. 
@@ -181,7 +191,7 @@ Output a JSON format object with this exact structure:
         "State": "Self-conscious"
       }
     }
-}`
+}`;
 
 const earl_humaine = 
 `Summarize the conversation using EARL HUMAINE and fill in the template below.
@@ -222,7 +232,7 @@ Output a JSON format object with this exact structure:
       },
       "Intensity": 0.0      // 0.0 (low) to 1.0 (high)
     }
-  }`
+  }`;
 
 const complexity_score =  
 ` Score the user's conversation history and output a JSON format object with this exact structur using the below as an example: 
@@ -234,7 +244,7 @@ const complexity_score =
     "Coherence": "Requires prior knowledge",
     "Overall Complexity Score": "High"
 }
-`
+`;
 
 const urgency_score = 
 ` Score the user's conversation history using the following:
@@ -246,16 +256,16 @@ const urgency_score =
     "Length": "Very High",
     "InformationDensity": "Very High"
 }
-`
+`;
 
 // temporary to be replaced with website input or user chathistory input 
-const preferences = `Could you please check in with me every 15 minutes?`
+const preferences = `Could you please check in with me every 15 minutes?`;
 
-const thought_starters = `I love authors like Daniel Dennett, Ted Chiang, Vaclav Smil, Ed Yong, Brene Brown, and Robert Sapolsky amongst many others.`
+const thought_starters = `I love authors like Daniel Dennett, Ted Chiang, Vaclav Smil, Ed Yong, Brene Brown, and Robert Sapolsky amongst many others.`;
 
-const communication_style = `I don't like long messages`
+const communication_style = `I don't like long messages`;
 
-const diagnoses_and_tests = `I have been diagnosed with post partum depression`
+const diagnoses_and_tests = `I have been diagnosed with post partum depression`;
 
 // UserContext
 
