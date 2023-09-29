@@ -79,7 +79,7 @@ const sessionMiddleware = async (req, res, next) => {
 
     // Set a timeout to close the session after a period of inactivity
     sessionTimers[sessionId] = setTimeout(async () => {
-      await summarizeChat(number);
+      await summarizeChat(user, sessionId);
       await Session.findByIdAndUpdate(sessionId, { expiresAt: new Date() });
       console.log(`Session ${sessionId} closed due to inactivity.`);
     }, 300000); // 5 minutes
