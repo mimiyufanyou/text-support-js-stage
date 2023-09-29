@@ -37,20 +37,16 @@ const internal_monologue = {
 };
 
 const summarize_chat = 
-`
-"For dyadicAnalysis, it is a dyadic relational interactions summary that is a simplified format, using arrows to indicate the emotional exchange (e.g., "Anxiety ↔️ Comfort")
-Summarize the conversation history in a JSON object with this exact format:
-
+` "Summarize content in a JSON object with this exact format:
 {
-    "topic": "1 sentence topic",
-    "summary": "3 sentence summary",
-    "keyTakeaways": [
-        "First takeaway",
-        "Second takeaway",
-        "Third takeaway"
-    ],
-}"
-`
+    topic: 1 sentence topic
+    summary: 3 sentence summary
+    keyTakeaways: 3 bullet key take aways 
+    actionItems: 3 bullet action items for assistant or user 
+    quotesOfNote: 3 bullet quotes of note only from the user 
+};`
+
+
 const EARL = 
 ` For EARL HUMAINE, all dimensions are on a scale that is described to the side of each dimension.
 Summarize the conversation history in a JSON object with this exact format: 

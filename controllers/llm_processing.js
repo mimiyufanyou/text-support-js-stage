@@ -44,6 +44,8 @@ const summarizeChat = async (number) => {
       sessionId: lastMessage.sessionId
     }, 'content type');
 
+    console.log("fetchUserSessionRecords", fetchUserSessionRecords)
+    
     const openAIResponseString = await getBackEndOpenAIResponse(JSON.stringify(fetchUserSessionRecords));
     const openAIResponse = JSON.parse(openAIResponseString);
 
