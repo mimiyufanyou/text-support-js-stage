@@ -30,8 +30,6 @@ async function getBackEndOpenAIResponse(sessionMessages) {
 
   console.log("data:", data);
 
-  console.log("response:", response);
-
   try {
     const response = await axios.post(endpoint, data, { headers });
     return response.data.choices[0].message.content;
