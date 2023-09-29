@@ -13,7 +13,6 @@ Thumbs.db
 
 # Ignore test files and deprecated files 
 test.js 
-index.js
 testdb.js
 test_2.js
 
