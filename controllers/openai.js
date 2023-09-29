@@ -17,7 +17,7 @@ async function getOpenAIResponse(message, sessionMessages) {
                 { "role": "system", "content": system_prompt }, 
                 { "role": "system", "content": internal_monologue.OpeningPhase.monologue }, 
                 ... transformedSessionMessages],
-        max_tokens: 150,
+        max_tokens: 400,
         model: "gpt-3.5-turbo",
     };
 

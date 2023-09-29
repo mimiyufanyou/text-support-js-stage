@@ -39,8 +39,6 @@ const internal_monologue = {
 const summarize_chat = 
 `
 For dyadicAnalysis, it is a dyadic relational interactions summary that is a simplified format, using arrows to indicate the emotional exchange (e.g., "Anxiety ↔️ Comfort")
-For EARL HUMAINE, all dimensions are on a scale that is described to the side of each dimension. 
-
 Summarize the conversation history in a JSON object with this exact format:
 
 {
@@ -65,38 +63,6 @@ Summarize the conversation history in a JSON object with this exact format:
         "entity1_entity2": "emotion1 ↔️ emotion2",
         "entity3_entity4": "emotion3 ↔️ emotion4"
     ],
-    "EARL": [
-        "EmotionalState": {
-            "Valence": 0.0,
-            "Arousal": 0.0,
-            "Potency": 0.0
-        },
-        "PrimaryEmotions": {
-            "Happiness": 0,
-            "Sadness": 0,
-            "Fear": 0,
-            "Disgust": 0,
-            "Anger": 0,
-            "Surprise": 0
-        },
-        "CognitiveDimensions": {
-            "Certainty": 0.0,
-            "Attention": 0.0,
-            "Control": 0.0
-        },
-        "SocialEmotions": {
-            "Embarrassment": 0,
-            "Guilt": 0,
-            "Pride": 0,
-            "Shame": 0
-        },
-        "Context": {
-            "SocialSetting": "",
-            "Activity": "",
-            "Object": ""
-        },
-        "Intensity": 0.0
-      ],
     "complexity_score": [
         "Sentence Structure": "Complex",
         "Vocabulary": "Academic and specialized",
@@ -113,7 +79,43 @@ Summarize the conversation history in a JSON object with this exact format:
     ]
 }
 `
+const EARL = 
+` For EARL HUMAINE, all dimensions are on a scale that is described to the side of each dimension.
+Summarize the conversation history in a JSON object with this exact format: 
 
+"EARL": [
+  "EmotionalState": {
+      "Valence": 0.0,
+      "Arousal": 0.0,
+      "Potency": 0.0
+  },
+  "PrimaryEmotions": {
+      "Happiness": 0,
+      "Sadness": 0,
+      "Fear": 0,
+      "Disgust": 0,
+      "Anger": 0,
+      "Surprise": 0
+  },
+  "CognitiveDimensions": {
+      "Certainty": 0.0,
+      "Attention": 0.0,
+      "Control": 0.0
+  },
+  "SocialEmotions": {
+      "Embarrassment": 0,
+      "Guilt": 0,
+      "Pride": 0,
+      "Shame": 0
+  },
+  "Context": {
+      "SocialSetting": "",
+      "Activity": "",
+      "Object": ""
+  },
+  "Intensity": 0.0
+] 
+` 
 const PANAS = 
 `
 Populate this template using the conversation history.
