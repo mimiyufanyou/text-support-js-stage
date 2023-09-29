@@ -15,7 +15,7 @@ async function getOpenAIResponse(message, sessionMessages) {
     const data = {
         messages: [
                 { "role": "system", "content": system_prompt }, 
-                { "role": "system", "content": internal_monologue }, 
+                { "role": "system", "content": internal_monologue.OpeningPhase }, 
                 ... transformedSessionMessages],
         max_tokens: 150,
         model: "gpt-3.5-turbo",
