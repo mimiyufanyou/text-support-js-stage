@@ -16,7 +16,7 @@ async function getBackEndOpenAIResponse(message) {
       { "role": "user", "content": message }
     ],
     max_tokens: 4000,
-    model: "gpt-3.5-turbo",
+    model: "gpt-4",
   };
   
   const headers = {
