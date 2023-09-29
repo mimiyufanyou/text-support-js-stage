@@ -28,8 +28,8 @@ const chatHistorySchema = new mongoose.Schema({
   quotesOfNote: [], 
   dyadicAnalysis: [], 
   EARL: [], 
-  urgency: [],
-  complexity: [] 
+  urgency_score: [],
+  complexity_score: [] 
 }, { timestamps: true });
 
 // Create the model

@@ -15,7 +15,7 @@ async function getBackEndOpenAIResponse(message) {
       { "role": "system", "content": summarize_chat },
       { "role": "user", "content": message }
     ],
-    max_tokens: 500,
+    max_tokens: 4000,
     model: "gpt-3.5-turbo",
   };
   
