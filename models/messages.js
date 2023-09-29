@@ -34,6 +34,14 @@ const messageSchema = new mongoose.Schema({
     type: String,
     required: false
   },
+  vectorChecks: {
+    type: [],
+    required: false
+  }, 
+  transitionTrigger: {
+    type: String,
+    required: false
+  },
   timestamp: {
     type: Date,
     default: Date.now

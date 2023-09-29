@@ -25,10 +25,18 @@ const chatHistorySchema = new mongoose.Schema({
   },
   keyTakeaways: [],
   actionItems: [],
-  quotesOfNote: []
+  quotesOfNote: [], 
+  PANAS: [], 
+  dyad_relational_summary: [], 
+  emotional_flow: [],
+  earl_humaine: [], 
+  urgency: [],
+  complexity: [] 
 }, { timestamps: true });
 
 // Create the model
 const ChatHistory = mongoose.model('ChatHistory', chatHistorySchema);
 
 module.exports = ChatHistory;
+
+

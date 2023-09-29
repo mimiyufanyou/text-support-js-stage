@@ -17,11 +17,6 @@ const userContextSchema = new mongoose.Schema({
       default: 'Only when I initiate contact'
     }
   },
-  role: {
-    type: String,
-    default: 'assistant', 
-    enum: ['user', 'assistant', 'system']
-  },
   thought_starters: {
     type: String, 
     required: false 
@@ -30,10 +25,10 @@ const userContextSchema = new mongoose.Schema({
     type: String, 
     required: false 
   },
-  pastConversations: [{
-    conversationId: String,
-    lastMessageTime: Date
-  }],
+  pastConversations: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'ChatHistory'  
+  },
   customFields: mongoose.Schema.Types.Mixed  // for storing any additional user-specific information
 }, { timestamps: true });
 
