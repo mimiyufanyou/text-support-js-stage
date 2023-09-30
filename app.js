@@ -26,8 +26,8 @@ app.use(express.static(path.join(__dirname, 'client/build'))); // Serve static f
 
 // The "catchall" handler: for any request that doesn't
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
-  });
+     res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+});
 
 db.connect().then(() => {
 
