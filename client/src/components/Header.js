@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 const Header = ({ title }) => (
   <div className="header" 
@@ -11,9 +12,11 @@ const Header = ({ title }) => (
   }}
   >
     <h1>{title}</h1>
-    <button className="get-started-button"> 
+    <Link to="/payments"> 
+      <button className="get-started-button"> 
         Get Started
     </button> 
+    </Link>
     <p className="subtext"> No Appointments | No Scheduling | Immediate Support </p>
   </div>
 );
