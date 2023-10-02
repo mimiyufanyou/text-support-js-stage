@@ -10,9 +10,11 @@
     "mongoimport": "^1.0.6",
     "mongoose": "^7.5.2",
     "openai": "^4.7.1",
+    "stripe": "^13.8.0",
     "uuid": "^9.0.1"
-  }, 
+  },
   "scripts": {
     "start": "node app.js",
-    "heroku-postbuild": "cd client && npm install && npm run build"}
+    "heroku-postbuild": "cd client && npm install && npm run build"
+  }
 }

@@ -4,7 +4,7 @@ const router = express.Router();
 const stripe = require('stripe')(process.env.STRIPE_KEY);
 
 
-const YOUR_DOMAIN = 'https://text-support-test-4c747d031b47.herokuapp.com/';
+const YOUR_DOMAIN = 'http://localhost:3000';
 
 router.post('/create-checkout-session', async (req, res) => {
   const session = await stripe.checkout.sessions.create({
