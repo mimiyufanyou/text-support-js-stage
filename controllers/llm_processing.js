@@ -55,7 +55,7 @@ const summarizeChat = async (user, sessionId) => {
 
     const chatSummary = {
       userId: user._id,
-      sessionId: lastMessage.sessionId,
+      sessionId: sessionId,
       ...openAIResponse
     };
 
