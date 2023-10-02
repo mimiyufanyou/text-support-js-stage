@@ -1,9 +1,13 @@
-import React from 'react'
+import React from 'react'; 
+import Quiz from './Quiz';
 
 const StartQuiz = () => {
   return (
-    <div>StartQuiz</div>
-  )
+    <div className="main-content">
+      <h1> Start Quiz </h1>
+      <Quiz />
+    </div>
+  );
 }
 
 export default StartQuiz

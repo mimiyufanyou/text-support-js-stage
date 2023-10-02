@@ -8,6 +8,7 @@ import Research from './components/Research';
 import FAQ from './components/FAQ';
 import Login from './components/Login';
 import StartQuiz from './components/StartQuiz';
+import Payment from './components/Payment';
 
 import './App.css';
 
@@ -24,6 +25,7 @@ function App() {
         <Route path="/faq" element={<FAQ />} />
         <Route path="/login" element={<Login />} />
         <Route path="/start-quiz" element={<StartQuiz />} />
+        <Route path="/payments" element={<Payment />} />  
       </Routes>
         <Footer contactEmail="info@myawesomeproduct.com" />
     </div>

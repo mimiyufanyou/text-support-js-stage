@@ -12,6 +12,7 @@ console.log(db);
 const userRoutes = require('./routes/user')
 const messageRoutes = require('./routes/message');
 const callbackRoutes = require('./routes/callback');
+const stripeRoutes = require('./routes/stripe');
 
 // Use middleware and other configurations
 app.use(bodyParser.json()); // JSON parsing middleware
@@ -20,6 +21,7 @@ app.use(bodyParser.json()); // JSON parsing middleware
 app.use('/api/message', messageRoutes);
 app.use('/api/callback', callbackRoutes);
 app.use('/api/user', userRoutes);
+app.use('/api/stripe', stripeRoutes);
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'client/build'))); // Serve static files from the React app
