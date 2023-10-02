@@ -14,11 +14,6 @@ const userSchema = new mongoose.Schema({
         unique: true 
     },
     confirmed: Boolean, 
-    email: {
-      type: String,
-      required: false,
-      unique: true
-    },
     programs: [{
       programId: String,
     }],
