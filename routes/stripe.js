@@ -1,7 +1,8 @@
 // stripeRoutes.js
+const express = require('express');
 const router = express.Router();
 const stripe = require('stripe')(process.env.STRIPE_KEY);
-const express = require('express');
+
 
 const YOUR_DOMAIN = 'https://text-support-test-4c747d031b47.herokuapp.com/';
 
