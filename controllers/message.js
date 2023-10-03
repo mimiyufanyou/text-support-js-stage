@@ -18,7 +18,7 @@ const sendSmsMessage = async (req, res) => {
   };
 
   try {
-    response = await axios.post(SEND_MSG_URL, requestData, { headers })
+    const response = await axios.post(SEND_MSG_URL, requestData, { headers })
     console.log('SMS sent successfully:', response);
     res.status(200).json({ 
       status: 'success', 
@@ -36,55 +36,57 @@ const sendSmsMessage = async (req, res) => {
     res.status(500).json({
       status: 'failure', 
       message: 'Failed to send SMS', 
-      error: error.message, 
-      response: response 
+      error: error.message
     });
     return {
       status: error.response ? error.response.status : 500,
       success: false,
-      error: error.message, 
-      response: response 
+      error: error.message
     };
   }
 };
 
 // Function to handle incoming SMS messages
 const receiveSmsMessage = async (req, res, type) => {
-  let status = 'DELIVERED';
+  const { recipient, text } = req.body;
 
   try {
-    const { number, content, was_downgraded } = req.body;
-    let user = await User.findOne({ phoneNumber: number });
+    let user = await User.findOne({ phoneNumber: recipient });
 
     if (!user) {
-      user = new User({ phoneNumber: number, confirmed: true });
-      await user.save();
+      user = await User.create({ phoneNumber: recipient, confirmed: true });
     } else if (!user.confirmed) {
       user.confirmed = true;
       await user.save();
     }
 
-    await processAndStoreMessage(user, number, content, type, was_downgraded, status);
-    status = 'READ';
+    await processAndStoreMessage(user, recipient, text, type);
 
-    return { status, success: true };
-
-    res.status(200).json({
-      status,
+    const responsePayload = {
+      status: 'success',
       success: true,
       type,
-      content
-    });
+      content: text
+    };
+
+    res.status(200).json(responsePayload);
+    return responsePayload;
 
   } catch (error) {
     console.error('Error receiving SMS:', error);
-    return { status, success: false };
-    res.status(500).send('Failed to process the message');
+
+    const errorResponse = {
+      status: 'failure',
+      success: false
+    };
+
+    res.status(500).json(errorResponse);
+    return errorResponse;
   }
 };
 
 // Function to process and store incoming messages
-const processAndStoreMessage = async (user, phoneNumber, message, type, was_downgraded, status) => {
+const processAndStoreMessage = async (user, phoneNumber, message, type, was_downgraded) => {
   const session = await Session.findOne({ phoneNumber }).sort({ createdAt: -1 });
 
   if (session && new Date(session.expiresAt) >= new Date()) {
@@ -95,7 +97,6 @@ const processAndStoreMessage = async (user, phoneNumber, message, type, was_down
       content: message,
       type,
       was_downgraded,
-      status,
       timestamp: new Date(),
     };
 
