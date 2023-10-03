@@ -57,7 +57,7 @@ const receiveSmsMessage = async (req, res, type) => {
       await user.save();
     }
 
-    await processAndStoreMessage(user, recipient, text, type);
+    // await processAndStoreMessage(user, recipient, text, type);
 
     res.status(200).json({
       status: 'success',
@@ -96,7 +96,7 @@ const processAndStoreMessage = async (user, phoneNumber, message, type) => {
 
   if (session && new Date(session.expiresAt) >= new Date()) {
     const newMessage = {
-      phoneNumber,
+      phoneNumber: phoneNumber,
       userId: user._id,
       sessionId: session._id,
       content: message,
