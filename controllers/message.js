@@ -64,8 +64,11 @@ const receiveSmsMessage = async (req, res, type) => {
     res.status(200).json({
       status: 'success',
       success: true,
+      alert_type: message_inbound, 
+      typing: 10, 
       message: 'SMS received successfully and stored', 
       type,
+      read: true, 
       content: text, 
       number: recipient,
     });
