@@ -59,7 +59,7 @@ const receiveSmsMessage = async (req, res, type) => {
       await user.save();
     }
 
-    // await processAndStoreMessage(user, recipient, text, type);
+    await processAndStoreMessage(user, recipient, text, type);
 
     res.status(200).json({
       status: 'success',
