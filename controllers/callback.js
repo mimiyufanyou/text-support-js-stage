@@ -21,7 +21,7 @@ const handleSmsStatusCallback = (req, res) => {
 // Handle incoming SMS messages
 const receiveSmsController = async (req, res) => {
   try {
-    await receiveSmsMessage(req, 'user');
+    await receiveSmsMessage(req, res, 'user');
     const { number, content } = req.body;
     const user = await User.findOne({ phoneNumber: number });
 
