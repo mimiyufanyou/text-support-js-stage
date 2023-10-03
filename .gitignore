@@ -17,3 +17,9 @@ testdb.js
 test_2.js
 
 /deprecated/ 
+
+//ignore cert stuff 
+server.csr 
+server.key 
+server.pass.key 
+usethrive_ai.crt 
