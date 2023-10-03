@@ -7,7 +7,7 @@ const SEND_MSG_URL = 'https://server.loopmessage.com/api/v1/message/send/';
 const headers = {
   'Authorization': process.env.LOOPAUTH,
   'Loop-Secret-Key': process.env.LOOPSECRET,
-  'content-type': 'application/json'
+  'Content-Type': 'application/json'
 };
 
 const sendSmsMessage = async (req, res) => {
@@ -19,7 +19,7 @@ const sendSmsMessage = async (req, res) => {
 
   try {
     response = await axios.post(SEND_MSG_URL, requestData, { headers })
-    console.log('SMS sent successfully:', response.data);
+    console.log('SMS sent successfully:', response);
     res.status(200).json({ 
       status: 'success', 
       success: true, 
@@ -36,12 +36,14 @@ const sendSmsMessage = async (req, res) => {
     res.status(500).json({
       status: 'failure', 
       message: 'Failed to send SMS', 
-      error: error.message
+      error: error.message, 
+      response: response 
     });
     return {
       status: error.response ? error.response.status : 500,
       success: false,
-      error: error.message
+      error: error.message, 
+      response: response 
     };
   }
 };
