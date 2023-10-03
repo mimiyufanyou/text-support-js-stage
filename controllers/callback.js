@@ -25,6 +25,10 @@ const receiveSmsController = async (req, res) => {
     const user = await User.findOne({ phoneNumber: number });
     const sessionId = req.sessionId;  // Access sessionId from req object attached from sessionMiddleware
 
+    console.log('Session ID:', sessionId)
+    console.log('User:', user)
+    console.log('Number:', number, 'Content:', content)
+
     // Fetch all messages in the current session.
     const sessionMessages = await Message.find({ sessionId }).sort({ timestamp: 1 });
 
@@ -49,8 +53,13 @@ const receiveSmsController = async (req, res) => {
 // Middleware to manage chat session timeouts
 let sessionTimers = {};
 const sessionMiddleware = async (req, res, next) => {
+
+  console.log('Session middleware called', req.body)
+  
   try {
     let { number } = req.body;
+    console.log('Session middleware called with number:', number)
+
     let user = await User.findOne({ phoneNumber: number });  // <-- Add this line
 
     if (!user) {
