@@ -55,22 +55,19 @@ let sessionTimers = {};
 const sessionMiddleware = async (req, res, next) => {
 
   console.log('Session middleware called', req.body)
-  
-  try {
-    let { number } = req.body;
-    console.log('Session middleware called with number:', number)
 
-    let user = await User.findOne({ phoneNumber: number });  // <-- Add this line
+  try {
+    let user = await User.findOne({ phoneNumber: req.body.recipient });  // <-- Add this line
 
     if (!user) {
-      user = new User({ phoneNumber: number, confirmed: true });
+      user = new User({ phoneNumber: req.body.recipient, confirmed: true });
       await user.save();
     } else if (!user.confirmed) {
       user.confirmed = true;
       await user.save();
     }
 
-    let sessionRecord = await Session.findOne({ phoneNumber: number }).sort({ createdAt: -1 });
+    let sessionRecord = await Session.findOne({ phoneNumber: req.body.recipient }).sort({ createdAt: -1 });
     let sessionId = sessionRecord ? sessionRecord._id : null;
 
     // Clear any existing timeout for the session
@@ -80,7 +77,7 @@ const sessionMiddleware = async (req, res, next) => {
 
     // Create a new session if needed
     if (!sessionRecord || new Date(sessionRecord.expiresAt) < new Date()) {
-      sessionRecord = new Session({ phoneNumber: number, userId: user._id});
+      sessionRecord = new Session({ phoneNumber: req.body.recipient, userId: user._id});
       await sessionRecord.save();
       sessionId = sessionRecord._id;
     }
