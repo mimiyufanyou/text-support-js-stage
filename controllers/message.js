@@ -37,6 +37,8 @@ const sendSms = async (phoneNumber, content) => {
 
 // Express route for sending an SMS
 const sendSmsMessage = async (req, res) => {
+  console.log('Send SMS message called', req.body)
+
   const { phoneNumber, content } = req.body;
   const result = await sendSms(phoneNumber, content);
 
@@ -65,15 +67,14 @@ const receiveSmsMessage = async (req, res, type) => {
       message: 'SMS received successfully and stored', 
       type,
       content: text, 
-      req: req 
+      number: recipient,
     });
     return {
       status: 'success',
       success: true,
       type,
       content: text, 
-      number: recipient, 
-      req: req 
+      number: recipient
     };
   } catch (error) {
     console.error('Error receiving SMS:', error);

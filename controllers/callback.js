@@ -1,5 +1,5 @@
 // Imports
-const { sendSmsMessage, receiveSmsMessage, processAndStoreMessage } = require('./message');
+const { sendSmsMessage, sendSms, receiveSmsMessage, processAndStoreMessage } = require('./message');
 const { getOpenAIResponse } = require('./openai');
 const { summarizeChat } = require('./llm_processing');
 
