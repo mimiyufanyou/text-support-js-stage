@@ -21,20 +21,19 @@ const handleSmsStatusCallback = (req, res) => {
 // Handle incoming SMS messages
 const receiveSmsController = async (req, res) => {
   try {
-    await receiveSmsMessage(req, res, 'user');
-    const { number, content } = req.body;
+    const { number, content } = await receiveSmsMessage(req, res, 'user');
     const user = await User.findOne({ phoneNumber: number });
-
-    const sessionId = req.sessionId;  // Access sessionId from req object
+    const sessionId = req.sessionId;  // Access sessionId from req object attached from sessionMiddleware
 
     // Fetch all messages in the current session.
     const sessionMessages = await Message.find({ sessionId }).sort({ timestamp: 1 });
 
+    // Get OpenAI Response and send it back to the user
     const type = 'assistant';
     const aiResponse = await getOpenAIResponse(content, sessionMessages);
 
     await processAndStoreMessage(user, number, aiResponse, type);
-    await sendSmsMessage(number, aiResponse);
+    await sendSms(number, aiResponse);
 
     res.status(200).json({
       status: 'READ',
