@@ -9,7 +9,10 @@ async function connect() {
   try {
     await mongoose.connect(MONGODB_URI, {
       useNewUrlParser: true,
-      useUnifiedTopology: true
+      useUnifiedTopology: true, 
+      // ssl: true, 
+      // sslValidate: true, 
+      // sslCA: require('fs').readFileSync('./usethrive_ai.crt')
     });
     console.log("Connected to MongoDB");
   } catch (error) {
