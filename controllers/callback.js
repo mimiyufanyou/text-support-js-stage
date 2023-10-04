@@ -37,8 +37,8 @@ const receiveSmsController = async (req, res) => {
     const type = 'assistant';
     const aiResponse = await getOpenAIResponse(content, sessionMessages);
     await sendSms(number, aiResponse);
-    const PANAS = await getPANASResponse(sessionMessages)
-    await processAndStoreMessage(user, number, aiResponse, type, PANAS);
+    const PANASAiResponse = await getPANASResponse(sessionMessages)
+    await processAndStoreMessage(user, number, aiResponse, type, PANASAiResponse);
 
   } catch (error) {
     console.error('Error:', error);
