@@ -13,8 +13,9 @@ async function getPANASResponse(sessionMessages) {
 
     const data = {
         messages: [
+                ... transformedSessionMessages, 
                 { "role": "system", "content": PANAS }, 
-                ... transformedSessionMessages],
+            ],
         max_tokens: 2000,
         model: "gpt-3.5-turbo",
     };
