@@ -1,6 +1,7 @@
 // Imports
 const { sendSmsMessage, sendSms, receiveSmsMessage, processAndStoreMessage } = require('./message');
 const { getOpenAIResponse } = require('./openai');
+const { getPANASResponse } = require('./emotion');
 const { summarizeChat } = require('./llm_processing');
 
 const User = require('../models/user');
@@ -38,6 +39,7 @@ const receiveSmsController = async (req, res) => {
 
     await processAndStoreMessage(user, number, aiResponse, type);
     await sendSms(number, aiResponse);
+    await getPANASResponse(sessionMessages)
 
   } catch (error) {
     console.error('Error:', error);
