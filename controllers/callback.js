@@ -21,15 +21,15 @@ const handleSmsStatusCallback = (req, res) => {
 
 // Handle incoming SMS messages
 const receiveSmsController = async (req, res) => {
+  const { number, content } = await receiveSmsMessage(req, res, 'user');
+  const user = await User.findOne({ phoneNumber: number });
+  const sessionId = req.sessionId;  // Access sessionId from req object attached from sessionMiddleware
+
+  console.log('Session ID:', sessionId)
+  console.log('User:', user)
+  console.log('Number:', number, 'Content:', content)
+
   try {
-    const { number, content } = await receiveSmsMessage(req, res, 'user');
-    const user = await User.findOne({ phoneNumber: number });
-    const sessionId = req.sessionId;  // Access sessionId from req object attached from sessionMiddleware
-
-    console.log('Session ID:', sessionId)
-    console.log('User:', user)
-    console.log('Number:', number, 'Content:', content)
-
     // Fetch all messages in the current session.
     const sessionMessages = await Message.find({ sessionId }).sort({ timestamp: 1 });
 
@@ -38,7 +38,7 @@ const receiveSmsController = async (req, res) => {
     const aiResponse = await getOpenAIResponse(content, sessionMessages);
     await sendSms(number, aiResponse);
     const PANAS = await getPANASResponse(sessionMessages)
-    await processAndStoreMessage(user, number, aiResponse, type);
+    await processAndStoreMessage(user, number, aiResponse, type, PANAS);
 
   } catch (error) {
     console.error('Error:', error);
