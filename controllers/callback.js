@@ -36,11 +36,10 @@ const receiveSmsController = async (req, res) => {
     // Get OpenAI Response and send it back to the user
     const type = 'assistant';
     const aiResponse = await getOpenAIResponse(content, sessionMessages);
-
-    await processAndStoreMessage(user, number, aiResponse, type);
     await sendSms(number, aiResponse);
-    await getPANASResponse(sessionMessages)
-    
+    const PANAS = await getPANASResponse(sessionMessages)
+    await processAndStoreMessage(user, number, aiResponse, type);
+
   } catch (error) {
     console.error('Error:', error);
     res.status(500).send('Failed to process the message');

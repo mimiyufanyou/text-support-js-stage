@@ -34,6 +34,10 @@ const messageSchema = new mongoose.Schema({
     type: String,
     required: false
   },
+  PANAS: {
+    type: [],
+    required: false
+  },
   vectorChecks: {
     type: [],
     required: false
