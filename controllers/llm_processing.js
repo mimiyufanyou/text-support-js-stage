@@ -62,6 +62,19 @@ const summarizeChat = async (user, sessionId) => {
     const chatHistory = new ChatHistory(chatSummary);
     await chatHistory.save();
 
+    // Update the User document
+    User.findByIdAndUpdate(
+      user._id,  // replace with the actual user's ObjectId
+      { $push: { chatHistory: savedChat._id } },
+      { new: true, useFindAndModify: false },
+      (err, updatedUser) => {
+        if (err) {
+          // handle error
+          return;
+        }
+      }
+    );
+
   } catch (error) {
     console.error("An error occurred:", error);
   } finally {
