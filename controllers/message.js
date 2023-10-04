@@ -99,22 +99,33 @@ const processAndStoreMessage = async (user, phoneNumber, message, type) => {
   const session = await Session.findOne({ phoneNumber }).sort({ createdAt: -1 });
 
   if (session && new Date(session.expiresAt) >= new Date()) {
-    const newMessage = {
-      phoneNumber: phoneNumber,
-      userId: user._id,
-      sessionId: session._id,
+
+    // Check if a message with the same content and timestamp already exists
+    const existingMessage = await Message.findOne({
+      phoneNumber,
       content: message,
-      type,
       timestamp: new Date(),
-    };
+    });
+
+    if (!existingMessage) { 
+      const newMessage = {
+        phoneNumber: phoneNumber,
+        userId: user._id,
+        sessionId: session._id,
+        content: message,
+        type,
+        timestamp: new Date(),
+      };
 
     const newMessageDoc = new Message(newMessage);
     await newMessageDoc.save();
   } else {
-    console.warn(`No active session found for phone number ${phoneNumber}`);
+    console.warn(`Duplicate message detected. Skipping storage.`);
   }
+} else {
+  console.warn(`No active session found for phone number ${phoneNumber}`);
+}
 };
-
 module.exports = {
   sendSms,
   sendSmsMessage,

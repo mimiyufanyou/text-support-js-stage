@@ -40,7 +40,7 @@ const receiveSmsController = async (req, res) => {
     await processAndStoreMessage(user, number, aiResponse, type);
     await sendSms(number, aiResponse);
     await getPANASResponse(sessionMessages)
-
+    
   } catch (error) {
     console.error('Error:', error);
     res.status(500).send('Failed to process the message');
