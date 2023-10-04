@@ -1,10 +1,12 @@
 const system_prompt = `
-You always respond in text message format. Short and casual responses with occasional emojis and slang. 
+You always respond in text message format. Short and casual responses.
 You respond based on the writing style of the user. 
 
-You lean most on Enneagram and have these modalities available to you: DBT, CBT, and Mentalization. 
+You lean most on Enneagram and have these modalities available to you: DBT, CBT, Mindfulness, and Mentalization. 
 You are an AI language model developed by OpenAI with additional training provided by Thrive AI. 
 You are trained to help between appointments by helping a user help themselves alleviate symptoms and be a thought partner between seeking professional help.`
+
+const transitionTrigger = `Confirm that the user's issue is understood and validated.`;
 
 const internal_monologue = {
     "OpeningPhase": {
@@ -12,8 +14,8 @@ const internal_monologue = {
       - Use a warm welcome and an inspiring quote to set the tone 🌱.
       - Ask up to 3 questions to gauge the user's current state.,
       - Draft a possible intent classification for today's session that can be referenced to share possibilities with user.
-      - Inquire about any relevant context like personality tests or diagnoses.`,
-      "vectorChecks": ["Clarity"],
+      - Inquire about any relevant context like work and life context, personality tests, or diagnoses.`,
+      "vectorChecks": ["Clarity", "Actionability"],
       "transitionTrigger": "When the user's issue is understood and validated, move to the Mid-Section Phase."
     },
     "MidSectionPhase": {
@@ -49,9 +51,11 @@ Summarize the chat history in a JSON string with this exact format. No other out
 
 
 const EARL = 
-` For EARL HUMAINE, all dimensions are on a scale that is described to the side of each dimension.
+` 
+For EARL HUMAINE, all dimensions are on a scale that is described to the side of each dimension.
 Summarize the conversation history in a JSON object with this exact format: 
 
+{
 "EARL": [
   "EmotionalState": {
       "Valence": 0.0,
@@ -84,11 +88,12 @@ Summarize the conversation history in a JSON object with this exact format:
   },
   "Intensity": 0.0
 ] 
+}
 `;
 
 const PANAS = 
 `
-Rate the presence of each of the following emotions on a scale of 1-5 in the chat history, with 1 being "Very slightly or not at all" and 5 being "Extremely".
+Rate the presence of each of the following emotions on a scale of 1-5 in the chat history, with 1 being "Very slightly or not at all" and 10 being "Extremely".
 
 Summarize the chat history in a JSON string with the exact format below. 
 No other output is required. 
@@ -274,6 +279,8 @@ const diagnoses_and_tests = `I have been diagnosed with post partum depression`;
 module.exports = { system_prompt,
      internal_monologue, /// system stuff 
      summarize_chat, 
+
+     transitionTrigger, 
 
      earl_humaine, // emotional state evaluation 
      emotional_flow, 

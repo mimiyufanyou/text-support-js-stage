@@ -3,6 +3,9 @@ const { sendSmsMessage, sendSms, receiveSmsMessage, processAndStoreMessage } = r
 const { getOpenAIResponse } = require('./openai');
 const { getPANASResponse } = require('./emotion');
 const { summarizeChat } = require('./llm_processing');
+const { getdynamicPromptResponse } = require('./dynamic_prompt');
+const { transitionTrigger, urgency_score } = require('../config/system_prompts');
+
 
 const User = require('../models/user');
 const Session = require('../models/session');
@@ -38,6 +41,8 @@ const receiveSmsController = async (req, res) => {
     const aiResponse = await getOpenAIResponse(content, sessionMessages);
     await sendSms(number, aiResponse);
     const PANASAiResponse = await getPANASResponse(sessionMessages)
+    const getdynamicPromptResponse = await getdynamicPromptResponse(sessionMessages, transitionTrigger)
+    
     await processAndStoreMessage(user, number, aiResponse, type, PANASAiResponse);
 
   } catch (error) {

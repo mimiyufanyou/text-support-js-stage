@@ -95,7 +95,7 @@ const receiveSmsMessage = async (req, res, type) => {
 };
 
 // Function to process and store incoming messages
-const processAndStoreMessage = async (user, phoneNumber, message, type, PANAS) => {
+const processAndStoreMessage = async (user, phoneNumber, message, type, PANAS, dynamic) => {
   const session = await Session.findOne({ phoneNumber }).sort({ createdAt: -1 });
 
   if (session && new Date(session.expiresAt) >= new Date()) {
@@ -115,6 +115,7 @@ const processAndStoreMessage = async (user, phoneNumber, message, type, PANAS) =
         content: message,
         type,
         PANAS: PANAS, 
+        dynamic: dynamic, 
         timestamp: new Date(),
       };
 

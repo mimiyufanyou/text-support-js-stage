@@ -64,6 +64,10 @@ const chatHistorySchema = new mongoose.Schema({
     type: Object,
     required: false
   }, 
+  dynamic: {
+    type: mongoose.Schema.Types.Mixed,
+    required: false
+  }, 
   dyadicAnalysis: [], 
   EARL: [earlSchema], 
   urgency_score: [],
