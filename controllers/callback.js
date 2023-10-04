@@ -41,9 +41,9 @@ const receiveSmsController = async (req, res) => {
     const aiResponse = await getOpenAIResponse(content, sessionMessages);
     await sendSms(number, aiResponse);
     const PANASAiResponse = await getPANASResponse(sessionMessages)
-    const getdynamicPromptResponse = await getdynamicPromptResponse(sessionMessages, transitionTrigger)
+    const dynamicPromptResponse = await getdynamicPromptResponse(sessionMessages, transitionTrigger)
     
-    await processAndStoreMessage(user, number, aiResponse, type, PANASAiResponse, getdynamicPromptResponse);
+    await processAndStoreMessage(user, number, aiResponse, type, PANASAiResponse, dynamicPromptResponse);
 
   } catch (error) {
     console.error('Error:', error);
