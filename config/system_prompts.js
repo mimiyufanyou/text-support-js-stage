@@ -88,9 +88,11 @@ Summarize the conversation history in a JSON object with this exact format:
 
 const PANAS = 
 `
-Populate this template using the conversation history.
+Rate the presence of each of the following emotions on a scale of 1-5 in the chat history, with 1 being "Very slightly or not at all" and 5 being "Extremely".
 
-Rate each of the following emotions on a scale of 1-5, with 1 being "Very slightly or not at all" and 5 being "Extremely".
+Summarize the chat history in a JSON string with the exact format below. 
+No other output is required. 
+
 {
     "PANAS": {
       "PositiveAffect": {
