@@ -30,6 +30,10 @@ const messageSchema = new mongoose.Schema({
     type: String,
     required: false
   },
+  PostSessionObject: { 
+    type: Object,
+    required: false
+  },
   was_downgraded: {  // Was the message downgraded to SMS?
     type: Boolean,
     required: false
@@ -42,10 +46,6 @@ const messageSchema = new mongoose.Schema({
     type: Object,
     required: false
   },
-  vectorChecks: {
-    type: [],
-    required: false
-  }, 
   transitionTrigger: {
     type: String,
     required: false
