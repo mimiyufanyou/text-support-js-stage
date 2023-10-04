@@ -4,8 +4,7 @@ const { getOpenAIResponse } = require('./openai');
 const { getPANASResponse } = require('./emotion');
 const { summarizeChat } = require('./llm_processing');
 const { getdynamicPromptResponse } = require('./dynamic_prompt');
-const { transitionTrigger, urgency_score } = require('../config/system_prompts');
-
+const { transitionTrigger1, transitionTrigger2, transitionTrigger3} = require('../config/system_prompts');
 
 const User = require('../models/user');
 const Session = require('../models/session');
@@ -38,10 +37,11 @@ const receiveSmsController = async (req, res) => {
 
     // Get OpenAI Response and send it back to the user
     const type = 'assistant';
-    const aiResponse = await getOpenAIResponse(content, sessionMessages);
+    const monoPhase = 'MidSectionPhase'
+    const aiResponse = await getOpenAIResponse(content, sessionMessages, monoPhase);
     await sendSms(number, aiResponse);
     const PANASAiResponse = await getPANASResponse(sessionMessages)
-    const dynamicPromptResponse = await getdynamicPromptResponse(sessionMessages, transitionTrigger)
+    const dynamicPromptResponse = await getdynamicPromptResponse(sessionMessages, transitionTrigger1)
     
     await processAndStoreMessage(user, number, aiResponse, type, PANASAiResponse, dynamicPromptResponse);
 
