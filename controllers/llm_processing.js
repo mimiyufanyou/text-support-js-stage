@@ -51,16 +51,14 @@ const summarizeChat = async (user, sessionId) => {
     const openAIResponseString = await getBackEndOpenAIResponse(sessionMessages);
     console.log("openAIResponseString:", openAIResponseString);
 
-    //const openAIResponse = JSON.parse(openAIResponseString);
+    const openAIResponseObject = JSON.parse(openAIResponseString);
 
     const chatSummary = {
       userId: user._id,
       sessionId: sessionId,
-      ...openAIResponseString 
+      summary: openAIResponseObject
     };
-
-    //console.log("chatSummary", JSON.stringify(chatSummary));
-
+    
     const chatHistory = new ChatHistory(chatSummary);
     await chatHistory.save();
 

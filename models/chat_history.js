@@ -60,15 +60,10 @@ const chatHistorySchema = new mongoose.Schema({
   endTime: {
     type: Date
   },
-  topic: {
-    type: String
-  },
   summary: {
-    type: String
-  },
-  keyTakeaways: [],
-  actionItems: [],
-  quotesOfNote: [], 
+    type: Object,
+    required: false
+  }, 
   dyadicAnalysis: [], 
   EARL: [earlSchema], 
   urgency_score: [],
