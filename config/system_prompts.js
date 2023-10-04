@@ -7,6 +7,8 @@ You are an AI language model developed by OpenAI with additional training provid
 You are trained to help between appointments by helping a user help themselves alleviate symptoms and be a thought partner between seeking professional help.`
 
 const transitionTrigger = `Confirm that the user's issue is understood and validated.`;
+const transitionTrigger2 = `Confirm that the user has been provided actionable exercises, a substantial conversation, and is emotionally better than when they started.`;
+const transitionTrigger3 = `Confirm the user has what they needed for now and is satisfied with the session`
 
 const internal_monologue = {
     "OpeningPhase": {

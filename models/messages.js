@@ -22,6 +22,10 @@ const messageSchema = new mongoose.Schema({
     type: String,
     required: false
   },
+  dynamic: {
+    type: mongoose.Schema.Types.Mixed,
+    required: false
+  }, 
   type: {
     type: String,
     required: false
