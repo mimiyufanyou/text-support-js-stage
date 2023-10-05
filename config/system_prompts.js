@@ -10,13 +10,13 @@ const transitionTriggers = {
     "instructions": `
     Analyze the chat history. 
 
-    Default monoNext: "OpeningPhase" 
-    Return transitionTrigger: True and monoNext: "MidSectionPhase" if the user's issue has been understood and validated by assistant.
-    Return transitionTrigger: True and monoNext: "ClosingPhase" if the user does not have an immediate issue they would like help with. 
+    Return transitionTrigger: "transitionTrigger2" and monoNext: "MidSectionPhase" if the user's issue has been understood and validated by assistant.
+    Return transitionTrigger: "transitionTrigger3" and monoNext: "ClosingPhase" if the user does not have an immediate issue they would like help with. 
+    Else return default transitionTrigger: "transitionTrigger1", monoNext: "OpeningPhase"
     Return JSON string with this exact format. No other output is required. 
     
     {
-      transitionTrigger: True 
+      transitionTrigger: transitionTrigger2
       monoNext: "MidSectionPhase"
     }`
   }, 
@@ -25,11 +25,12 @@ const transitionTriggers = {
     Analyze the chat history. 
 
     Default monoNext: "MidSectionPhase" 
-    Return transitionTrigger: True and monoNext: "ClosingPhase" if user has been provided actionable exercises, a substantial conversation, and is emotionally better than when they started.
+    Return transitionTrigger: transitionTrigger3 and monoNext: "ClosingPhase" if user has been provided actionable exercises, a substantial conversation, and is emotionally better than when they started.
+    Else return default transitionTrigger: "transitionTrigger2", monoNext: "MidSectionPhase"
     Return JSON string with this exact format. No other output is required. 
     
     {
-      transitionTrigger: True 
+      transitionTrigger: transitionTrigger3 
       monoNext: "ClosingPhase" 
     }`
   }, 
@@ -37,7 +38,7 @@ const transitionTriggers = {
     "instructions": `
     Analyze the chat history. 
 
-    Default monoNext: "ClosingPhase" 
+    Default monoNext: "ClosingPhase". Default transitionTrigger: "transitionTrigger3"
     Return transitionTrigger: True and monoNext: "PostSessionPhase" if the user confirms they got what they needed.
     Return JSON string with this exact format. No other output is required. 
     

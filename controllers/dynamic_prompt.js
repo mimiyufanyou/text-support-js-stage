@@ -1,6 +1,17 @@
 const axios = require('axios');
 
 async function getdynamicPromptResponse(sessionMessages, dynamicPrompt) {
+
+    const getFirstPropertyValue = (obj) => {
+        const firstItem = Object.values(obj)[0] || obj;
+        const firstPropertyName = Object.keys(firstItem)[0] || Object.keys(obj)[0];
+        return firstItem[firstPropertyName] || obj;
+      };
+      
+    const firstPropertyValue = getFirstPropertyValue(dynamicPrompt);
+
+    console.log("First Property Value", firstPropertyValue)
+
     const endpoint = "https://api.openai.com/v1/chat/completions";
 
     console.log("sessionMessages:", sessionMessages);
@@ -8,7 +19,7 @@ async function getdynamicPromptResponse(sessionMessages, dynamicPrompt) {
     // Transform sessionMessages into the format you want.
     const transformedSessionMessages = sessionMessages.map(msg => ({ role: msg.type, content: msg.content }));
 
-    console.log("transformedSessionMessages:", transformedSessionMessages);
+    console.log("transformedSessionMessages:", firstPropertyValue);
 
     const data = {
         messages: [
