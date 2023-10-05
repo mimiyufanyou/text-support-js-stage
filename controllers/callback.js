@@ -46,8 +46,9 @@ const receiveSmsController = async (req, res) => {
     }
 
     // Use dynamic values or defaults
-    const defaultPhase = internal_monologue.OpeningPhase.monologue;
-    const defaultTrig = transitionTriggers.transitionTrigger1.instructions;
+    const defaultPhase =  "OpeningPhase";
+    const defaultTrig = "transitionTrigger1"; 
+
     const monoPhase = monoNextValue || defaultPhase;
     const transitionTrig = transitionTrigValue || defaultTrig;
 
