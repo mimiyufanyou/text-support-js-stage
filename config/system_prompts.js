@@ -9,6 +9,8 @@ const transitionTriggers = {
   "transitionTrigger1": { 
     "instructions": `
     Analyze the chat history. 
+
+    Default monoNext: "OpeningPhase" 
     Return transitionTrigger: True and monoNext: "MidSectionPhase" if the user's issue has been understood and validated by assistant.
     Return transitionTrigger: True and monoNext: "ClosingPhase" if the user does not have an immediate issue they would like help with. 
     Return JSON string with this exact format. No other output is required. 
@@ -21,6 +23,8 @@ const transitionTriggers = {
   "transitionTrigger2": {
     "instructions": `
     Analyze the chat history. 
+
+    Default monoNext: "MidSectionPhase" 
     Return transitionTrigger: True and monoNext: "ClosingPhase" if user has been provided actionable exercises, a substantial conversation, and is emotionally better than when they started.
     Return JSON string with this exact format. No other output is required. 
     
@@ -32,6 +36,8 @@ const transitionTriggers = {
   "transitionTrigger3": {
     "instructions": `
     Analyze the chat history. 
+
+    Default monoNext: "ClosingPhase" 
     Return transitionTrigger: True and monoNext: "PostSessionPhase" if the user confirms they got what they needed.
     Return JSON string with this exact format. No other output is required. 
     

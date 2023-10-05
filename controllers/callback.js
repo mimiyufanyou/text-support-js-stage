@@ -4,7 +4,7 @@ const { getOpenAIResponse } = require('./openai');
 const { getPANASResponse } = require('./emotion');
 const { summarizeChat } = require('./llm_processing');
 const { getdynamicPromptResponse } = require('./dynamic_prompt');
-const { transitionTriggers } = require('../config/system_prompts');
+const { transitionTriggers, internal_monologue } = require('../config/system_prompts');
 
 const User = require('../models/user');
 const Session = require('../models/session');
@@ -38,13 +38,32 @@ const receiveSmsController = async (req, res) => {
     // Get OpenAI Response and send it back to the user
     const type = 'assistant';
 
-    const monoPhase = 'MidSectionPhase'
-    const transitionTrig = 'transitionTrigger1'
+    const defaultPhase = internal_monologue.OpeningPhase.monologue
+    const defaultTrig = transitionTriggers.transitionTrigger1.instructions 
+
+    const [lastMessage] = await Message.find({ sessionId })
+      .sort({ timestamp: -1 })
+      .select('dynamic')
+      .limit(1);
+
+    let monoNextValue = null;
+
+    if (lastMessage && lastMessage.dynamic) {
+    const dynamicObject = JSON.parse(lastMessage.dynamic);
+    monoNextValue = dynamicObject.monoNext;
+    transitionTrigValue = dynamicObject.transitionTrigger; 
+    }
+
+    const monoPhase = monoNextValue || defaultPhase; 
+    const transitionTrig = transitionTrigValue || defaultTrig; 
 
     const aiResponse = await getOpenAIResponse(content, sessionMessages, monoPhase);
     await sendSms(number, aiResponse);
+    
     const PANASAiResponse = await getPANASResponse(sessionMessages)
     const dynamicPromptResponse = await getdynamicPromptResponse(sessionMessages, transitionTrig)
+
+    console.log('DynamicPromptResponse', dynamicPromptResponse)
     
     await processAndStoreMessage(user, number, aiResponse, type, PANASAiResponse, dynamicPromptResponse);
 
