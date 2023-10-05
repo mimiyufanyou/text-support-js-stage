@@ -23,49 +23,50 @@ const handleSmsStatusCallback = (req, res) => {
 
 // Handle incoming SMS messages
 const receiveSmsController = async (req, res) => {
-  const { number, content } = await receiveSmsMessage(req, res, 'user');
-  const user = await User.findOne({ phoneNumber: number });
-  const sessionId = req.sessionId;  // Access sessionId from req object attached from sessionMiddleware
-
-  console.log('Session ID:', sessionId)
-  console.log('User:', user)
-  console.log('Number:', number, 'Content:', content)
-
   try {
-    // Fetch all messages in the current session.
-    const sessionMessages = await Message.find({ sessionId }).sort({ timestamp: 1 });
+    const { number, content } = await receiveSmsMessage(req, res, 'user');
+    const user = await User.findOne({ phoneNumber: number });
+    const sessionId = req.sessionId;
 
-    // Get OpenAI Response and send it back to the user
-    const type = 'assistant';
+    // Initialize default values
+    let monoNextValue = null;
+    let transitionTrigValue = null;
 
-    const defaultPhase = internal_monologue.OpeningPhase.monologue
-    const defaultTrig = transitionTriggers.transitionTrigger1.instructions 
-
+    // Fetch last message
     const [lastMessage] = await Message.find({ sessionId })
       .sort({ timestamp: -1 })
       .select('dynamic')
       .limit(1);
 
-    let monoNextValue = null;
-
+    // Extract dynamic values if available
     if (lastMessage && lastMessage.dynamic) {
-    const dynamicObject = JSON.parse(lastMessage.dynamic);
-    monoNextValue = dynamicObject.monoNext;
-    transitionTrigValue = dynamicObject.transitionTrigger; 
+      const dynamicObject = JSON.parse(lastMessage.dynamic);
+      monoNextValue = dynamicObject.monoNext;
+      transitionTrigValue = dynamicObject.transitionTrigger;
     }
 
-    const monoPhase = monoNextValue || defaultPhase; 
-    const transitionTrig = transitionTrigValue || defaultTrig; 
+    // Use dynamic values or defaults
+    const defaultPhase = internal_monologue.OpeningPhase.monologue;
+    const defaultTrig = transitionTriggers.transitionTrigger1.instructions;
+    const monoPhase = monoNextValue || defaultPhase;
+    const transitionTrig = transitionTrigValue || defaultTrig;
 
+    // Get OpenAI and PANAS responses
+    const sessionMessages = await Message.find({ sessionId }).sort({ timestamp: 1 });
     const aiResponse = await getOpenAIResponse(content, sessionMessages, monoPhase);
-    await sendSms(number, aiResponse);
-    
-    const PANASAiResponse = await getPANASResponse(sessionMessages)
-    const dynamicPromptResponse = await getdynamicPromptResponse(sessionMessages, transitionTrig)
 
-    console.log('DynamicPromptResponse', dynamicPromptResponse)
-    
-    await processAndStoreMessage(user, number, aiResponse, type, PANASAiResponse, dynamicPromptResponse);
+    try {
+      // Additional try-catch for more specific error handling
+      const PANASAiResponse = await getPANASResponse(sessionMessages);
+      const dynamicPromptResponse = await getdynamicPromptResponse(sessionMessages, transitionTrig);
+      await processAndStoreMessage(user, number, aiResponse, 'assistant', PANASAiResponse, dynamicPromptResponse);
+    } catch (innerError) {
+      console.error('Error in inner operations:', innerError);
+      // Handle this specific error differently if needed
+    }
+
+    // Send SMS
+    await sendSms(number, aiResponse);
 
   } catch (error) {
     console.error('Error:', error);
