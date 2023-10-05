@@ -38,6 +38,8 @@ const receiveSmsController = async (req, res) => {
       .select('dynamic')
       .limit(1);
 
+    console.log("lastMessage in receiveSMS retrieved successsfully", lastMessage) 
+
     // Extract dynamic values if available
     if (lastMessage && lastMessage.dynamic) {
       const dynamicObject = JSON.parse(lastMessage.dynamic);
@@ -45,12 +47,18 @@ const receiveSmsController = async (req, res) => {
       transitionTrigValue = dynamicObject.transitionTrigger;
     }
 
+    console.log("monoNextValue", monoNextValue)
+    console.log("transitionTrigValue", transitionTrigValue)
+
     // Use dynamic values or defaults
     const defaultPhase =  "OpeningPhase";
     const defaultTrig = "transitionTrigger1"; 
 
     const monoPhase = monoNextValue || defaultPhase;
     const transitionTrig = transitionTrigValue || defaultTrig;
+
+    console.log("monoPhase", monoPhase)
+    console.log("transitionTrig", transitionTrig)
 
     // Get OpenAI and PANAS responses
     const sessionMessages = await Message.find({ sessionId }).sort({ timestamp: 1 });
