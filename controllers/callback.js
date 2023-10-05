@@ -38,7 +38,7 @@ const receiveSmsController = async (req, res) => {
       .select('dynamic')
       .limit(1);
 
-    console.log("lastMessage in receiveSMS retrieved successsfully", lastMessage) 
+    console.log("lastMessage in receiveSMS retrieved successsfully", [lastMessage]) 
 
     // Extract dynamic values if available
     if (lastMessage && lastMessage.dynamic) {
