@@ -4,6 +4,7 @@ const Agenda = require('agenda');
 const { connect } = require('./config/db');
 require('dotenv').config();
 const { sendSms } = require('./controllers/message'); 
+const { processUserFollowUps } = require('./controllers/userchathist');
 
 
 // Initialize Agenda
@@ -19,6 +20,11 @@ const agenda = new Agenda({
     } catch (error) {
       console.error('An error occurred:', error);
     }
+  });
+
+  agenda.define('process follow-ups', async (job) => {
+    const { userId } = job.attrs.data;
+    await processUserFollowUps(userId);
   });
 
 module.exports = { agenda }; 

@@ -1,4 +1,9 @@
 const User = require('../models/user');
+const Message = require('../models/messages');
+const ChatHistory = require('../models/chat_history');
+const { sendSms } = require('./message');
+const { getFollowUpsOpenAIResponse } = require('./ai_followups');
+
 
 async function userChatHistory(identifier) {
   try {
@@ -34,12 +39,12 @@ async function userChatHistory(identifier) {
       lastChat: lastChatWithActionItems ? {
         summary: lastChatWithActionItems.summary.summary,
         actionItems: lastChatWithActionItems.summary.actionItems,
-        followUpFrequency: lastChatWithActionItems.summary.followUpFrequency || null  // Make it optional
+        frequencyOfFollowUp: lastChatWithActionItems.summary.frequencyOfFollowUp || null  // Make it optional
       } : null,
       prevChat: prevChatWithActionItems ? {
         summary: prevChatWithActionItems.summary.summary,
         actionItems: prevChatWithActionItems.summary.actionItems,
-        followUpFrequency: prevChatWithActionItems.summary.followUpFrequency || null  // Make it optional
+        frequencyOfFollowUp: prevChatWithActionItems.summary.frequencyOfFollowUp || null  // Make it optional
       } : null
     };
 
@@ -52,4 +57,23 @@ async function userChatHistory(identifier) {
   }
 }
 
-module.exports = { userChatHistory };
+async function processUserFollowUps(userId) {
+  try {
+    console.log('Processing follow-ups...');
+    const userChats = await userChatHistory(userId);
+    console.log("userChats:", userChats);
+
+    const latestFrequencyOfFollowUp = userChats.lastChat ? userChats.lastChat.frequencyOfFollowUp : null;
+    console.log("latestFrequencyOfFollowUp:", latestFrequencyOfFollowUp);
+
+    const aiResponse = await getFollowUpsOpenAIResponse(userChats);
+    console.log("aiResponse:", aiResponse); 
+
+    await sendSms(userId, aiResponse);
+
+  } catch (error) {
+    console.error("An error occurred:", error);
+  }
+}; 
+
+module.exports = { userChatHistory, processUserFollowUps };
