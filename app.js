@@ -52,8 +52,8 @@ db.connect().then(async () => {
 });
 
 // Graceful shutdown
-process.on('SIGTERM', async () => {
-    await agenda.stop();
-    process.exit(0);
-    });
+//process.on('SIGTERM', async () => {
+//    await agenda.stop();
+//    process.exit(0);
+//    });
 
