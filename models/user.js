@@ -2,11 +2,6 @@
 
 const mongoose = require('mongoose');
 
-const { chatHistorySchema } = require('./chat_history');
-const { contextSchema } = require('./context'); 
-const { quizResultSchema } = require('./quiz_result');
-
-
 const userSchema = new mongoose.Schema({
     phoneNumber: {
         type: String,

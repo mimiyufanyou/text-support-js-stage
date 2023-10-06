@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const Agenda = require('agenda');
 const { connect } = require('./config/db');
 require('dotenv').config();
-
 const { sendSms } = require('./controllers/message'); 
 
 
@@ -22,21 +21,4 @@ const agenda = new Agenda({
     }
   });
 
-// Connect and fetch user data
-connect().then(async () => {
-
-    // Start Agenda
-    await agenda.start();
-
-    agenda.now('send sms follow-up', { to: '+16048189821', message: 'Hiiii me! This is from Agenda woo!' });
-    agenda.every('30 seconds', 'send sms follow-up', { to: '+16048189821', message: 'A CELEBRATIONN~!!! OF SPAAAAM!' });
-  
-}).catch(error => {
-console.error("Failed to start due to database error:", error);
-});
-
-// Graceful shutdown
-process.on('SIGTERM', async () => {
-await agenda.stop();
-process.exit(0);
-});
+module.exports = { agenda }; 
