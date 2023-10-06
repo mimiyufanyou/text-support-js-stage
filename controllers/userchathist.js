@@ -33,11 +33,13 @@ async function userChatHistory(identifier) {
       userId: user._id,
       lastChat: lastChatWithActionItems ? {
         summary: lastChatWithActionItems.summary.summary,
-        actionItems: lastChatWithActionItems.summary.actionItems
+        actionItems: lastChatWithActionItems.summary.actionItems,
+        followUpFrequency: lastChatWithActionItems.summary.followUpFrequency || null  // Make it optional
       } : null,
       prevChat: prevChatWithActionItems ? {
         summary: prevChatWithActionItems.summary.summary,
-        actionItems: prevChatWithActionItems.summary.actionItems
+        actionItems: prevChatWithActionItems.summary.actionItems,
+        followUpFrequency: prevChatWithActionItems.summary.followUpFrequency || null  // Make it optional
       } : null
     };
 

@@ -14,7 +14,7 @@ const messageRoutes = require('./routes/message');
 const callbackRoutes = require('./routes/callback');
 const stripeRoutes = require('./routes/stripe');
 
-const agenda = require('./agenda');
+const agenda = require('agenda');
 
 // Use middleware and other configurations
 app.use(bodyParser.json()); // JSON parsing middleware
@@ -33,14 +33,14 @@ app.get('*', (req, res) => {
      res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
 });
 
-db.connect().then(() => {
+db.connect().then(async () => {
 
     // Start Agenda
-    await agenda.start();
-    console.log("Agenda started successfully");
+  //  await agenda.start();
+  //  console.log("Agenda started successfully");
 
-    agenda.now('send sms follow-up', { to: '+16048189821', message: 'Hiiii me! This is from Agenda woo!' });
-    agenda.every('1 day', 'send sms follow-up', { to: '+16048189821', message: 'A CELEBRATIONN~!!! OF SPAAAAM!' });
+  //  agenda.now('send sms follow-up', { to: '+16048189821', message: 'Hiiii me! This is from Agenda woo!' });
+  // agenda.every('1 day', 'send sms follow-up', { to: '+16048189821', message: 'A CELEBRATIONN~!!! OF SPAAAAM!' });
 
     // Start Server 
     app.listen(PORT, () => {

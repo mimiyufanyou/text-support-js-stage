@@ -93,6 +93,7 @@ Summarize the chat history in a JSON string with this exact format. No other out
   keyTakeaways: Array with 3 bullet key takeaways,
   actionItems: Array with 3 bullet action items for assistant,
   quotesOfNote: Array with 3 bullet quotes of note only from the user
+  frequencyOfFollowUp: String with frequency of follow up 
 }`;
 
 

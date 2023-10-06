@@ -1,5 +1,5 @@
-const User = require('./models/user');
-const ChatHistory = require('./models/chat_history');
+const User = require('../models/user');
+const ChatHistory = require('../models/chat_history');
 
 async function associateChatHistories() {
   try {
