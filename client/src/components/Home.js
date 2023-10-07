@@ -5,12 +5,13 @@ import Header from './Header';
 import Section from './Section';
 import FAQ from './FAQ';
 
+// const title = "MAKE <br/> TIME </br> TO </br> THRIVE" 
 const Home = () => {
   return (
     <>
-      <Header title="Make Time to Thrive" />
+      <Header title="MAKE TIME TO THRIVE" />
       <div className="main-content">
-        <Section title="Personalize Care At Your Fingertips" bgColor="#eddbb0" className="value-prop-section-1">
+        <Section title="Personalized Care At Your Fingertips" bgColor="#ede4d2" className="value-prop-section-1">
           <div className="kpi">
             <h1>A Consistent Practice</h1>
             <p>Enhances Reduction in Anxiety</p>
@@ -25,8 +26,8 @@ const Home = () => {
             <p>Improve Memory and Problem Solving</p>
           </div>
         </Section>
-
-        <Section title="Value Proposition 2" bgColor="#85925e" />
+        
+        <Section title="Support when you want it." bgColor="#ede4d2" />
       </div>
       <div> 
         <FAQ />

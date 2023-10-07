@@ -1,9 +1,31 @@
-@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Merriweather+Sans:wght@300;400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Mono:wght@300,400,700&display=swap');
 
-.App {
+:root {
+  --primary-font: 'Fira Mono', monospace;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+  --default-font-color: #050100;
+  --default-bg-color: #ede4d2;
+  --default-font-size: 1rem;
+}
+
+html, body, #root, .App {
+  background-color: var(--default-bg-color);
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
   text-align: center;
-  font-family: 'Merriweather', serif;
+  margin-left: 4rem; 
+  margin-right: 4rem; 
+  font-family: 'Fira Mono';
+  font-family: var(--primary-font);
+  font-weight: var(--font-weight-regular);
+}
+
+a { 
+  color: var(--default-font-color);
+  text-decoration: none;
 }
 
 .logo {
@@ -12,8 +34,8 @@
 }
 
 .nav-bar {
-  background-color: #65664f;
-  color: white;
+  background-color: #ede4d2;
+  color: 050100;
   display: flex;
   padding: 0 1rem;
   height: 3.5rem;
@@ -21,21 +43,8 @@
 
 }
 
-/* Responsive styles for smaller screens */
-@media (max-width: 768px) {
-  .nav-bar {
-    flex-direction: column;
-    align-items: center;
-  }
-  .nav-menu {
-    width: 100%;
-    font-size: 0.8rem; /* This reduces the font-size of the menu items */
-  }
-}
-
 .nav-menu {
   list-style: none;
-  font-family: 'Merriweather Sans', sans-serif;
   margin: 0;
   padding: 0 0.5rem;
   display: flex;
@@ -53,37 +62,55 @@
 
 .nav-menu a {
   text-decoration: none;
-  color: white;
+  color: 050100;
   display: flex;
   align-items: center;  /* This aligns the text vertically in the middle */
 }
 
 .header {
-  background-color: #282c34;
-  min-height: 80vh;
+  background-color: #ede4d2;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 4vmin);
-  color: whitesmoke;
+  font-weight: var(--font-weight-bold);
+  color: 050100;
   position: relative;
+  line-height: 190%;
 }
+
+.header-content {
+  display: flex;
+  align-items: center;  /* Aligns items to the center vertically */
+}
+
+.header-title {
+  text-align: left;
+  height: 100%;  /* Adjust based on your needs */
+  margin: 5rem;
+}
+
+.header-image {
+  max-width: 50%;  /* Makes sure the image doesn't overflow */
+  height: auto;     /* Maintains aspect ratio */
+  /* Add any additional styles like border, margin, etc. */
+}
+
 .get-started-button {
-  background-color: #101710; /* Green background */
-  font-family: 'Merriweather', serif;
+  background-color: #050100; /* Green background */
   color: white; /* White text */
   padding: 1rem 3rem; /* Some padding */
   margin: 0.4rem 0; /* A bit of margin */
   border: none; /* No border */
   cursor: pointer; /* Add a pointer cursor on mouse-over */
   font-size: 1.2em;
-  border-radius: 1rem; /* Rounded corners */
+  border-radius: 0.2rem; /* Rounded corners */
 }
 
 /* On hover */
 .get-started-button:hover {
-  background-color: #45a049;
+  background-color: #cf9f67;
 }
 
 .subtext {
@@ -102,20 +129,25 @@
 .kpi {
   flex: 1;
   text-align: center;
+  margin: 3rem; 
 }
 
 .kpi h1 {
   font-size: 1.5rem;
   margin-bottom: 1rem;
+  margin: 5rem;
 }
 
 .kpi p {
   font-size: 0.9rem;
+  text-align: left;
+  margin-left: 4rem; 
+  margin-right: 4rem; 
 }
 
 .footer {
-  background-color: #325343;
-  color: #fff;
+  background-color: #ede4d2;
+  color: #050100;
   padding: 1em;
 }
 
@@ -125,6 +157,7 @@
 
 .main-content {
   overflow: auto;
+  background-color: #ede4d2;
 }
 
 .section {
@@ -133,14 +166,13 @@
   align-items: center;
   justify-content: space-between;
   font-size: 2em;
-  color: #fff;
+  color: #050100;
   flex-direction: column;
   align-items: center;
-    /* Other existing styles */
 }
 
 .section-title {
-  color: darkolivegreen/* any specific styles you want for the title */
+  color: #050100/* any specific styles you want for the title */
 }
 
 .section-content {
@@ -150,20 +182,21 @@
 }
 
 .accordion-item {
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid #ede4d2;
+  margin: 0rem; 
 }
 
 .accordion-title {
   cursor: pointer;
   padding: 1rem;
-  background-color: whitesmoke;
+  background-color: #ede4d2;
 }
 
 .accordion-content {
   padding: 1rem;
   font-size: 0.9rem;
   font-family: Arial, Helvetica, sans-serif;
-  background-color: whitesmoke;
+  background-color: #ede4d2;
 }
 .contact-form {
   max-width: 100%;
@@ -193,11 +226,25 @@
 
 .contact-form button {
   padding: 8px 16px;
-  background-color: #007bff;
-  color: white;
+  background-color: #050100;
+  color: #ede4d2;
   border: none;
   border-radius: 3px;
   cursor: pointer;
   font-size: 0.8rem;
 }
+
+/* Responsive styles for smaller screens */
+@media (max-width: 768px) {
+  .nav-bar {
+    flex-direction: column;
+    align-items: center;
+  }
+  .nav-menu {
+    width: 100%;
+    font-size: 0.8rem; /* This reduces the font-size of the menu items */
+  }
+}
+
+
 
