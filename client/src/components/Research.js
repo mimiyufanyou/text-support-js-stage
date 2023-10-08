@@ -4,8 +4,9 @@ import Section from './Section';
 const Research = () => {
   return (
     <>
-    <Section title="Access is Everything" bgColor="#ede4d2" />
+    <Section title="" bgColor="#ede4d2" />
     <div className="kpi">
+    <h1> Research </h1>
     <p> Thrive addresses the 5 dimensions of patient-centred access to care outlined in a 2013 study for conceptualising access at the interface of health systems published in the International Journal for Health Equity.</p> 
 
     <p> <b>Approachability. Availability. Affordability. Acceptability. Appropriateness. </b></p> 
@@ -15,7 +16,10 @@ const Research = () => {
     </p>
     </div> 
 
-    <Section title="The Science" bgColor="#ede4d2" />
+    <div className="center-container">
+    <div className="blue-colored-circle"></div>
+    </div> 
+
     <div className="kpi">
     <h1> References </h1>
 
@@ -36,6 +40,9 @@ const Research = () => {
       <p>Reese, R. J., Toland, M. D., & Hopkins, N. B. (2011). Replicating and extending the good-enough level model of change: Considering session frequency. Psychotherapy Research, 21(5), 608-619. https://doi.org/10.1080/10503307.2011.598580</p>
 
       <p>Wells, K. B., Jones, L., Chung, B., Dixon, E. L., Tang, L., ... Miranda, J. (2013). Community-partnered cluster-randomized comparative effectiveness trial of community engagement and planning or resources for services to address depression disparities. J Gen Intern Med, 28(10), 1268-78. https://doi.org/10.1007/s11606-013-2484-3</p>
+    </div> 
+    <div className="center-container">
+    <div className="blue-colored-circle"></div>
     </div> 
     </>
   )
