@@ -4,7 +4,7 @@ import Quiz from './Quiz';
 const StartQuiz = () => {
   return (
     <div className="main-content">
-      <h1> Start Quiz </h1>
+      <h1> Start</h1>
       <Quiz />
     </div>
   );

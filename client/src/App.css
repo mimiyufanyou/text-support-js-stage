@@ -14,13 +14,11 @@ html, body, #root, .App {
   background-color: var(--default-bg-color); 
   margin: 1rem;
   padding: 1rem;
-  min-height: 100vh;
   text-align: center;
   margin-left: 4rem; 
   margin-right: 4rem; 
   font-family: 'Fira Mono';
   font-family: var(--primary-font);
-  font-weight: var(--font-weight-regular);
 }
 
 .hamburger-icon {
@@ -70,7 +68,7 @@ a {
 
 .nav-bar {
   background-color: #ede4d2;
-  color: 050100;
+  color: #050100;
   display: flex;
   /* padding: 0 1rem; */ 
   /* height: 3.5rem; */ 
@@ -112,7 +110,7 @@ a {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: 050100;
+  color: #050100;
   position: relative;
 }
 
@@ -123,9 +121,8 @@ a {
 
 .header-title {
   text-align: left;
-  font-size: 10rem;
+  font-size: 5rem;
   line-height: 100%;
-  height: 100%;  /* Adjust based on your needs */
   margin: 5rem;
 }
 
@@ -221,7 +218,7 @@ a {
   cursor: pointer;
   padding: 1rem;
   background-color: #ede4d2;
-  font-weight: --var(font-weight-medium); 
+  font-weight: var(--font-weight-medium); 
 }
 
 .accordion-content {
@@ -284,12 +281,9 @@ a {
     font-family: var(--primary-font);
     font-weight: var(--font-weight-regular);
   }
-  .header-title {
-    font-size: calc(10px + 4vmin); /* This line ensures the title is responsive */
-  }
 
   .nav-bar {
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
   }
   .nav-menu {
@@ -299,6 +293,8 @@ a {
   }
   .nav-menu.open {
     display: flex; /* Show when open */
+    width: 100%;
+    font-size: 0.8rem; /* This reduces the font-size of the menu items */
   }
 }
 
