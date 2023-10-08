@@ -27,7 +27,7 @@ function App() {
         <Route path="/start-quiz" element={<StartQuiz />} />
         <Route path="/payments" element={<Payment />} />  
       </Routes>
-        <Footer contactEmail="info@myawesomeproduct.com" />
+        <Footer contactEmail="" />
     </div>
     </Router>
   );

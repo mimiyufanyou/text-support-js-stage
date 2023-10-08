@@ -12,7 +12,11 @@ const Research = () => {
     <p> <b>Approachability. Availability. Affordability. Acceptability. Appropriateness. </b></p> 
 
     <p>
-      Multimodal digital platforms have been proven effective at reducing symptom severity with and without traditional psychotherapy. There is evidence for the effectiveness of community interventions for improving mental health and some social outcomes across social-ecological levels. Thrive operates at the intersection and forefront of these research areas for the lowest barrier delivery of peer-reviewed scientifically validated techniques for improved quality of life.
+      Multimodal digital platforms have been proven effective at reducing symptom severity with and without traditional psychotherapy. There is evidence for the effectiveness of community interventions for improving mental health and some social outcomes across social-ecological levels. 
+    </p>
+    
+    <p>
+      Thrive operates at the intersection and forefront of these research areas for the lowest barrier delivery of peer-reviewed scientifically validated techniques for improved quality of life.
     </p>
     </div> 
 
