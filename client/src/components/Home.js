@@ -7,9 +7,9 @@ import { Link } from 'react-router-dom';
 const Home = () => {
   return (
     <>
-      <Header title="MAKE TIME TO THRIVE" />
+      <Header title=">MAKE TIME TO THRIVE" />
       <div className="main-content">
-        <Section title="Personalized Care At Your Fingertips" bgColor="#ede4d2" className="value-prop-section-1">
+        <Section title="Personalized Care At Your Fingertips" bgColor="#ede4d2">
           <div className="kpi">
             <h1>A Consistent Practice</h1>
             <p>Enhances Reduction in Anxiety</p>
@@ -25,17 +25,26 @@ const Home = () => {
           </div>
         </Section>
 
+        <div className="center-container">
+        <div className="orange-colored-circle"></div>
+        </div> 
+
         <Section title="Support When You Want It" bgColor="#ede4d2">
           <div className="kpi">
           <p>"[...] the most frequently reported barriers were related to personal circumstances (78.2%), such as not knowing where to get help, <b>being too busy</b>, or not being able to pay for services."</p>
           </div>
         </Section>
 
-        <Section title="Self-Empowered Care is the Next Community-Led Care" bgColor="#ede4d2">
+        <div className="center-container">
+        <div className="orange-colored-circle"></div>
+        </div> 
+
+        <Section title="Self-Empowered Care" bgColor="#ede4d2">
           <div className="kpi">
           <p>"[A] systematic review included 32 studies, all of which demonstrated a moderate to <b>high promising effect for community-based</b> and recovery-oriented practices or programs [...]" </p>
           </div> 
         </Section>
+
 
         <Link to="/payments">
           <button className="get-started-button">
