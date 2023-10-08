@@ -33,6 +33,15 @@ a {
   pointer-events: none;
 }
 
+.hamburger-icon .bar {
+  z-index: 999; /* This ensures the hamburger icon is always on top */
+  width: 25px;
+  height: 3px;
+  margin: 3px 0;
+  background-color: #333;
+  cursor: pointer;
+}
+
 .nav-bar {
   background-color: #ede4d2;
   color: 050100;
@@ -51,6 +60,10 @@ a {
   justify-content: space-between;
   flex-wrap: wrap;
   width: 100%;  /* This ensures the .nav-menu takes up all available space */
+}
+
+.nav-menu.open {
+  display: flex; /* Show when open */
 }
 
 .nav-left, .nav-right, .nav-center {
@@ -160,14 +173,15 @@ a {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 2em;
+  font-size: calc(10px + 4vmin);
+  font-weight: var(--font-weight-bold);
   color: #050100;
   flex-direction: column;
   align-items: center;
 }
 
 .section-title {
-  color: #050100/* any specific styles you want for the title */
+  color: #050100;/* any specific styles you want for the title */
 }
 
 .section-content {
@@ -232,6 +246,10 @@ a {
 /* Responsive styles for smaller screens */
 @media (max-width: 768px) {
 
+  .hamburger-icon {
+    display: block; /* Show hamburger icon on small screens */
+  }
+
   html, body, #root, .App {
     background-color: var(--default-bg-color);
     margin: 0;
@@ -244,16 +262,29 @@ a {
     font-family: var(--primary-font);
     font-weight: var(--font-weight-regular);
   }
+  .header-title {
+    font-size: calc(10px + 4vmin); /* This line ensures the title is responsive */
+  }
 
   .nav-bar {
     flex-direction: column;
     align-items: center;
   }
   .nav-menu {
+    display: none; 
     width: 100%;
     font-size: 0.8rem; /* This reduces the font-size of the menu items */
   }
+  .nav-menu.open {
+    display: flex; /* Show when open */
+  }
 }
 
+*, ::after, ::before {
+  box-sizing: inherit;
+}
+*, ::after, ::before {
+  box-sizing: inherit;
+}
 
 
