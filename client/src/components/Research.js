@@ -8,13 +8,14 @@ const Research = () => {
     <Section title="Research" bgColor="#ede4d2" />
     <div className="kpi">
     <p> Thrive addresses the 5 dimensions of patient-centred access to care outlined in a 2013 study for conceptualising access at the interface of health systems published in the International Journal for Health Equity.</p> 
-    <p> Approachability. Availability. Affordability. Acceptability. Appropriateness. </p> 
 
-    <p>"There is evidence for the effectiveness of community interventions for improving mental health and some social outcomes across social-ecological levels. </p>
+    <p> <b>Approachability. Availability. Affordability. Acceptability. Appropriateness. </b></p> 
 
-    <p>"The systematic review included 32 studies, all of which demonstrated a moderate to high promising effect for community-based and recovery-oriented practices or programs </p>
+    <p>There is evidence for the effectiveness of community interventions for improving mental health and some social outcomes across social-ecological levels. Multimodal digital platforms have been proven effective at reducing symptom severity with and without traditional psychotherapy.</p>
 
-    <p>"Of the 2.3 million Canadians who reported unmet or partially met mental healthcare needs, the most frequently reported barriers were related to personal circumstances (78.2%), such as not knowing where to get help, being too busy, or not being able to pay for services.</p>
+    <p>"[A] systematic review included 32 studies, all of which demonstrated a moderate to high promising effect for community-based and recovery-oriented practices or programs [...]" </p>
+
+    <p>"[...] the most frequently reported barriers were related to personal circumstances (78.2%), such as not knowing where to get help, being too busy, or not being able to pay for services."</p>
     </div>
     </div> 
 
