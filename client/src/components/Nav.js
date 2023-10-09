@@ -5,11 +5,11 @@ const Nav = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const toggleMenu = () => {
-    console.log('toggle menu');
     setMenuOpen(!menuOpen);
   };
 
   return (
+    <div className="nav-header">
     <div className="nav-bar">
       <div className="hamburger-icon" onClick={() => toggleMenu()}>
         <div className="bar"></div>
@@ -18,7 +18,7 @@ const Nav = () => {
       </div>
       <nav className={`nav-menu ${menuOpen ? 'open' : ''}`}>
         <ul className="nav-left">
-          <li><Link to="/">>THRIVE</Link></li>
+          <li><Link to="/">{'>'}THRIVE</Link></li>
           <li><Link to="/research">RESEARCH</Link></li>
           <li><Link to="/faq">FAQ</Link></li>
           <li><Link to="/login">LOGIN</Link></li>
@@ -26,6 +26,7 @@ const Nav = () => {
         </ul>
       </nav>
     </div>
+    </div> 
   );
 };
 

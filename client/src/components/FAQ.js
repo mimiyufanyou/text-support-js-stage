@@ -58,6 +58,7 @@ const FAQ = () => {
 
   return (
     <> 
+    <div className="main-content">
     <Section> 
       <div className="kpi">
       <h1>Frequently Asked Questions</h1>
@@ -71,6 +72,7 @@ const FAQ = () => {
 
     <div className="center-container">
     <div className="orange-colored-circle"></div>
+    </div> 
     </div> 
     </>
   );

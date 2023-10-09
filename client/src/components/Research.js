@@ -4,7 +4,9 @@ import Section from './Section';
 const Research = () => {
   return (
     <>
+    <div className="main-content">
     <Section title="" bgColor="#ede4d2" />
+
     <div className="kpi">
     <h1> Research </h1>
     <p> Thrive addresses the 5 dimensions of patient-centred access to care outlined in a 2013 study for conceptualising access at the interface of health systems published in the International Journal for Health Equity.</p> 
@@ -48,6 +50,7 @@ const Research = () => {
     <div className="center-container">
     <div className="blue-colored-circle"></div>
     </div> 
+    </div>
     </>
   )
 }

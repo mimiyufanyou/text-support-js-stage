@@ -14,6 +14,11 @@ const Login = () => {
     }
   };
 
+  const handleGoogleLogin = () => {
+    // Redirect to your backend route that will initiate Google OAuth
+    window.location.href = '/api/auth/google';
+  };
+
   return (
     <div>
       <h1>Login Page</h1>
@@ -28,6 +33,8 @@ const Login = () => {
         </div>
         {error && <p>{error}</p>}
         <button onClick={handleLogin}>Login</button>
+        {/* Google OAuth Button */}
+        <button onClick={handleGoogleLogin}>Login with Google</button>
       </form>
     </div>
   );

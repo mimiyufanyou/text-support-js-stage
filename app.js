@@ -1,4 +1,7 @@
 const express = require('express');
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+
 const app = express();
 const path = require('path');
 
@@ -7,6 +10,21 @@ const PORT = process.env.PORT || 5001;
 
 const db = require('./config/db');
 console.log(db); 
+
+passport.use(new GoogleStrategy({
+  clientID: process.env.GOOGLE_CLIENT_ID,
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+  callbackURL: "https://text-support-test-4c747d031b47.herokuapp.com/status-callback"
+},
+function(accessToken, refreshToken, profile, cb) {
+  User.findOrCreate({ googleId: profile.id }, function (err, user) {
+    if (err) {
+      return cb(err, null);
+    }
+    return cb(null, user);
+  });
+}));
+
 
 // Require and use route modules
 const userRoutes = require('./routes/user')

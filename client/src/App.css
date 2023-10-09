@@ -8,17 +8,43 @@
   --default-font-color: #050100;
   --default-bg-color: #ede4d2;
   --default-font-size: 1rem;
+  background-color: #ede4d2;
+  width: 100vw;
 }
 
-html, body, #root, .App {
+html, body { 
+  width: 100vw; 
+  height: 100vh; 
   background-color: var(--default-bg-color); 
-  margin: 1rem;
-  padding: 1rem;
+  font-family: 'Fira Mono';
+  font-family: var(--primary-font);
+}
+
+.App { 
+  min-height: 100vh; 
+  display: flex; 
+  flex-direction: column;
+}
+
+.main-content { 
+  
+  flex: 1;
   text-align: center;
   margin-left: 4rem; 
   margin-right: 4rem; 
-  font-family: 'Fira Mono';
-  font-family: var(--primary-font);
+  overflow: auto;
+  background-color: #ede4d2;
+}
+
+.footer {
+  padding: 20px;
+  flex-shrink: 0; 
+  min-height: 5rem;
+  width: 100vw; 
+  box-sizing: border-box;
+  background-color: #a3916b;
+  color: #050100;
+  font-size: 0.8rem;
 }
 
 .hamburger-icon {
@@ -66,6 +92,12 @@ a {
   cursor: pointer;
 }
 
+.nav-header { 
+  width: 100vw; 
+  background-color:#a3916b;
+  color: #050100;
+}
+
 .nav-bar {
   background-color: #ede4d2;
   color: #050100;
@@ -73,7 +105,6 @@ a {
   /* padding: 0 1rem; */ 
   /* height: 3.5rem; */ 
   justify-content: space-between;  /* This line ensures the left and right menus are pushed to the edges */
-
 }
 
 .nav-menu {
@@ -148,6 +179,12 @@ a {
   margin-top: 0rem;
 }
 
+.subsubtext { 
+  font-size: 0.55rem;
+  text-align: center;
+  margin-top: 0rem;
+}
+
 .h1 {
   display: block;
   font-size: 2em;
@@ -172,19 +209,8 @@ a {
   text-align: left;
 }
 
-.footer {
-  background-color: #ede4d2;
-  color: #050100;
-  padding: 1em;
-}
-
 .link {
   color: #61dafb;
-}
-
-.main-content {
-  overflow: auto;
-  background-color: #ede4d2;
 }
 
 .section {
@@ -283,8 +309,9 @@ a {
   }
 
   .nav-bar {
-    flex-direction: row;
-    align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
   }
   .nav-menu {
     display: none; 
@@ -293,8 +320,8 @@ a {
   }
   .nav-menu.open {
     display: flex; /* Show when open */
-    width: 100%;
     font-size: 0.8rem; /* This reduces the font-size of the menu items */
+    max-width: calc(100% - 100px)
   }
 }
 
