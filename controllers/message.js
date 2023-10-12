@@ -5,6 +5,7 @@ const Session = require('../models/session');
 
 const { Twilio } = require('twilio');
 const twilioClient = new Twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
+const TWILIO_URL = `https://api.twilio.com/2010-04-01/Accounts/${process.env.TWILIO_ACCOUNT_SID}/Messages.json`;
 
 const SEND_MSG_URL = 'https://server.loopmessage.com/api/v1/message/send/';
 const headers = {
@@ -12,6 +13,7 @@ const headers = {
   'Loop-Secret-Key': process.env.LOOPSECRET,
   'Content-Type': 'application/json'
 };
+
 
 const sendSms = async (phoneNumber, content) => {
   const requestData = {
@@ -34,9 +36,9 @@ const sendSms = async (phoneNumber, content) => {
     
     try {
       const twilioResponse = await twilioClient.messages.create({
+        to: phoneNumber || `whatsapp:${phoneNumber}`, 
         body: content,
-        from: process.env.TWILIO_PHONE_NUMBER,
-        to: phoneNumber
+        from: process.env.TWILIO_PHONE_NUMBER || `whatsapp:${process.env.TWILIO_PHONE_NUMBER}`
       });
       console.log('SMS via Twilio sent successfully:', twilioResponse);
       return {
