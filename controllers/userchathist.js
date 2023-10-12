@@ -1,8 +1,8 @@
 const User = require('../models/user');
-const Message = require('../models/messages');
-const ChatHistory = require('../models/chat_history');
 const { sendSms } = require('./message');
 const { getFollowUpsOpenAIResponse } = require('./ai_followups');
+const { agenda } = require('../agenda');
+const moment = require('moment');
 
 
 async function userChatHistory(identifier) {
@@ -77,4 +77,29 @@ async function processUserFollowUps(phoneNumber, userId) {
   }
 }; 
 
-module.exports = { userChatHistory, processUserFollowUps };
+
+const scheduleFollowUp = async (phoneNumber, userId) => {
+  console.log('Schedule follow-up called', userId);
+  
+  try {
+    const userChats = await userChatHistory(userId);
+    const latestFrequencyOfFollowUp = userChats.lastChat ? userChats.lastChat.frequencyOfFollowUp : null;
+
+    if (!latestFrequencyOfFollowUp) {
+      console.log('No follow-up frequency found.');
+      return;
+    }
+
+    console.log('Frequency of Follow Up:', latestFrequencyOfFollowUp);
+
+    const [value, unit] = latestFrequencyOfFollowUp.split(' '); 
+    const nextFollowUp = moment().add(value, unit).toDate(); 
+    console.log('Next Follow-Up:', nextFollowUp);
+
+    agenda.schedule(nextFollowUp, 'process follow-ups', { phoneNumber: phoneNumber, userId: userId });
+  } catch (error) {
+    console.error('An error occurred:', error);
+  }
+};
+
+module.exports = { userChatHistory, processUserFollowUps, scheduleFollowUp };
