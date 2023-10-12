@@ -90,10 +90,10 @@ const sessionMiddleware = async (req, res, next) => {
   console.log('Session middleware called', req.body)
 
   try {
-    let user = await User.findOne({ phoneNumber: req.body.recipient });  // <-- Add this line
+    let user = await User.findOne({ phoneNumber: req.body.recipient || req.body.from || req.body.to });  // <-- Add this line
 
     if (!user) {
-      user = new User({ phoneNumber: req.body.recipient, confirmed: true });
+      user = new User({ phoneNumber: req.body.recipient || req.body.from || req.body.to , confirmed: true });
       await user.save();
     } else if (!user.confirmed) {
       user.confirmed = true;
