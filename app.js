@@ -1,5 +1,5 @@
 const express = require('express');
-const agenda = require('agenda');
+const agenda = require('./agenda');
 
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
@@ -60,11 +60,11 @@ app.get('*', (req, res) => {
      res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
 });
 
-db.connect().then(async () => {
+// Start Agenda
+await agenda.start();
+console.log("Agenda started successfully");
 
-    // Start Agenda
-    await agenda.start();
-    console.log("Agenda started successfully");
+db.connect().then(async () => {
 
     // Start Server 
     app.listen(PORT, () => {
@@ -76,8 +76,8 @@ db.connect().then(async () => {
 });
 
 // Graceful shutdown
-//process.on('SIGTERM', async () => {
-//    await agenda.stop();
-//    process.exit(0);
-//    });
+process.on('SIGTERM', async () => {
+    await agenda.stop();
+    process.exit(0);
+    });
 
