@@ -90,17 +90,17 @@ const sessionMiddleware = async (req, res, next) => {
   console.log('Session middleware called', req.body)
 
   try {
-    let user = await User.findOne({ phoneNumber: req.body.recipient || req.body.from || req.body.to });  // <-- Add this line
+    let user = await User.findOne({ phoneNumber: req.body.recipient || req.body.From });  // <-- Add this line
 
     if (!user) {
-      user = new User({ phoneNumber: req.body.recipient || req.body.from || req.body.to , confirmed: true });
+      user = new User({ phoneNumber: req.body.recipient || req.body.From, confirmed: true });
       await user.save();
     } else if (!user.confirmed) {
       user.confirmed = true;
       await user.save();
     }
 
-    let sessionRecord = await Session.findOne({ phoneNumber: req.body.recipient }).sort({ createdAt: -1 });
+    let sessionRecord = await Session.findOne({ phoneNumber: req.body.recipient || req.body.From }).sort({ createdAt: -1 });
     let sessionId = sessionRecord ? sessionRecord._id : null;
 
     // Clear any existing timeout for the session
@@ -110,7 +110,7 @@ const sessionMiddleware = async (req, res, next) => {
 
     // Create a new session if needed
     if (!sessionRecord || new Date(sessionRecord.expiresAt) < new Date()) {
-      sessionRecord = new Session({ phoneNumber: req.body.recipient, userId: user._id});
+      sessionRecord = new Session({ phoneNumber: req.body.recipient || req.body.From, userId: user._id});
       await sessionRecord.save();
       sessionId = sessionRecord._id;
     }
