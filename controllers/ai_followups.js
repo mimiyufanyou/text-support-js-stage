@@ -1,4 +1,8 @@
 const axios = require('axios');  // Make sure to import axios if you haven't already
+const { userChatHistory } = require('./controllers/userchathist');
+const { agenda } = require('./agenda');
+const moment = require('moment');
+
 async function getFollowUpsOpenAIResponse(userChats) {
   const endpoint = "https://api.openai.com/v1/chat/completions";
 
@@ -32,6 +36,32 @@ async function getFollowUpsOpenAIResponse(userChats) {
     console.error("Error querying OpenAI:", error);
     throw new Error("Sorry, I couldn't process that.");
   }
-}
+};
 
-module.exports = { getFollowUpsOpenAIResponse }
+const scheduleFollowUp = async (userId) => {
+  console.log('Schedule follow-up called', userId);
+  
+  try {
+    await agenda.start();
+
+    const userChats = await userChatHistory(userId);
+    const latestFrequencyOfFollowUp = userChats.lastChat ? userChats.lastChat.frequencyOfFollowUp : null;
+
+    if (!latestFrequencyOfFollowUp) {
+      console.log('No follow-up frequency found.');
+      return;
+    }
+
+    console.log('Frequency of Follow Up:', latestFrequencyOfFollowUp);
+
+    const [value, unit] = latestFrequencyOfFollowUp.split(' '); 
+    const nextFollowUp = moment().add(value, unit).toDate(); 
+    console.log('Next Follow-Up:', nextFollowUp);
+
+    agenda.schedule(nextFollowUp, 'process follow-ups', { userId: userId });
+  } catch (error) {
+    console.error('An error occurred:', error);
+  }
+};
+
+module.exports = { getFollowUpsOpenAIResponse, scheduleFollowUp };

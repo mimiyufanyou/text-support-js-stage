@@ -3,6 +3,7 @@ const { sendSmsMessage, sendSms, receiveSmsMessage, processAndStoreMessage } = r
 const { getOpenAIResponse } = require('./openai');
 const { getPANASResponse } = require('./emotion');
 const { summarizeChat } = require('./llm_processing');
+const { scheduleFollowUp } = require('./ai_followups');
 const { getdynamicPromptResponse } = require('./dynamic_prompt');
 const { transitionTriggers, internal_monologue } = require('../config/system_prompts');
 
@@ -125,6 +126,7 @@ const sessionMiddleware = async (req, res, next) => {
     sessionTimers[sessionId] = setTimeout(async () => {
       await summarizeChat(user, sessionId);
       await Session.findByIdAndUpdate(sessionId, { expiresAt: new Date() });
+      await scheduleFollowUp(user._id) 
       console.log(`Session ${sessionId} closed due to inactivity.`);
     }, 300000); // 5 minutes
 
