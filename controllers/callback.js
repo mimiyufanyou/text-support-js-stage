@@ -3,7 +3,7 @@ const { sendSmsMessage, sendSms, receiveSmsMessage, processAndStoreMessage } = r
 const { getOpenAIResponse } = require('./openai');
 const { getPANASResponse } = require('./emotion');
 const { summarizeChat } = require('./llm_processing');
-const { scheduleFollowUp } = require('./ai_followups');
+const { scheduleFollowUp } = require('./userchathist');
 const { getdynamicPromptResponse } = require('./dynamic_prompt');
 const { transitionTriggers, internal_monologue } = require('../config/system_prompts');
 
