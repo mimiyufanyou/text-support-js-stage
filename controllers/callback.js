@@ -89,8 +89,14 @@ const sessionMiddleware = async (req, res, next) => {
 
   console.log('Session middleware called', req.body)
 
+  console.log('Session middleware called', req.body);
+  console.log('Recipient:', req.body.recipient);
+  console.log('From:', req.body.From);
+
   try {
     let user = await User.findOne({ phoneNumber: req.body.recipient || req.body.From });  // <-- Add this line
+
+    console.log("Within middleware user", user)
 
     if (!user) {
       user = new User({ phoneNumber: req.body.recipient || req.body.From, confirmed: true });

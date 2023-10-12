@@ -71,7 +71,9 @@ const sendSmsMessage = async (req, res) => {
 
 // Function to handle incoming SMS messages
 const receiveSmsMessage = async (req, res, type) => {
-  const { recipient, text } = req.body;
+  const recipient = req.body.recipient || req.body.From;
+  const text = req.body.text || req.body.content;
+  
 
   try {
     let user = await User.findOne({ phoneNumber: recipient });
