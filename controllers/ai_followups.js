@@ -1,6 +1,6 @@
 const axios = require('axios');  // Make sure to import axios if you haven't already
 const { userChatHistory } = require('./userchathist');
-const { agenda } = require('./agenda');
+const { agenda } = require('../agenda');
 const moment = require('moment');
 
 async function getFollowUpsOpenAIResponse(userChats) {
