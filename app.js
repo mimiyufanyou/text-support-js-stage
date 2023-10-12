@@ -1,5 +1,5 @@
 const express = require('express');
-const agenda = require('./agenda');
+const { agenda } = require('./agenda');
 
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
