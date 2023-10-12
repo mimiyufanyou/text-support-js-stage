@@ -72,7 +72,7 @@ const sendSmsMessage = async (req, res) => {
 // Function to handle incoming SMS messages
 const receiveSmsMessage = async (req, res, type) => {
   const recipient = req.body.recipient || req.body.From;
-  const text = req.body.text || req.body.content;
+  const text = req.body.text || req.body.content || req.body.Body;
   
 
   try {
