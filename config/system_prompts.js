@@ -88,10 +88,10 @@ const summarize_chat = `
 Summarize the chat history in a JSON string with this exact format. No other output is required. 
 
 {
-  topic: String with 1 sentence topic,
+  topic: Cannot be null or empty. String with 1 sentence topic,
   summary: Array with 3 sentence summary,
   keyTakeaways: Array with 3 bullet key takeaways,
-  actionItems: Array with 3 bullet action items for assistant,
+  actionItems: Cannot be null or empty. Array with 3 bullet action items for assistant,
   quotesOfNote: Array with 3 bullet quotes of note only from the user
   frequencyOfFollowUp: Cannot be null or empty. String with human-interval format for next follow-up (e.g., "15 minutes", "30 minutes", "1 hour", "3 hours", "1 day")
 }`;

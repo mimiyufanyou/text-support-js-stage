@@ -30,7 +30,7 @@ async function userChatHistory(identifier) {
     console.log("Fetched user successfully!");
 
     const reversedChats = [...user.chatHistory].reverse();
-    const lastChatWithActionItems = reversedChats.find(chat => chat.summary.actionItems && chat.summary.actionItems.length > 0);
+    const lastChatWithActionItems = reversedChats.find(chat => chat.summary.frequencyOfFollowUp);
     const prevChatIndex = reversedChats.indexOf(lastChatWithActionItems) + 1;
     const prevChatWithActionItems = reversedChats[prevChatIndex];
 
@@ -64,6 +64,7 @@ async function processUserFollowUps(userId) {
     console.log("userChats:", userChats);
 
     const latestFrequencyOfFollowUp = userChats.lastChat ? userChats.lastChat.frequencyOfFollowUp : null;
+    
     console.log("latestFrequencyOfFollowUp:", latestFrequencyOfFollowUp);
 
     const aiResponse = await getFollowUpsOpenAIResponse(userChats);

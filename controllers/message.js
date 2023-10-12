@@ -3,6 +3,9 @@ const User = require('../models/user');
 const Message = require('../models/messages');
 const Session = require('../models/session');
 
+const { Twilio } = require('twilio');
+const twilioClient = new Twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
+
 const SEND_MSG_URL = 'https://server.loopmessage.com/api/v1/message/send/';
 const headers = {
   'Authorization': process.env.LOOPAUTH,
@@ -18,20 +21,39 @@ const sendSms = async (phoneNumber, content) => {
   };
 
   try {
-    const response = await axios.post(SEND_MSG_URL, requestData, { headers })
-    console.log('SMS sent successfully:', response);
+    const axiosResponse = await axios.post(SEND_MSG_URL, requestData, { headers });
+    console.log('SMS via Axios sent successfully:', axiosResponse);
     return { 
-      status: 'success', 
+      status: 'success',
       success: true,
-      data: response.data 
+      data: axiosResponse.data,
+      via: 'Axios'
     };
-  } catch (error) {
-    console.error('Error sending SMS:', error);
-    return {
-      status: error.response ? error.response.status : 500,
-      success: false,
-      error: error.message
-    };
+  } catch (axiosError) {
+    console.error('Error sending SMS via Axios:', axiosError);
+    
+    try {
+      const twilioResponse = await twilioClient.messages.create({
+        body: content,
+        from: process.env.TWILIO_PHONE_NUMBER,
+        to: phoneNumber
+      });
+      console.log('SMS via Twilio sent successfully:', twilioResponse);
+      return {
+        status: 'success',
+        success: true,
+        data: twilioResponse,
+        via: 'Twilio'
+      };
+    } catch (twilioError) {
+      console.error('Error sending SMS via Twilio:', twilioError);
+      return {
+        status: twilioError.status || 500,
+        success: false,
+        error: twilioError.message,
+        via: 'Both Failed'
+      };
+    }
   }
 };
 
@@ -128,6 +150,7 @@ const processAndStoreMessage = async (user, phoneNumber, message, type, PANAS, d
   console.warn(`No active session found for phone number ${phoneNumber}`);
 }
 };
+
 module.exports = {
   sendSms,
   sendSmsMessage,
