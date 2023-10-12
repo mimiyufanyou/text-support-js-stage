@@ -1,4 +1,6 @@
 const express = require('express');
+const agenda = require('agenda');
+
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
@@ -43,11 +45,6 @@ const userRoutes = require('./routes/user')
 const messageRoutes = require('./routes/message');
 const callbackRoutes = require('./routes/callback');
 const stripeRoutes = require('./routes/stripe');
-
-const agenda = require('agenda');
-
-// Use middleware and other configurations
-app.use(bodyParser.json()); // JSON parsing middleware
 
 // Use routes
 app.use('/api/message', messageRoutes);
