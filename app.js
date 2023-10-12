@@ -6,7 +6,7 @@ const app = express();
 const path = require('path');
 
 const bodyParser = require('body-parser');
-const queryString = require('query-string');  // or any library you use for URL parsing
+const querystring = require('querystring');  // or any library you use for URL parsing
 
 const PORT = process.env.PORT || 5001;
 
@@ -28,7 +28,7 @@ function(accessToken, refreshToken, profile, cb) {
 }));
 
 // Dual parsing middleware
-app.use('/api/callback', async (req, res, next) => {
+app.use('/api/callback', (req, res, next) => {
   if (req.get('Content-Type') === 'application/json') {
     bodyParser.json()(req, res, next);
   } else if (req.get('Content-Type') === 'application/x-www-form-urlencoded') {
