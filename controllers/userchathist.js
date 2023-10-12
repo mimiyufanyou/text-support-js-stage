@@ -57,7 +57,7 @@ async function userChatHistory(identifier) {
   }
 }
 
-async function processUserFollowUps(userId) {
+async function processUserFollowUps(phoneNumber, userId) {
   try {
     console.log('Processing follow-ups...');
     const userChats = await userChatHistory(userId);
@@ -70,7 +70,7 @@ async function processUserFollowUps(userId) {
     const aiResponse = await getFollowUpsOpenAIResponse(userChats);
     console.log("aiResponse:", aiResponse); 
 
-    await sendSms(userId, aiResponse);
+    await sendSms(phoneNumber, aiResponse);
 
   } catch (error) {
     console.error("An error occurred:", error);

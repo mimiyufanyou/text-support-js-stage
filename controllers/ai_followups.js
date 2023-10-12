@@ -38,12 +38,10 @@ async function getFollowUpsOpenAIResponse(userChats) {
   }
 };
 
-const scheduleFollowUp = async (userId) => {
+const scheduleFollowUp = async (phoneNumber, userId) => {
   console.log('Schedule follow-up called', userId);
   
   try {
-    await agenda.start();
-
     const userChats = await userChatHistory(userId);
     const latestFrequencyOfFollowUp = userChats.lastChat ? userChats.lastChat.frequencyOfFollowUp : null;
 
@@ -58,7 +56,7 @@ const scheduleFollowUp = async (userId) => {
     const nextFollowUp = moment().add(value, unit).toDate(); 
     console.log('Next Follow-Up:', nextFollowUp);
 
-    agenda.schedule(nextFollowUp, 'process follow-ups', { userId: userId });
+    agenda.schedule(nextFollowUp, 'process follow-ups', { phoneNumber: phoneNumber, userId: userId });
   } catch (error) {
     console.error('An error occurred:', error);
   }

@@ -19,12 +19,21 @@ const agenda = new Agenda({
       console.log('Job executed!', job.attrs.data);
     } catch (error) {
       console.error('An error occurred:', error);
+    } finally {
+      job.unlock();
     }
   });
 
   agenda.define('process follow-ups', async (job) => {
+    try {
     const { userId } = job.attrs.data;
-    await processUserFollowUps(userId);
+    await processUserFollowUps(phoneNumber, userId);
+    console.log("Executing 'send sms follow-up'");
+    } catch (e) {
+      console.error("Error in 'send sms follow-up':", e);
+    } finally {
+      job.unlock();
+    }
   });
 
 module.exports = { agenda }; 

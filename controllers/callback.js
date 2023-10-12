@@ -126,7 +126,7 @@ const sessionMiddleware = async (req, res, next) => {
     sessionTimers[sessionId] = setTimeout(async () => {
       await summarizeChat(user, sessionId);
       await Session.findByIdAndUpdate(sessionId, { expiresAt: new Date() });
-      await scheduleFollowUp(user._id) 
+      await scheduleFollowUp(user.phoneNumber, user._id);
       console.log(`Session ${sessionId} closed due to inactivity.`);
     }, 300000); // 5 minutes
 

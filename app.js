@@ -63,11 +63,8 @@ app.get('*', (req, res) => {
 db.connect().then(async () => {
 
     // Start Agenda
-  //  await agenda.start();
-  //  console.log("Agenda started successfully");
-
-  //  agenda.now('send sms follow-up', { to: '+16048189821', message: 'Hiiii me! This is from Agenda woo!' });
-  // agenda.every('1 day', 'send sms follow-up', { to: '+16048189821', message: 'A CELEBRATIONN~!!! OF SPAAAAM!' });
+    await agenda.start();
+    console.log("Agenda started successfully");
 
     // Start Server 
     app.listen(PORT, () => {
