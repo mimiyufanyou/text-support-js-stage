@@ -4,8 +4,8 @@ const Message = require('../models/messages');
 const Session = require('../models/session');
 
 const { Twilio } = require('twilio');
-const twilioClient = new Twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
-const TWILIO_URL = `https://api.twilio.com/2010-04-01/Accounts/${process.env.TWILIO_ACCOUNT_SID}/Messages.json`;
+const twilioClient = new Twilio(process.env.TWILIO_ACCOUNT, process.env.TWILIO_SECRET);
+/* const TWILIO_URL = `https://api.twilio.com/2010-04-01/Accounts/${process.env.TWILIO_ACCOUNT_SID}/Messages.json`; */ 
 
 const SEND_MSG_URL = 'https://server.loopmessage.com/api/v1/message/send/';
 const headers = {
