@@ -1,9 +1,6 @@
 const User = require('../models/user');
 const { sendSms } = require('./message');
 const { getFollowUpsOpenAIResponse } = require('./ai_followups');
-const { agenda } = require('../agenda');
-const moment = require('moment');
-
 
 async function userChatHistory(identifier) {
   try {
@@ -80,6 +77,8 @@ async function processUserFollowUps(phoneNumber, userId) {
 
 const scheduleFollowUp = async (phoneNumber, userId) => {
   console.log('Schedule follow-up called', userId);
+  const { agenda } = require('../agenda');
+  const moment = require('moment');
   
   try {
     const userChats = await userChatHistory(userId);

@@ -26,7 +26,7 @@ const agenda = new Agenda({
 
   agenda.define('process follow-ups', async (job) => {
     try {
-    const { userId } = job.attrs.data;
+    const { phoneNumber, userId } = job.attrs.data;
     await processUserFollowUps(phoneNumber, userId);
     console.log("Executing 'send sms follow-up'");
     } catch (e) {
