@@ -8,7 +8,7 @@ async function getdynamicPromptResponse(sessionMessages, dynamicPrompt) {
         return firstItem[firstPropertyName] || obj;
       };
       
-    const firstPropertyValue = getFirstPropertyValue(dynamicPrompt);
+    const firstPropertyValue = getFirstPropertyValue(dynamicPrompt); ///remove this stuff - it's just sending T that's why lol 
 
     console.log("First Property Value", firstPropertyValue)
 

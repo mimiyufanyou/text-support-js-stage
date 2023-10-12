@@ -16,7 +16,7 @@ const agenda = new Agenda({
     try {
       const { to, message } = job.attrs.data;
       await sendSms(to, message);
-      console.log('Job executed!');
+      console.log('Job executed!', job.attrs.data);
     } catch (error) {
       console.error('An error occurred:', error);
     }
