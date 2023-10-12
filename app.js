@@ -60,11 +60,12 @@ app.get('*', (req, res) => {
      res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
 });
 
-// Start Agenda
-await agenda.start();
-console.log("Agenda started successfully");
-
 db.connect().then(async () => {
+
+    // Start Agenda
+    await agenda.start();
+    console.log("Agenda started successfully");
+
 
     // Start Server 
     app.listen(PORT, () => {
