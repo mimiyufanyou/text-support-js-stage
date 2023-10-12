@@ -35,11 +35,17 @@ const sendSms = async (phoneNumber, content) => {
     console.error('Error sending SMS via Axios:', axiosError);
     
     try {
+      console.log('Attempting to send Twilio message...');
+      console.log(`To: ${phoneNumber || `whatsapp:${phoneNumber}`}`);
+      console.log(`From: ${process.env.TWILIO_PHONE_NUMBER || `whatsapp:${process.env.TWILIO_PHONE_NUMBER}`}`);
+      console.log(`Body: ${content}`);
+    
       const twilioResponse = await twilioClient.messages.create({
         to: phoneNumber || `whatsapp:${phoneNumber}`, 
         body: content,
         from: process.env.TWILIO_PHONE_NUMBER || `whatsapp:${process.env.TWILIO_PHONE_NUMBER}`
       });
+      
       console.log('SMS via Twilio sent successfully:', twilioResponse);
       return {
         status: 'success',
